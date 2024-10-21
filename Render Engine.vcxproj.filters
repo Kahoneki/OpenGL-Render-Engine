@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{eb351e59-f0a2-41fc-bd2a-ea4e35fff78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World\Drawable">
+      <UniqueIdentifier>{ae109777-6774-402c-99a2-7e1950688808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{64892b35-f78b-47cd-a71d-c47fd6d2ef04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{dd55f350-996b-4d05-a9ac-94c41d3f006c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{1fd9896c-135f-4eab-be68-f68e1efd0269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{af03c7b5-e463-42fe-9dbf-d8d635136542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External">
+      <UniqueIdentifier>{83eb4692-994c-4557-973e-991309339cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External\imgui">
+      <UniqueIdentifier>{3d211798-93db-4a8d-a9f9-8756d6265fc3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source Files\World\Scene.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\SceneObject.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\ExternalModel.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Mesh.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\PrimitiveModel.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Cube8.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Plane.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Sphere.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Material\Material.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Camera\camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Camera\PlayerCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Camera\RenderSource.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\LightSource.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Drawable.cpp">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\InputManager.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\TimeManager.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\WindowManager.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\SceneManager.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Application\Renderer.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Shaders\shader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="program.cpp" />
+    <ClCompile Include="Source Files\imgui\imgui.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_demo.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_draw.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_tables.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\External\glad.c">
+      <Filter>Source Files\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\External\stb_image.cpp">
+      <Filter>Source Files\External</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source Files\World\Scene.h">
+      <Filter>Source Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\SceneObject.h">
+      <Filter>Source Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Drawable.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\ExternalModel.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Mesh.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\PrimitiveModel.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Cube8.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Plane.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Sphere.h">
+      <Filter>Source Files\World\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Material\Material.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Camera\camera.h">
+      <Filter>Source Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Camera\PlayerCamera.h">
+      <Filter>Source Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Camera\RenderSource.h">
+      <Filter>Source Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\Application.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\InputManager.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\TimeManager.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\WindowManager.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\SceneManager.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Application\Renderer.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\LightSource.h">
+      <Filter>Source Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Shaders\shader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imconfig.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imgui.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imgui_impl_glfw.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imgui_impl_opengl3.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imgui_internal.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imstb_rectpack.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imstb_textedit.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\imgui\imstb_truetype.h">
+      <Filter>Source Files\External\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\External\stb_image.h">
+      <Filter>Source Files\External</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source Files\Shaders\frag.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\vert.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\static_colour.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\static_colour.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
