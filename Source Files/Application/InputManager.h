@@ -7,6 +7,7 @@
 #include "GLFW/glfw3.h"
 #include "../Camera/PlayerCamera.h"
 #include "../World/Scene.h"
+#include <iostream>
 
 class Application;
 class GLFWwindow;

@@ -40,6 +40,8 @@ void Application::RunFrame()
 	timeManager->NewFrame();
 	inputManager->ProcessInputs(windowManager->GetWindow(), timeManager->dt);
 	renderer->Render(sceneManager->GetActiveScene());
+	
+	applicationRunning = !glfwWindowShouldClose(windowManager->GetWindow());
 }
 
 
