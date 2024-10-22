@@ -3,6 +3,8 @@
 #include "GLM/gtx/quaternion.hpp"
 #include "../../Utility/BindingPoints.h"
 
+#include <iostream>
+
 Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, topLeftFront)
 {
 	//Construct model matrix
@@ -28,9 +30,9 @@ Drawable::~Drawable() {
 
 void Drawable::setPosition(glm::vec3 pos)
 {
-	worldPos = pos;
 	glm::vec3 diff{ pos - getPosition() };
 	model = glm::translate(model, diff);
+	worldPos = pos;
 }
 
 void Drawable::UpdateMaterial()
