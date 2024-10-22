@@ -3,14 +3,24 @@
 
 
 #include <GLM/gtc/matrix_transform.hpp>
+#include "GLAD/glad.h"
 
 
-/*To be attached to a Drawable object*/
 
 enum MaterialProperties
 {
 	MATERIAL_COLOUR_BIT = (1 << 0), //0001
 };
+
+struct MaterialData
+{
+	glm::vec4 colour;
+
+	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
+};
+
+
+/*To be attached to a Drawable object*/
 
 class Material
 {
@@ -21,10 +31,11 @@ public:
 
 	void SetPropertyActive(MaterialProperties property, bool active);
 	bool GetPropertyActive(MaterialProperties property);
-	glm::vec3 colour;
+	
+	[[no_discard]] const std::size_t GetMaxProperties();
+	[[no_discard]] const GLsizeiptr GetPaddedSize();
 
-private:
-	std::uint16_t activePropertiesBitfield;
+	MaterialData materialData;
 };
 
 #endif

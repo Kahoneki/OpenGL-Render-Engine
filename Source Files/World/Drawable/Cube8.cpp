@@ -48,7 +48,4 @@ Cube8::Cube8(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec
 	glBindVertexArray(0);
 
 	drawMode = GL_TRIANGLES;
-
-	material = Material(MaterialProperties::MATERIAL_COLOUR_BIT);
-	material.colour = glm::vec3(1.0f, 0.7f, 0.7f); //Pink!
 }

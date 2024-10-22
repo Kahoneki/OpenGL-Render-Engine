@@ -189,6 +189,7 @@
     <ClInclude Include="Source Files\imgui\imstb_truetype.h" />
     <ClInclude Include="Source Files\Material\Material.h" />
     <ClInclude Include="Source Files\Shaders\shader.h" />
+    <ClInclude Include="Source Files\Utility\BindingPoints.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube8.h" />
     <ClInclude Include="Source Files\World\Drawable\Drawable.h" />
     <ClInclude Include="Source Files\World\Drawable\ExternalModel.h" />
@@ -204,6 +205,8 @@
     <None Include="Source Files\Shaders\frag.glsl" />
     <None Include="Source Files\Shaders\static_colour.frag" />
     <None Include="Source Files\Shaders\static_colour.vert" />
+    <None Include="Source Files\Shaders\static_material.frag" />
+    <None Include="Source Files\Shaders\static_material.vert" />
     <None Include="Source Files\Shaders\vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,7 @@
 #include "Drawable.h"
 
 #include "GLM/gtx/quaternion.hpp"
+#include "../../Utility/BindingPoints.h"
 
 Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, topLeftFront)
 {
@@ -13,14 +14,27 @@ Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, gl
 	glCreateBuffers(1, &VBO);
 	glCreateBuffers(1, &EBO);
 
+	glCreateBuffers(1, &materialBuffer);
+
 	worldPos = topLeftFront;
 }
 
-Drawable::~Drawable() {}
+Drawable::~Drawable() {
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &materialBuffer);
+}
 
 void Drawable::setPosition(glm::vec3 pos)
 {
 	worldPos = pos;
 	glm::vec3 diff{ pos - getPosition() };
 	model = glm::translate(model, diff);
+}
+
+void Drawable::UpdateMaterial()
+{
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::MATERIAL, materialBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, material.GetPaddedSize(), &material.materialData, GL_DYNAMIC_DRAW); //Dynamic draw as this function will be called everytime the material is modified
 }

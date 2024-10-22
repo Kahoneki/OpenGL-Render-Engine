@@ -105,6 +105,12 @@ Shader::Shader(SHADER_PRESET preset)
         fragmentFilepath = "static_colour.frag";
         break;
     }
+    case SHADER_PRESET::STATIC_MATERIAL:
+    {
+        vertexFilepath = "static_material.vert";
+        fragmentFilepath = "static_material.frag";
+        break;
+    }
     default:
     {
         std::cerr << "Shader preset not found: " << preset << std::endl;

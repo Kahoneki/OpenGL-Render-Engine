@@ -37,6 +37,9 @@
     <Filter Include="Source Files\External\imgui">
       <UniqueIdentifier>{3d211798-93db-4a8d-a9f9-8756d6265fc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{ea57d36a-b21b-4a9f-b5ac-3c5a3803be51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\World\Scene.cpp">
@@ -225,6 +228,9 @@
     <ClInclude Include="Source Files\External\stb_image.h">
       <Filter>Source Files\External</Filter>
     </ClInclude>
+    <ClInclude Include="Source Files\Utility\BindingPoints.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl">
@@ -237,6 +243,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="Source Files\Shaders\static_colour.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\static_material.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\static_material.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,12 +1,14 @@
 #include "Scene.h"
 #include <GLAD/glad.h>
 #include "LightSource.h"
+#include "../Utility/BindingPoints.h"
 
 Scene::Scene()
 {
 	lightSources = std::vector<LightSource>();
 	renderSources = std::vector<RenderSource*>();
 	drawables = std::vector<Drawable*>();
+	glCreateBuffers(1, &lightSourcesBuffer);
 	//Purposefully leave activeRenderSource uninitialised
 }
 
@@ -44,9 +46,8 @@ void Scene::RemoveLightSource(std::size_t index)
 
 void Scene::UpdateLightSources()
 {
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, lightSourcesBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, lightSources.size() * sizeof(lightSources[0]), lightSources.data(), GL_DYNAMIC_DRAW); //Dynamic draw as this function will be called everytime a light source is added, removed, or modified
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 std::size_t Scene::AddRenderSource(RenderSource* renderSource)

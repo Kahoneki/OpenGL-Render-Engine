@@ -15,13 +15,16 @@ int main()
 	//Define scene
 	PlayerCamera cam{ "cam" };
 	Cube8 cube{ "cube", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	cube.material.materialData.colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	cube.UpdateMaterial();
 	Scene scene;
 	scene.AddRenderSource(&cam);
 	scene.SetActiveRenderSource(0);
 	scene.AddDrawable(&cube);
 
 	//Define renderer
-	Shader shader{ SHADER_PRESET::STATIC_COLOUR };
+	Shader shader{ SHADER_PRESET::STATIC_MATERIAL };
 	app.renderer->AddShader(&shader);
 	app.renderer->SetActiveShader(0);
 	app.sceneManager->AddScene(&scene);
