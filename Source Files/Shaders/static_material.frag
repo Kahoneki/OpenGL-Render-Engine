@@ -1,10 +1,13 @@
 #version 450 core
 
+in vec2 texCoords;
 out vec4 FragColour;
 
 struct MaterialData
 {
 	vec4 colour;
+
+	sampler2D texture;
 
 	uint activePropertiesBitfield;
 };

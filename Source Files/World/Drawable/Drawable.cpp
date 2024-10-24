@@ -17,6 +17,7 @@ Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, gl
 	glCreateBuffers(1, &EBO);
 
 	glCreateBuffers(1, &materialBuffer);
+	material.parent = this;
 
 	worldPos = topLeftFront;
 }

@@ -17,7 +17,6 @@ int main()
 	Cube8 cube{ "cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
 	cube.material.materialData.colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	cube.UpdateMaterial();
 	cube.setPosition(cube.getPosition() + glm::vec3(0, 0, -5));
 	Scene scene;
 	scene.AddRenderSource(&cam);
