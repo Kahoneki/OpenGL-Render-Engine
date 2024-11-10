@@ -9,24 +9,34 @@
 #include "WindowManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "AssetManager.h"
 #include "Renderer.h"
 #include "../Shaders/shader.h"
 
 #include <iostream>
 
 
+Application& Application::getInstance()
+{
+	static Application instance;
+	return instance;
+}
+
 Application::Application()
 {
-	inputManager = std::make_shared<InputManager>(this);
+	applicationRunning = true;
+
+	//GLFW needs to be initialised before GLAD
 	windowManager = std::make_shared<WindowManager>(this);
-	timeManager = std::make_shared<TimeManager>(this);
-	sceneManager = std::make_shared<SceneManager>(this);
-	renderer = std::make_shared<Renderer>(this);
 
 	InitialiseGLAD();
 	InitialiseImGui(windowManager->GetWindow());
 
-	applicationRunning = true;
+	inputManager = std::make_shared<InputManager>(this);
+	timeManager = std::make_shared<TimeManager>(this);
+	sceneManager = std::make_shared<SceneManager>(this);
+	assetManager = std::make_shared<AssetManager>();
+	renderer = std::make_shared<Renderer>(this);
 }
 
 Application::~Application() {
@@ -34,6 +44,7 @@ Application::~Application() {
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
+
 
 void Application::RunFrame()
 {

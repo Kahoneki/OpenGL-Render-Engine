@@ -2,6 +2,9 @@
 
 #include "GLM/gtx/quaternion.hpp"
 #include "../../Utility/BindingPoints.h"
+#include "../../Application/Application.h"
+#include "../../Application/Renderer.h"
+#include "../../Shaders/shader.h"
 
 #include <iostream>
 
@@ -20,6 +23,11 @@ Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, gl
 	material.parent = this;
 
 	worldPos = topLeftFront;
+}
+
+void Drawable::Draw(Shader& shader)
+{
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::MATERIAL, materialBuffer);
 }
 
 Drawable::~Drawable() {

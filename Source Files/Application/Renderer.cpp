@@ -103,6 +103,16 @@ void Renderer::SetActiveShader(std::size_t index)
 	activeShader = index;
 }
 
+Shader* Renderer::GetActiveShader()
+{
+	return shaders[activeShader];
+}
+
+Shader* Renderer::GetShader(std::size_t index)
+{
+	return shaders[index];
+}
+
 
 
 void Renderer::RenderImGui() const

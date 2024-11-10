@@ -20,7 +20,7 @@ class Drawable : public virtual SceneObject
 
 public:
 	Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
-	virtual void Draw(Shader& shader) = 0;
+	virtual void Draw(Shader& shader);
 	virtual ~Drawable() = 0;
 	void setPosition(glm::vec3 pos) override;
 	Material material;
@@ -38,6 +38,7 @@ protected:
 	unsigned int EBO;
 
 	GLenum drawMode;
+	bool indexed;
 };
 
 #endif

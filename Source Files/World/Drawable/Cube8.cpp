@@ -48,4 +48,5 @@ Cube8::Cube8(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec
 	glBindVertexArray(0);
 
 	drawMode = GL_TRIANGLES;
+	indexed = true;
 }

@@ -24,6 +24,8 @@ public:
 	std::size_t AddShader(Shader* shader); //Returns index
 	void RemoveShader(std::size_t index);
 	void SetActiveShader(std::size_t index);
+	Shader* GetActiveShader();
+	Shader* GetShader(std::size_t index);
 
 private:
 	Application* app;

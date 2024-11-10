@@ -16,7 +16,7 @@ enum MaterialProperties
 struct MaterialData
 {
 	glm::vec4 colour;
-	unsigned int texture;
+	GLuint64 textureHandle;
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
 };
 
@@ -44,8 +44,9 @@ public:
 	glm::vec4 getColour();
 	void setColour(glm::vec4 colour);
 
-	unsigned int getTextureID();
-	void setTexture(const char* filepath);
+	GLuint64 getTextureHandle();
+	void setTextureName(unsigned int textureName);
+	void setTextureHandle(GLuint64 textureHandle);
 
 
 	Drawable* parent;
@@ -55,7 +56,6 @@ private:
 	[[no_discard]] const GLsizeiptr GetPaddedSize();
 	
 	MaterialData materialData;
-	unsigned int textureBuffer;
 };
 
 #endif

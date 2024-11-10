@@ -1,18 +1,18 @@
-#version 450 core
+#version 460 core
+#extension GL_ARB_bindless_texture : require
+#extension GL_ARB_gpu_shader_int64 : require
 
-in vec2 texCoords;
+in vec2 texCoord;
 out vec4 FragColour;
 
 struct MaterialData
 {
 	vec4 colour;
-
-	sampler2D texture;
-
+	uint64_t textureHandle;
 	uint activePropertiesBitfield;
 };
 
-layout (binding=1, std140) uniform Material
+layout (binding=1, std140) uniform MaterialBlock
 {
 	MaterialData matData;
 } material;
@@ -20,10 +20,11 @@ layout (binding=1, std140) uniform Material
 
 void main()
 {
-	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
-		FragColour = material.matData.colour;
+	FragColour = vec4(1.0f);
+	if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
+		FragColour = texture(sampler2D(material.matData.textureHandle), texCoord);
 	}
-	else {
-		FragColour = vec4(1.0f, 0.0f, 1.0f, 1.0f);
+	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
+		FragColour *= material.matData.colour;
 	}
 }

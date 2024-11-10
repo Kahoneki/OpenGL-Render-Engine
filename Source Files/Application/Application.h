@@ -9,8 +9,8 @@ class InputManager;
 class WindowManager;
 class TimeManager;
 class SceneManager;
+class AssetManager;
 class Renderer;
-class Shader;
 class GLFWwindow;
 
 class Application
@@ -19,10 +19,14 @@ class Application
 	friend class WindowManager;
 	friend class TimeManager;
 	friend class SceneManager;
+	friend class AssetManager;
 	friend class Renderer;
 
 public:
-	Application();
+
+	static Application& getInstance();
+	Application(const Application&) = delete;
+	Application& operator=(const Application&) = delete;
 	~Application();
 	void RunFrame();
 
@@ -32,9 +36,12 @@ public:
 	std::shared_ptr<WindowManager> windowManager;
 	std::shared_ptr<TimeManager> timeManager;
 	std::shared_ptr<SceneManager> sceneManager;
+	std::shared_ptr<AssetManager> assetManager;
 	std::shared_ptr<Renderer> renderer;
 
 private:
+	Application();
+
 	void InitialiseGLAD();
 	void InitialiseImGui(GLFWwindow* window);
 
