@@ -34,6 +34,7 @@ struct MaterialData
 	vec4 diffuseColour;
 	vec4 specularColour;
 	float specularPower;
+	float rimPower;
 
 	uint64_t textureHandle;
 	uint activePropertiesBitfield;
@@ -45,9 +46,24 @@ layout (binding=1, std140) uniform MaterialBlock
 } material;
 
 
+vec4 calculateRimContribution(vec3 normal, vec3 view, vec4 lightColour) {
+	//Rim lighting is highest when view vector is orthogonal to normal
+	//Just use specular colour and strength multiplied by some constant - might change this later
+	
+	float rimFactor = 1.0f - dot(normal, view);
+
+	//Transform to range 0,1
+	rimFactor = smoothstep(0.0f, 1.0f, rimFactor);
+
+	//Raise to rim exponent
+	rimFactor = pow(rimFactor, material.matData.rimPower);
+	
+	return rimFactor * lightColour;
+}
+
+
 void main()
 {
-
 
 	if (isEmissive) {
 		FragColour = material.matData.diffuseColour;
@@ -64,8 +80,9 @@ void main()
 		vec4 ambient = material.matData.ambientColour * lightSources.lights[i].ambientColour;
 		vec4 diffuse = max(dot(worldNormal, worldPosToLightPos), 0.0f) * material.matData.diffuseColour * lightSources.lights[i].diffuseColour;
 		vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, worldPosToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * lightSources.lights[i].specularColour;
-	
-		FragColour += ambient + diffuse + specular;
+		vec4 rim = calculateRimContribution(worldNormal, worldPosToCamera, lightSources.lights[i].diffuseColour);
+
+		FragColour += ambient + diffuse + specular + rim;
 	}
 
 	if ((material.matData.activePropertiesBitfield & 2u) != 0u) {

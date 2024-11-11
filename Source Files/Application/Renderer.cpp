@@ -215,6 +215,10 @@ void DrawHeirarchy(SceneObject* s)
 			if (ImGui::SliderFloat("Specular Power", &specPow, 0.0f, 256.0f)) {
 				d->material.setSpecularPower(specPow);
 			}
+			float rimPow{ d->material.getRimPower() };
+			if (ImGui::SliderFloat("Rim Power", &rimPow, 0.0f, 256.0f)) {
+				d->material.setRimPower(rimPow);
+			}
 		}
 
 		if (s->child != nullptr) {

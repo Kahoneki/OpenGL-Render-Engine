@@ -19,6 +19,7 @@ struct MaterialData
 	glm::vec4 diffuseColour;
 	glm::vec4 specularColour;
 	float specularPower;
+	float rimPower;
 
 	GLuint64 textureHandle;
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
@@ -53,6 +54,8 @@ public:
 	void setSpecularColour(glm::vec4 colour);
 	float getSpecularPower();
 	void setSpecularPower(float power);
+	float getRimPower();
+	void setRimPower(float power);
 
 	GLuint64 getTextureHandle();
 	void setTextureName(unsigned int textureName);

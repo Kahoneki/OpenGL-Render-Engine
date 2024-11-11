@@ -85,6 +85,17 @@ void Material::setSpecularPower(float power)
 	drawableParent->UpdateMaterial();
 }
 
+float Material::getRimPower()
+{
+	return materialData.rimPower;
+}
+
+void Material::setRimPower(float power)
+{
+	materialData.rimPower = power;
+	drawableParent->UpdateMaterial();
+}
+
 const std::size_t Material::GetMaxProperties()
 {
 	return 8 * sizeof(materialData.activePropertiesBitfield);
@@ -101,6 +112,9 @@ const GLsizeiptr Material::GetPaddedSize()
 	size += sizeof(materialData.specularColour); //16 bytes
 
 	size += sizeof(materialData.specularPower); //4 bytes
+	size += 12;
+
+	size += sizeof(materialData.rimPower); //4 bytes
 	size += 12;
 
 	size += sizeof(materialData.textureHandle); //8 bytes

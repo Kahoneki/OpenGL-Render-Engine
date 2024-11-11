@@ -26,6 +26,7 @@ int main()
 	cube.material.setDiffuseColour(glm::vec4(1.0f, 0.5f, 0.2f, 1.0f)); // Diffuse: warm orange color
 	cube.material.setSpecularColour(glm::vec4(0.8f, 0.6f, 0.3f, 1.0f)); // Specular: slightly muted warm shine
 	cube.material.setSpecularPower(64.0f); // Specular strength
+	cube.material.setRimPower(64.0f);
 	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
 
 	unsigned int kevinTextureName{ app.assetManager.get()->addTexture("kevin.png") };
@@ -41,6 +42,7 @@ int main()
 	cube2.material.setDiffuseColour(glm::vec4(0.2f, 0.3f, 1.0f, 1.0f)); // Diffuse: cool blue
 	cube2.material.setSpecularColour(glm::vec4(0.5f, 0.6f, 1.0f, 1.0f)); // Specular: blue, shiny
 	cube2.material.setSpecularPower(128.0f); // Specular strength
+	cube2.material.setRimPower(128.0f);
 	cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
 
 	unsigned int garfieldTextureName{ app.assetManager.get()->addTexture("garfield.png") };
