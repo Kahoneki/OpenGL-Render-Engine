@@ -18,9 +18,12 @@ public:
 	//Getters
 	glm::vec3 getPosition() const;
 
-protected:
-	const char* name;
 	SceneObject* parent;
+	SceneObject* child;
+
+	const char* name;
+
+protected:
 	glm::vec3 worldPos;
 };
 

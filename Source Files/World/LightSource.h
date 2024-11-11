@@ -2,32 +2,49 @@
 #define LIGHTSOURCE_H
 
 #include "SceneObject.h"
+#include "Drawable/Cube24.h"
 
 #include "GLM/glm.hpp"
+#include <GLAD/glad.h>
+
+class Scene;
 
 struct Light
 {
-	glm::vec3 position;
-	glm::vec3 colour;
-	float intensity;
+	glm::vec4 position;
+	
+	glm::vec4 ambientColour;
+	glm::vec4 diffuseColour;
+	glm::vec4 specularColour;
 };
 
-class LightSource : SceneObject
+class LightSource : public SceneObject
 {
+
+	friend class Scene;
+
 public:
 	LightSource();
-	LightSource(const char* name, glm::vec3 _position, glm::vec3 _colour, float _intensity, SceneObject* parent);
+	LightSource(const char* name, glm::vec3 _position, glm::vec4 ambientColour, glm::vec4 diffuseColour, glm::vec4 specularColour, SceneObject* parent);
 	~LightSource();
 
 	void setPosition(glm::vec3 pos) override;
 
-	glm::vec3 getColour();
-	float getIntensity();
+	glm::vec4 getAmbientColour();
+	void setAmbientColour(glm::vec4 colour);
+	glm::vec4 getDiffuseColour();
+	void setDiffuseColour(glm::vec4 colour);
+	glm::vec4 getSpecularColour();
+	void setSpecularColour(glm::vec4 colour);
 
-	void setColour(glm::vec3 val);
-	void setIntensity(float val);
+	Cube24 cube;
 
 private:
+
+	[[no_discard]] const GLsizeiptr GetPaddedSize();
+
+	Scene* sceneParent;
 	Light light;
+
 };
 #endif

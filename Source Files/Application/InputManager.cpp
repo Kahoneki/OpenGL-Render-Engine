@@ -37,6 +37,10 @@ InputManager::InputManager(Application* _app)
 
 void InputManager::ProcessMouse(double xposIn, double yposIn)
 {
+	if (app->editorMode) {
+		firstMouse = true;
+	}
+
 	if (!app->editorMode && dynamic_cast<PlayerCamera*>(app->sceneManager->GetActiveScene()->GetActiveRenderSource())) {
 		float xpos = static_cast<float>(xposIn);
 		float ypos = static_cast<float>(yposIn);

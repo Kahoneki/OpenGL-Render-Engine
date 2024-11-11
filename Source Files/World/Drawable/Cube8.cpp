@@ -1,6 +1,9 @@
 #include "Cube8.h"
 
-Cube8::Cube8(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, glm::vec3 colour, SceneObject* parent) : Drawable(name, topLeftFront, scale, rotation, parent)
+Cube8::Cube8(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, glm::vec3 colour, SceneObject* parent) :
+	SceneObject(name, parent, topLeftFront),
+	Drawable(name, topLeftFront, scale, rotation, parent),
+	PrimitiveModel(name, topLeftFront, scale, rotation, parent)
 {
 
 	vertices =

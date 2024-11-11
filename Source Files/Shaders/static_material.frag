@@ -7,7 +7,11 @@ out vec4 FragColour;
 
 struct MaterialData
 {
-	vec4 colour;
+	vec4 ambientColour;
+	vec4 diffuseColour;
+	vec4 specularColour;
+	float specularPower;
+
 	uint64_t textureHandle;
 	uint activePropertiesBitfield;
 };
@@ -25,6 +29,6 @@ void main()
 		FragColour = texture(sampler2D(material.matData.textureHandle), texCoord);
 	}
 	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
-		FragColour *= material.matData.colour;
+		FragColour *= material.matData.diffuseColour;
 	}
 }

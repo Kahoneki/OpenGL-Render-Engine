@@ -111,6 +111,18 @@ Shader::Shader(SHADER_PRESET preset)
         fragmentFilepath = "static_material.frag";
         break;
     }
+    case SHADER_PRESET::BLINN_PHONG:
+    {
+        vertexFilepath = "blinn_phong.vert";
+        fragmentFilepath = "blinn_phong.frag";
+        break;
+    }
+    case SHADER_PRESET::LIGHT_SOURCE:
+    {
+        vertexFilepath = "light_source.vert";
+        fragmentFilepath = "light_source.frag";
+        break;
+    }
     default:
     {
         std::cerr << "Shader preset not found: " << preset << std::endl;
@@ -171,6 +183,7 @@ Shader::Shader(SHADER_PRESET preset)
             exit(-1);
         }
     }
+
     glCompileShader(frag);
     {
         int success;

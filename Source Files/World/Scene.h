@@ -13,12 +13,15 @@ class Drawable;
 
 class Scene
 {
+
+	friend class Renderer;
+
 public:
 	Scene();
-	Scene(std::vector<LightSource> _lightSources, std::vector<RenderSource*> _renderSources, std::vector<Drawable*> _drawables);
+	Scene(std::vector<LightSource*> _lightSources, std::vector<RenderSource*> _renderSources, std::vector<Drawable*> _drawables);
 	~Scene();
 
-	std::size_t AddLightSource(LightSource lightSource); //Returns index
+	std::size_t AddLightSource(LightSource* lightSource); //Returns index
 	void RemoveLightSource(std::size_t index);
 	void UpdateLightSources(); //Must be called after LightSource::setPosition(), LightSource::setColour() or LightSource::setIntensity()
 
@@ -32,7 +35,7 @@ public:
 
 
 private:
-	std::vector<LightSource> lightSources; //Can't be pointers as they need to be passed to the GPU
+	std::vector<LightSource*> lightSources; //Can't be pointers as they need to be passed to the GPU
 	unsigned int lightSourcesBuffer;
 
 	std::vector<RenderSource*> renderSources; //E.g.: cameras
@@ -40,8 +43,7 @@ private:
 
 	std::vector<Drawable*> drawables;
 
-
-	friend class Renderer;
+	std::vector<SceneObject*> sceneObjects; //Contains all light sources, render sources, and drawables
 };
 
 #endif

@@ -6,7 +6,7 @@
 class RenderSource : public SceneObject
 {
 public:
-	RenderSource();
+	RenderSource(const char* name, SceneObject* parent, glm::vec3 worldPos);
 	virtual ~RenderSource();
 	virtual void setPosition(glm::vec3 pos) override = 0;
 };

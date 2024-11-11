@@ -263,5 +263,17 @@
     <None Include="Source Files\Shaders\static_material.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="Source Files\Shaders\blinn_phong.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\blinn_phong.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\light_source.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\light_source.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

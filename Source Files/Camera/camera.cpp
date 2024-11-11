@@ -4,7 +4,7 @@
 
 
 //Vector Constructor
-Camera::Camera(const char* name, glm::vec3 position, glm::vec3 up, float yaw, float pitch, float nearPlaneDist, float farPlaneDist)
+Camera::Camera(const char* name, SceneObject* parent, glm::vec3 position, glm::vec3 up, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, position)
 {
 	Position = position;
 	WorldUp = up;
@@ -20,7 +20,7 @@ Camera::Camera(const char* name, glm::vec3 position, glm::vec3 up, float yaw, fl
 }
 
 //Scalar Constructor
-Camera::Camera(const char* name, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch, float nearPlaneDist, float farPlaneDist)
+Camera::Camera(const char* name, SceneObject* parent, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, glm::vec3(posX, posY, posZ))
 {
 	Position = glm::vec3(posX, posY, posZ);
 	WorldUp = glm::vec3(upX, upY, upZ);
@@ -43,6 +43,7 @@ Camera::~Camera()
 void Camera::setPosition(glm::vec3 pos)
 {
 	worldPos = pos;
+	Position = pos;
 }
 
 //Returns the view matrix calculated using euler angles and the LookAt matrix

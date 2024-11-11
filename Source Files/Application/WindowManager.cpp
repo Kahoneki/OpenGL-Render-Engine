@@ -12,8 +12,8 @@ WindowManager::WindowManager(Application* _app)
 {
 	app = _app;
 
-	SCRWIDTH = 800;
-	SCRHEIGHT = 800;
+	SCRWIDTH = 1920;
+	SCRHEIGHT = 1080;
 
 	window = InitialiseGLFW();
 	glfwMakeContextCurrent(window);
@@ -34,7 +34,7 @@ GLFWwindow* WindowManager::InitialiseGLFW()
 	//glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
-	GLFWwindow* window{ glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "[Render Engine Name Here]", NULL, NULL) };
+	GLFWwindow* window{ glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "Neki", glfwGetPrimaryMonitor(), NULL)};
 	if (window == NULL) {
 		std::cerr << "Failed to initialise GLFW." << std::endl;
 		glfwTerminate();

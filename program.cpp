@@ -6,6 +6,7 @@
 #include "Source Files/Camera/PlayerCamera.h"
 #include "Source Files/World/Drawable/Cube24.h"
 #include "Source Files/World/Scene.h"
+#include "Source Files/World/LightSource.h"
 #include "Source Files/Shaders/shader.h"
 
 int main()
@@ -13,34 +14,71 @@ int main()
 	Application& app{ Application::getInstance() };
 
 	//Define renderer
-	Shader shader{ SHADER_PRESET::STATIC_MATERIAL };
+	Shader shader{ SHADER_PRESET::BLINN_PHONG };
 	app.renderer->AddShader(&shader);
 	app.renderer->SetActiveShader(0);
 
 	//Define scene
-	PlayerCamera cam{ "cam" };
+	PlayerCamera cam{ "cam", nullptr };
 	
-	Cube24 cube{ "cube", glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	cube.material.setColour(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	Cube24 cube{ "orange cube", glm::vec3(2.0f, 1.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	cube.material.setAmbientColour(glm::vec4(0.2f, 0.2f, 0.1f, 1.0f)); // Ambient: warm subtle light
+	cube.material.setDiffuseColour(glm::vec4(1.0f, 0.5f, 0.2f, 1.0f)); // Diffuse: warm orange color
+	cube.material.setSpecularColour(glm::vec4(0.8f, 0.6f, 0.3f, 1.0f)); // Specular: slightly muted warm shine
+	cube.material.setSpecularPower(64.0f); // Specular strength
 	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+
 	unsigned int kevinTextureName{ app.assetManager.get()->addTexture("kevin.png") };
 	cube.material.setTextureName(kevinTextureName);
 	cube.material.SetPropertyActive(MATERIAL_TEXTURE_BIT, true);
-	cube.setPosition(cube.getPosition() + glm::vec3(-2, 0, 0));
 
-	Cube24 cube2{ "cube", glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	cube2.material.setColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	// Position set to the right and slightly raised
+	cube.setPosition(cube.getPosition() + glm::vec3(2.0f, 1.0f, 0.0f));
+
+
+	Cube24 cube2{ "blue cube", glm::vec3(-2.0f, 1.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	cube2.material.setAmbientColour(glm::vec4(0.1f, 0.1f, 0.2f, 1.0f)); // Ambient: cool subtle light
+	cube2.material.setDiffuseColour(glm::vec4(0.2f, 0.3f, 1.0f, 1.0f)); // Diffuse: cool blue
+	cube2.material.setSpecularColour(glm::vec4(0.5f, 0.6f, 1.0f, 1.0f)); // Specular: blue, shiny
+	cube2.material.setSpecularPower(128.0f); // Specular strength
 	cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+
 	unsigned int garfieldTextureName{ app.assetManager.get()->addTexture("garfield.png") };
 	cube2.material.setTextureName(garfieldTextureName);
 	cube2.material.SetPropertyActive(MATERIAL_TEXTURE_BIT, true);
-	cube2.setPosition(cube2.getPosition() + glm::vec3(2, 0, 0));
+
+	// Position set to the left and slightly raised
+	cube2.setPosition(cube2.getPosition() + glm::vec3(-2.0f, 1.0f, 0.0f));
+
 
 	Scene scene;
 	scene.AddRenderSource(&cam);
 	scene.SetActiveRenderSource(0);
 	scene.AddDrawable(&cube);
 	scene.AddDrawable(&cube2);
+
+	// Warm yellow light
+	LightSource light{
+		"yellow light",
+		glm::vec3(3.0f, 3.0f, 3.0f),
+		glm::vec4(0.2f, 0.2f, 0.1f, 1.0f),  // Ambient: subtle warm
+		glm::vec4(1.0f, 0.9f, 0.6f, 1.0f),  // Diffuse: warm yellow
+		glm::vec4(1.0f, 0.9f, 0.7f, 1.0f),   // Specular: slightly cooler than diffuse
+		nullptr
+	};
+
+	// Cool blue/purple light
+	LightSource light2{
+		"blue light",
+		glm::vec3(-3.0f, 3.0f, -3.0f),
+		glm::vec4(0.1f, 0.1f, 0.2f, 1.0f),  // Ambient: subtle cool
+		glm::vec4(0.6f, 0.7f, 1.0f, 1.0f),  // Diffuse: cool blue
+		glm::vec4(0.7f, 0.8f, 1.0f, 1.0f),   // Specular: slightly brighter than diffuse
+		nullptr
+	};
+
+	scene.AddLightSource(&light);
+	scene.AddLightSource(&light2);
 
 	app.sceneManager->AddScene(&scene);
 	app.sceneManager->SetActiveScene(0);

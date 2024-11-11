@@ -33,6 +33,8 @@ private:
 	std::vector<Shader*> shaders;
 	std::size_t activeShader; //Index
 
+	Shader* lightSourceShader;
+
 	void RenderImGui() const;
 };
 

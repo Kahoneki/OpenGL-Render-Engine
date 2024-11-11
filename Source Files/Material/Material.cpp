@@ -10,14 +10,18 @@
 Material::Material()
 {
 	materialData.activePropertiesBitfield = 0;
-	materialData.colour = glm::vec4(1.0f);
+	materialData.ambientColour = glm::vec4(0.0f);
+	materialData.diffuseColour = glm::vec4(0.0f);
+	materialData.specularColour = glm::vec4(0.0f);
 	stbi_set_flip_vertically_on_load(true);
 }
 
 Material::Material(std::uint16_t _activePropertiesBitfield)
 {
 	materialData.activePropertiesBitfield = _activePropertiesBitfield;
-	materialData.colour = glm::vec4(1.0f);
+	materialData.ambientColour = glm::vec4(0.0f);
+	materialData.diffuseColour = glm::vec4(0.0f);
+	materialData.specularColour = glm::vec4(0.0f);
 	stbi_set_flip_vertically_on_load(true);
 }
 
@@ -29,12 +33,56 @@ void Material::SetPropertyActive(MaterialProperties property, bool active)
 {
 	if (active) { materialData.activePropertiesBitfield |= property; }
 	else { materialData.activePropertiesBitfield &= ~property; }
-	parent->UpdateMaterial();
+	drawableParent->UpdateMaterial();
 }
 
 bool Material::GetPropertyActive(MaterialProperties property)
 {
 	return materialData.activePropertiesBitfield & property;
+}
+
+glm::vec4 Material::getAmbientColour()
+{
+	return materialData.ambientColour;
+}
+
+void Material::setAmbientColour(glm::vec4 colour)
+{
+	materialData.ambientColour = colour;
+	drawableParent->UpdateMaterial();
+}
+
+glm::vec4 Material::getDiffuseColour()
+{
+	return materialData.diffuseColour;
+}
+
+void Material::setDiffuseColour(glm::vec4 colour)
+{
+	materialData.diffuseColour = colour;
+	drawableParent->UpdateMaterial();
+}
+
+glm::vec4 Material::getSpecularColour()
+{
+	return materialData.specularColour;
+}
+
+void Material::setSpecularColour(glm::vec4 colour)
+{
+	materialData.specularColour = colour;
+	drawableParent->UpdateMaterial();
+}
+
+float Material::getSpecularPower()
+{
+	return materialData.specularPower;
+}
+
+void Material::setSpecularPower(float power)
+{
+	materialData.specularPower = power;
+	drawableParent->UpdateMaterial();
 }
 
 const std::size_t Material::GetMaxProperties()
@@ -46,26 +94,27 @@ const GLsizeiptr Material::GetPaddedSize()
 {
 	GLsizeiptr size{ 0 };
 	
-	size += sizeof(materialData.colour); //16 bytes
+	size += sizeof(materialData.ambientColour); //16 bytes
+
+	size += sizeof(materialData.diffuseColour); //16 bytes
+
+	size += sizeof(materialData.specularColour); //16 bytes
+
+	size += sizeof(materialData.specularPower); //4 bytes
+	size += 12;
 
 	size += sizeof(materialData.textureHandle); //8 bytes
-	
+	size += 8;
+
 	size += sizeof(materialData.activePropertiesBitfield); //4 bytes
-	
-	size += 4; //4 bytes of padding for 16 byte alignment
+	size += 12;
+
+	//Padding bytes for 16 byte alignment
+	if (size % 16 != 0) {
+		size += 16 - (size % 16);
+	}
 
 	return size;
-}
-
-glm::vec4 Material::getColour()
-{
-	return materialData.colour;
-}
-
-void Material::setColour(glm::vec4 colour)
-{
-	materialData.colour = colour;
-	parent->UpdateMaterial();
 }
 
 GLuint64 Material::getTextureHandle()
@@ -81,5 +130,5 @@ void Material::setTextureName(unsigned int textureName)
 void Material::setTextureHandle(GLuint64 textureHandle)
 {
 	materialData.textureHandle = textureHandle;
-	parent->UpdateMaterial();
+	drawableParent->UpdateMaterial();
 }

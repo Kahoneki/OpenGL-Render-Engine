@@ -37,9 +37,9 @@ public:
 	//----CONSTRUCTORS----//
 	
 	//Vector Constructor
-	Camera(const char* name, glm::vec3 position=glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up=glm::vec3(0.0f, 1.0f, 0.0f), float yaw=YAW, float pitch=PITCH, float nearPlaneDist=NEARPLANEDISTANCE, float farPlaneDist=FARPLANEDISTANCE);
+	Camera(const char* name, SceneObject* parent=nullptr, glm::vec3 position=glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up=glm::vec3(0.0f, 1.0f, 0.0f), float yaw=YAW, float pitch=PITCH, float nearPlaneDist=NEARPLANEDISTANCE, float farPlaneDist=FARPLANEDISTANCE);
 	//Scalar Constructor
-	Camera(const char* name, float posX=0.0f, float posY=0.0f, float posZ=0.0f, float upX=0.0f, float upY=1.0f, float upZ=0.0f, float yaw=YAW, float pitch=PITCH, float nearPlaneDist = NEARPLANEDISTANCE, float farPlaneDist = FARPLANEDISTANCE);
+	Camera(const char* name, SceneObject* parent=nullptr, float posX=0.0f, float posY=0.0f, float posZ=0.0f, float upX=0.0f, float upY=1.0f, float upZ=0.0f, float yaw=YAW, float pitch=PITCH, float nearPlaneDist = NEARPLANEDISTANCE, float farPlaneDist = FARPLANEDISTANCE);
 
 	virtual ~Camera();
 
@@ -51,7 +51,6 @@ public:
 	//Returns the view matrix calculated using euler angles and the LookAt matrix
 	glm::mat4 GetViewMatrix() const;
 
-protected:
 	//Calculates the front vector from the camera's updated euler angles
 	void updateCameraVectors();
 };

@@ -65,7 +65,8 @@ void Application::InitialiseGLAD()
 	}
 
 	glViewport(0, 0, windowManager->SCRWIDTH, windowManager->SCRHEIGHT);
-	glClearColor(0.8f, 1.0f, 1.0f, 1.0f);
+	//glClearColor(0.8f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);

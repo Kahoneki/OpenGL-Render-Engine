@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-PlayerCamera::PlayerCamera(const char* name, glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Camera(name, position, up, yaw, pitch)
+PlayerCamera::PlayerCamera(const char* name, SceneObject* parent, glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Camera(name, parent, position, up, yaw, pitch)
 {
 
 	MovementSpeed = MOVEMENT_SPEED;
@@ -13,7 +13,7 @@ PlayerCamera::PlayerCamera(const char* name, glm::vec3 position, glm::vec3 up, f
 }
 
 //Scalar Constructor
-PlayerCamera::PlayerCamera(const char* name, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Camera(name, posX, posY, posZ, upX, upY, upZ, yaw, pitch)
+PlayerCamera::PlayerCamera(const char* name, SceneObject* parent, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Camera(name, parent, posX, posY, posZ, upX, upY, upZ, yaw, pitch)
 {
 	MovementSpeed = MOVEMENT_SPEED;
 	MouseSensitivity = SENSITIVITY;
@@ -28,13 +28,13 @@ void PlayerCamera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
 	float velocity = MovementSpeed * deltaTime;
 	if (direction == FORWARD)
-		Position += Front * velocity;
+		setPosition(Position + Front * velocity);
 	if (direction == BACKWARD)
-		Position -= Front * velocity;
+		setPosition(Position - Front * velocity);
 	if (direction == LEFT)
-		Position -= Right * velocity;
+		setPosition(Position - Right * velocity);
 	if (direction == RIGHT)
-		Position += Right * velocity;
+		setPosition(Position + Right * velocity);
 }
 
 

@@ -15,7 +15,11 @@ enum MaterialProperties
 
 struct MaterialData
 {
-	glm::vec4 colour;
+	glm::vec4 ambientColour;
+	glm::vec4 diffuseColour;
+	glm::vec4 specularColour;
+	float specularPower;
+
 	GLuint64 textureHandle;
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
 };
@@ -41,21 +45,28 @@ public:
 
 	//MaterialData getters + setters//
 
-	glm::vec4 getColour();
-	void setColour(glm::vec4 colour);
+	glm::vec4 getAmbientColour();
+	void setAmbientColour(glm::vec4 colour);
+	glm::vec4 getDiffuseColour();
+	void setDiffuseColour(glm::vec4 colour);
+	glm::vec4 getSpecularColour();
+	void setSpecularColour(glm::vec4 colour);
+	float getSpecularPower();
+	void setSpecularPower(float power);
 
 	GLuint64 getTextureHandle();
 	void setTextureName(unsigned int textureName);
 	void setTextureHandle(GLuint64 textureHandle);
 
 
-	Drawable* parent;
 
 private:
 	[[no_discard]] const std::size_t GetMaxProperties();
 	[[no_discard]] const GLsizeiptr GetPaddedSize();
 	
 	MaterialData materialData;
+
+	Drawable* drawableParent;
 };
 
 #endif

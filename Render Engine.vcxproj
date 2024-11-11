@@ -207,8 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl" />
+    <None Include="Source Files\Shaders\light_source.frag" />
+    <None Include="Source Files\Shaders\light_source.vert" />
     <None Include="Source Files\Shaders\static_colour.frag" />
     <None Include="Source Files\Shaders\static_colour.vert" />
+    <None Include="Source Files\Shaders\blinn_phong.frag" />
+    <None Include="Source Files\Shaders\blinn_phong.vert" />
     <None Include="Source Files\Shaders\static_material.frag" />
     <None Include="Source Files\Shaders\static_material.vert" />
     <None Include="Source Files\Shaders\vert.glsl" />
