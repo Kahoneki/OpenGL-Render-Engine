@@ -80,7 +80,7 @@ unsigned int AssetManager::addTexture(const char* filepath)
 	return -1;
 }
 
-void AssetManager::removeTexture(unsigned int textureName)
+void AssetManager::removeTextureByName(unsigned int textureName)
 {
 	glDeleteTextures(1, &textureName);
 	for (std::size_t i{ 0 }; i < textureBuffers.size(); ++i) {
@@ -91,12 +91,37 @@ void AssetManager::removeTexture(unsigned int textureName)
 		}
 	}
 
-	//Texture not found
+	//Texture name not found
 	std::cerr << "ASSET_MANAGER::REMOVE_TEXTURE::TEXTURE_NAME_NOT_FOUND::TEXTURE_NAME=" << textureName;
+}
+
+void AssetManager::removeTextureByHandle(GLuint64 textureHandle)
+{
+	for (std::map<unsigned int, GLuint64>::iterator it{ textureHandles.begin() }; it != textureHandles.end(); ++it) {
+		if (it->second == textureHandle) {
+			removeTextureByName(it->first);
+			return;
+		}
+	}
+
+	//Texture handle not found
+	std::cerr << "ASSET_MANAGER::REMOVE_TEXTURE::TEXTURE_HANDLE_NOT_FOUND::TEXTURE_HANDLE=" << textureHandle;
 }
 
 
 GLuint64 AssetManager::getTextureHandle(unsigned int textureName)
 {
 	return textureHandles[textureName];
+}
+
+unsigned int AssetManager::getTextureName(GLuint64 textureHandle)
+{
+	for (std::map<unsigned int, GLuint64>::iterator it{ textureHandles.begin() }; it != textureHandles.end(); ++it) {
+		if (it->second == textureHandle) {
+			return it->first;
+		}
+	}
+
+	//Texture handle not found
+	std::cerr << "ASSET_MANAGER::GET_TEXTURE_NAME::TEXTURE_HANDLE_NOT_FOUND::TEXTURE_HANDLE=" << textureHandle;
 }

@@ -3,14 +3,16 @@
 
 
 #include <GLM/gtc/matrix_transform.hpp>
-#include "GLAD/glad.h"
+#include <GLAD/glad.h>
+#include "../Utility/Vec2ui64.h"
 
 
 
 enum MaterialProperties
 {
-	MATERIAL_COLOUR_BIT  = (1 << 0), //0000 0000 0000 0000 0000 0000 0000 0001
-	MATERIAL_TEXTURE_BIT = (1 << 1), //0000 0000 0000 0000 0000 0000 0000 0010
+	MATERIAL_COLOUR_BIT         = (1 << 0), //0000 0000 0000 0000 0000 0000 0000 0001
+	MATERIAL_ALBEDO_TEXTURE_BIT = (1 << 1), //0000 0000 0000 0000 0000 0000 0000 0010
+	MATERIAL_NORMAL_TEXTURE_BIT = (1 << 2), //0000 0000 0000 0000 0000 0000 0000 0100
 };
 
 struct MaterialData
@@ -21,8 +23,10 @@ struct MaterialData
 	float specularPower;
 	float rimPower;
 
-	GLuint64 textureHandle;
+	glm::u64vec2 textureHandles; //Albedo + Normal
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
+
+	MaterialData() {}
 };
 
 
@@ -57,19 +61,24 @@ public:
 	float getRimPower();
 	void setRimPower(float power);
 
-	GLuint64 getTextureHandle();
-	void setTextureName(unsigned int textureName);
-	void setTextureHandle(GLuint64 textureHandle);
+	GLuint64 getAlbedoTextureHandle();
+	GLuint64 getNormalTextureHandle();
+	unsigned int getAlbedoTextureName();
+	unsigned int getNormalTextureName();
+	void setAlbedoTextureHandle(GLuint64 textureHandle);
+	void setNormalTextureHandle(GLuint64 textureHandle);
+	void setAlbedoTextureName(unsigned int textureName);
+	void setNormalTextureName(unsigned int textureName);
 
 
 
 private:
 	[[no_discard]] const std::size_t GetMaxProperties();
-	[[no_discard]] const GLsizeiptr GetPaddedSize();
+	[[no_discard]] const GLsizeiptr GetPaddedSize(); //For std140 layout padding requirements
 	
 	MaterialData materialData;
 
-	Drawable* drawableParent;
+	Drawable* drawableParent; //The drawable that this material is attached to
 };
 
 #endif

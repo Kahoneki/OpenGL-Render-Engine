@@ -243,6 +243,9 @@
     <ClInclude Include="Source Files\Application\AssetManager.h">
       <Filter>Source Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Source Files\Utility\Vec2ui64.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl">

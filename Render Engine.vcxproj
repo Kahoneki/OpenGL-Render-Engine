@@ -193,6 +193,7 @@
     <ClInclude Include="Source Files\Material\Material.h" />
     <ClInclude Include="Source Files\Shaders\shader.h" />
     <ClInclude Include="Source Files\Utility\BindingPoints.h" />
+    <ClInclude Include="Source Files\Utility\Vec2ui64.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube24.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube8.h" />
     <ClInclude Include="Source Files\World\Drawable\Drawable.h" />

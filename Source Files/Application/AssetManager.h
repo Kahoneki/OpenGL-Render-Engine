@@ -16,9 +16,11 @@ public:
 	~AssetManager(); //AssetManager is responsible for cleaning up textures
 
 	unsigned int addTexture(const char* filepath); //Creates texture, makes it resident, and returns texture name
-	void removeTexture(unsigned int textureName);
+	void removeTextureByName(unsigned int textureName);
+	void removeTextureByHandle(GLuint64 textureHandle);
 
 	GLuint64 getTextureHandle(unsigned int textureName);
+	unsigned int getTextureName(GLuint64 textureHandle);
 
 private:
 	std::size_t maxTextures;

@@ -117,8 +117,7 @@ const GLsizeiptr Material::GetPaddedSize()
 	size += sizeof(materialData.rimPower); //4 bytes
 	size += 12;
 
-	size += sizeof(materialData.textureHandle); //8 bytes
-	size += 8;
+	size += sizeof(materialData.textureHandles); //16 bytes
 
 	size += sizeof(materialData.activePropertiesBitfield); //4 bytes
 	size += 12;
@@ -131,18 +130,44 @@ const GLsizeiptr Material::GetPaddedSize()
 	return size;
 }
 
-GLuint64 Material::getTextureHandle()
+GLuint64 Material::getAlbedoTextureHandle()
 {
-	return materialData.textureHandle;
+	return materialData.textureHandles.x;
 }
 
-void Material::setTextureName(unsigned int textureName)
+GLuint64 Material::getNormalTextureHandle()
 {
-	setTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
+	return materialData.textureHandles.y;
 }
 
-void Material::setTextureHandle(GLuint64 textureHandle)
+unsigned int Material::getAlbedoTextureName()
 {
-	materialData.textureHandle = textureHandle;
+	return Application::getInstance().assetManager.get()->getTextureName(getAlbedoTextureHandle());
+}
+
+unsigned int Material::getNormalTextureName()
+{
+	return Application::getInstance().assetManager.get()->getTextureName(getNormalTextureHandle());
+}
+
+void Material::setAlbedoTextureName(unsigned int textureName)
+{
+	setAlbedoTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
+}
+
+void Material::setNormalTextureName(unsigned int textureName)
+{
+	setNormalTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
+}
+
+void Material::setAlbedoTextureHandle(GLuint64 textureHandle)
+{
+	materialData.textureHandles.x = textureHandle;
+	drawableParent->UpdateMaterial();
+}
+
+void Material::setNormalTextureHandle(GLuint64 textureHandle)
+{
+	materialData.textureHandles.y = textureHandle;
 	drawableParent->UpdateMaterial();
 }
