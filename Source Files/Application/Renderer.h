@@ -36,6 +36,8 @@ private:
 	Shader* lightSourceShader;
 
 	void RenderImGui() const;
+
+	bool dropdownStatuses[1]; //ImGui dropdowns
 };
 
 #endif

@@ -193,7 +193,6 @@
     <ClInclude Include="Source Files\Material\Material.h" />
     <ClInclude Include="Source Files\Shaders\shader.h" />
     <ClInclude Include="Source Files\Utility\BindingPoints.h" />
-    <ClInclude Include="Source Files\Utility\Vec2ui64.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube24.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube8.h" />
     <ClInclude Include="Source Files\World\Drawable\Drawable.h" />
@@ -217,6 +216,12 @@
     <None Include="Source Files\Shaders\static_material.frag" />
     <None Include="Source Files\Shaders\static_material.vert" />
     <None Include="Source Files\Shaders\vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource Files\brickwall.jpg" />
+    <Image Include="Resource Files\brickwall_normal.jpg" />
+    <Image Include="Resource Files\garfield.png" />
+    <Image Include="Resource Files\kevin.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -28,6 +28,8 @@ Renderer::Renderer(Application* _app)
 	shaders = std::vector<Shader*>();
 	lightSourceShader = new Shader(SHADER_PRESET::LIGHT_SOURCE);
 
+	for (bool& d : dropdownStatuses) { d = false; }
+
 	//Purposefully leave activeShader uninitialised.
 }
 
@@ -36,6 +38,8 @@ Renderer::Renderer(Shader* shader)
 	shaders.push_back(shader);
 	lightSourceShader = new Shader(SHADER_PRESET::LIGHT_SOURCE);
 
+	for (bool& d : dropdownStatuses) { d = false; }
+
 	//Purposefully leave activeShader uninitialised.
 }
 
@@ -43,6 +47,8 @@ Renderer::Renderer(std::vector<Shader*> _shaders)
 {
 	shaders = _shaders;
 	lightSourceShader = new Shader(SHADER_PRESET::LIGHT_SOURCE);
+
+	for (bool& d : dropdownStatuses) { d = false; }
 
 	//Purposefully leave activeShader uninitialised.
 }
@@ -129,30 +135,41 @@ void DrawHeirarchy(SceneObject* s)
 		if (dynamic_cast<LightSource*>(s)) {
 			LightSource* ls{ dynamic_cast<LightSource*>(s) };
 			
-			glm::vec3 pos{ ls->getPosition() };
-			if (ImGui::DragFloat3("Position", &pos.x)) {
-				ls->setPosition(pos);
-			}
-			glm::vec3 scale{ ls->cube.getScale() };
-			if (ImGui::DragFloat3("Scale", &scale.x)) {
-				ls->cube.setScale(scale);
-			}
-			glm::vec3 rotation{ ls->cube.getRotation() };
-			if (ImGui::DragFloat3("Rotation", &rotation.x)) {
-				ls->cube.setRotation(rotation);
+			if (ImGui::TreeNode("Transform")) {
+
+				glm::vec3 pos{ ls->getPosition() };
+				if (ImGui::DragFloat3("Position", &pos.x, 0.1f)) {
+					ls->setPosition(pos);
+				}
+				glm::vec3 scale{ ls->cube.getScale() };
+				if (ImGui::DragFloat3("Scale", &scale.x, 0.1f)) {
+					ls->cube.setScale(scale);
+				}
+				glm::vec3 rotation{ ls->cube.getRotation() };
+				if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f)) {
+					ls->cube.setRotation(rotation);
+				}
+
+
+				ImGui::TreePop();
 			}
 
-			glm::vec3 amb{ ls->getAmbientColour() };
-			if (ImGui::ColorPicker3("Ambient Colour", &amb.x)) {
-				ls->setAmbientColour(glm::vec4(amb, 0.0f));
-			}
-			glm::vec3 dif{ ls->getDiffuseColour() };
-			if (ImGui::ColorPicker3("Diffuse Colour", &dif.x)) {
-				ls->setDiffuseColour(glm::vec4(dif, 0.0f));
-			}
-			glm::vec3 spec{ ls->getSpecularColour() };
-			if (ImGui::ColorPicker3("Specular Colour", &spec.x)) {
-				ls->setSpecularColour(glm::vec4(spec, 0.0f));
+			if (ImGui::TreeNode("Colour")) {
+
+				glm::vec3 amb{ ls->getAmbientColour() };
+				if (ImGui::ColorPicker3("Ambient Colour", &amb.x)) {
+					ls->setAmbientColour(glm::vec4(amb, 0.0f));
+				}
+				glm::vec3 dif{ ls->getDiffuseColour() };
+				if (ImGui::ColorPicker3("Diffuse Colour", &dif.x)) {
+					ls->setDiffuseColour(glm::vec4(dif, 0.0f));
+				}
+				glm::vec3 spec{ ls->getSpecularColour() };
+				if (ImGui::ColorPicker3("Specular Colour", &spec.x)) {
+					ls->setSpecularColour(glm::vec4(spec, 0.0f));
+				}
+
+				ImGui::TreePop();
 			}
 		}
 
@@ -161,17 +178,24 @@ void DrawHeirarchy(SceneObject* s)
 			RenderSource* rs{ dynamic_cast<RenderSource*>(s) };
 
 			if (dynamic_cast<Camera*>(rs)) {
+
 				Camera* c{ dynamic_cast<Camera*>(rs) };
-				glm::vec3 pos{ c->getPosition() };
-				if (ImGui::DragFloat3("Position", &pos.x)) {
-					c->setPosition(pos);
+				if (ImGui::TreeNode("Transform")) {
+
+					glm::vec3 pos{ c->getPosition() };
+					if (ImGui::DragFloat3("Position", &pos.x, 0.1f)) {
+						c->setPosition(pos);
+					}
+					glm::vec2 rotation{ c->Pitch, c->Yaw};
+					if (ImGui::DragFloat2("Rotation", &rotation.x, 0.1f)) {
+						c->Pitch = rotation.x;
+						c->Yaw = rotation.y;
+						c->updateCameraVectors();
+					}
+
+					ImGui::TreePop();
 				}
-				glm::vec2 rotation{ c->Pitch, c->Yaw};
-				if (ImGui::DragFloat2("Rotation", &rotation.x)) {
-					c->Pitch = rotation.x;
-					c->Yaw = rotation.y;
-					c->updateCameraVectors();
-				}
+
 				ImGui::DragFloat("Near Plane Distance", &c->nearPlaneDistance);
 				ImGui::DragFloat("Far Plane Distance", &c->farPlaneDistance);
 			
@@ -186,38 +210,68 @@ void DrawHeirarchy(SceneObject* s)
 		if (dynamic_cast<Drawable*>(s)) {
 			Drawable* d{ dynamic_cast<Drawable*>(s) };
 
-			glm::vec3 pos{ d->getPosition() };
-			if (ImGui::DragFloat3("Position", &pos.x)) {
-				d->setPosition(pos);
-			}
-			glm::vec3 scale{ d->getScale() };
-			if (ImGui::DragFloat3("Scale", &scale.x)) {
-				d->setScale(scale);
-			}
-			glm::vec3 rotation{ d->getRotation() };
-			if (ImGui::DragFloat3("Rotation", &rotation.x)) {
-				d->setRotation(rotation);
+			if (ImGui::TreeNode("Transform")) {
+
+				glm::vec3 pos{ d->getPosition() };
+				if (ImGui::DragFloat3("Position", &pos.x, 0.1f)) {
+					d->setPosition(pos);
+				}
+				glm::vec3 scale{ d->getScale() };
+				if (ImGui::DragFloat3("Scale", &scale.x, 0.1f)) {
+					d->setScale(scale);
+				}
+				glm::vec3 rotation{ d->getRotation() };
+				if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f)) {
+					d->setRotation(rotation);
+				}
+
+				ImGui::TreePop();
 			}
 
-			glm::vec3 amb{ d->material.getAmbientColour() };
-			if (ImGui::ColorPicker3("Ambient Colour", &amb.x)) {
-				d->material.setAmbientColour(glm::vec4(amb, 0.0f));
+			if (ImGui::TreeNode("Colour")) {
+
+					glm::vec3 amb{ d->material.getAmbientColour() };
+					if (ImGui::ColorPicker3("Ambient", &amb.x)) {
+						d->material.setAmbientColour(glm::vec4(amb, 0.0f));
+					}
+					glm::vec3 dif{ d->material.getDiffuseColour() };
+					if (ImGui::ColorPicker3("Diffuse", &dif.x)) {
+						d->material.setDiffuseColour(glm::vec4(dif, 0.0f));
+					}
+					glm::vec3 spec{ d->material.getSpecularColour() };
+					if (ImGui::ColorPicker3("Specular", &spec.x)) {
+						d->material.setSpecularColour(glm::vec4(spec, 0.0f));
+					}
+					float specPow{ d->material.getSpecularPower() };
+					if (ImGui::SliderFloat("Specular Power", &specPow, 0.0f, 256.0f)) {
+						d->material.setSpecularPower(specPow);
+					}
+					float rimPow{ d->material.getRimPower() };
+					if (ImGui::SliderFloat("Rim Power", &rimPow, 0.0f, 5.0f)) {
+						d->material.setRimPower(rimPow);
+					}
+
+				ImGui::TreePop();
 			}
-			glm::vec3 dif{ d->material.getDiffuseColour() };
-			if (ImGui::ColorPicker3("Diffuse Colour", &dif.x)) {
-				d->material.setDiffuseColour(glm::vec4(dif, 0.0f));
-			}
-			glm::vec3 spec{ d->material.getSpecularColour() };
-			if (ImGui::ColorPicker3("Specular Colour", &spec.x)) {
-				d->material.setSpecularColour(glm::vec4(spec, 0.0f));
-			}
-			float specPow{ d->material.getSpecularPower() };
-			if (ImGui::SliderFloat("Specular Power", &specPow, 0.0f, 256.0f)) {
-				d->material.setSpecularPower(specPow);
-			}
-			float rimPow{ d->material.getRimPower() };
-			if (ImGui::SliderFloat("Rim Power", &rimPow, 0.0f, 256.0f)) {
-				d->material.setRimPower(rimPow);
+
+			if (ImGui::TreeNode("Properties")) {
+			
+				bool colour = d->material.GetPropertyActive(MATERIAL_COLOUR_BIT);
+				if (ImGui::Checkbox("Colour", &colour)) {
+					d->material.SetPropertyActive(MATERIAL_COLOUR_BIT, colour);
+				}
+
+				bool albedo = d->material.GetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT);
+				if (ImGui::Checkbox("Albedo Texture", &albedo)) {
+					d->material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, albedo);
+				}
+
+				bool normal = d->material.GetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT);
+				if (ImGui::Checkbox("Normal Texture", &normal)) {
+					d->material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, normal);
+				}
+
+				ImGui::TreePop();
 			}
 		}
 

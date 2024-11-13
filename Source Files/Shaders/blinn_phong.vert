@@ -5,10 +5,11 @@ layout (location = 2) in vec3 aNormal;
 layout (location = 3) in vec3 aTangent;
 
 out vec2 texCoord;
-out vec3 viewNormal;
-out vec3 viewTangent;
-out vec3 viewBitangent;
-out vec4 viewPos;
+out vec3 worldNormal;
+out vec3 worldTangent;
+out vec3 worldBitangent;
+out vec3 worldPos;
+out vec3 cameraPos;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -19,11 +20,12 @@ void main()
 {
 
 	texCoord = aTexCoord;
-	viewNormal = normalize(mat3(view * model) * aNormal);
-	viewTangent = normalize(mat3(view * model) * aTangent);
-	viewBitangent = cross(viewNormal, viewTangent);
+	worldNormal = normalize(mat3(model) * aNormal);
+	worldTangent = normalize(mat3(model) * aTangent);
+	worldBitangent = cross(worldNormal, worldTangent);
 	
-	viewPos = view * model * vec4(aPos, 1.0f); //Vertex position in view-space
+	worldPos = vec4(model * vec4(aPos, 1.0f)).xyz; //Vertex position in world-space
+	cameraPos = inverse(view)[3].xyz;
 		
-	gl_Position = projection * viewPos;
+	gl_Position = projection * view * model * vec4(aPos, 1.0f);
 }

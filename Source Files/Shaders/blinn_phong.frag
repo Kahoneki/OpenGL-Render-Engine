@@ -3,14 +3,13 @@
 #extension GL_ARB_gpu_shader_int64 : require
 
 in vec2 texCoord;
-in vec3 viewNormal;
-in vec3 viewTangent;
-in vec3 viewBitangent;
-in vec4 viewPos;
+in vec3 worldNormal;
+in vec3 worldTangent;
+in vec3 worldBitangent;
+in vec3 worldPos;
+in vec3 cameraPos;
 
 out vec4 FragColour;
-
-uniform mat4 view;
 
 uniform int numLights;
 uniform bool isEmissive;
@@ -62,7 +61,7 @@ vec4 calculateRimContribution(vec3 normal, vec3 view, vec4 lightColour) {
 	rimFactor = smoothstep(0.0f, 1.0f, rimFactor);
 
 	//Raise to rim exponent
-	rimFactor = pow(rimFactor, material.matData.rimPower);
+	rimFactor = pow(rimFactor, 5.001f-material.matData.rimPower); //5.001f-power rather than just power because a higher rim power should result in more rim lighting (rimFactor is <= 1) (max rim power is 5)
 	
 	return rimFactor * lightColour;
 }
@@ -97,25 +96,23 @@ void main()
 			return;
 		}
 
-		mat3 TBN = mat3(viewTangent, viewBitangent, viewNormal);
+		mat3 TBN = mat3(worldTangent, worldBitangent, worldNormal);
 
 		//Normal texture bit - will determine whether to use view space or tangent space
 		vec3 lightingNormal; //Normal used in lighting calculations
-		vec3 posToCamera = normalize(-viewPos.xyz); //Vector from fragment pos to camera
+		vec3 worldPosToCamera = normalize(cameraPos - worldPos);
 		if ((material.matData.activePropertiesBitfield & 4u) != 0u) {
 			lightingNormal = normalize(texture(sampler2D(material.matData.normalTextureHandle), texCoord).rgb * 2.0f - vec3(1.0f));
-			posToCamera = normalize(transpose(TBN) * posToCamera); //Go from view space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
+			worldPosToCamera = normalize(transpose(TBN) * worldPosToCamera); //Go from world space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
 		}
 		else {
-			lightingNormal = viewNormal;
-			posToCamera = -viewPos.xyz;
+			lightingNormal = worldNormal;
 		}
 
 		//Calculate lighting
 		for (int i=0; i<numLights; ++i) {
 			LightData light = lightSources.lights[i];
-			vec3 viewLightPos = vec3(view * light.position).xyz;
-			vec3 lightDir = normalize(viewLightPos - viewPos.xyz); //Vector from fragment position to light in view space
+			vec3 lightDir = normalize(light.position.xyz - worldPos); //Vector from fragment position to light
 
 			//Normal texture bit
 			if ((material.matData.activePropertiesBitfield & 4u) != 0u) {
@@ -125,10 +122,10 @@ void main()
 
 			vec4 ambient = material.matData.ambientColour * light.ambientColour;
 			vec4 diffuse = max(dot(lightingNormal, lightDir), 0.0f) * material.matData.diffuseColour * light.diffuseColour;
-			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, posToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
-			vec4 rim = calculateRimContribution(lightingNormal, posToCamera, light.diffuseColour);
+			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, worldPosToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
+			vec4 rim = calculateRimContribution(lightingNormal, worldPosToCamera, light.diffuseColour);
 
-			FragColour += diffuse;
+			FragColour += ambient + diffuse + specular + rim;
 		}
 
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {

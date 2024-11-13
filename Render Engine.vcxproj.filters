@@ -243,9 +243,6 @@
     <ClInclude Include="Source Files\Application\AssetManager.h">
       <Filter>Source Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source Files\Utility\Vec2ui64.h">
-      <Filter>Source Files\Utility</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl">
@@ -278,5 +275,19 @@
     <None Include="Source Files\Shaders\light_source.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource Files\brickwall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource Files\brickwall_normal.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource Files\garfield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource Files\kevin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

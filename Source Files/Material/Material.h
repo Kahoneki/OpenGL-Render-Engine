@@ -4,8 +4,6 @@
 
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLAD/glad.h>
-#include "../Utility/Vec2ui64.h"
-
 
 
 enum MaterialProperties
