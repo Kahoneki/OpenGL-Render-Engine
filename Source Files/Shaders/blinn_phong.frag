@@ -36,13 +36,11 @@ struct MaterialData
 	vec4 specularColour;
 	float specularPower;
 	float rimPower;
-//	float padding1[2];
 
 	uint64_t albedoTextureHandle;
 	uint64_t normalTextureHandle;
 
 	uint activePropertiesBitfield;
-//	float padding2[3];
 };
 
 layout (binding=1, std140) uniform MaterialBlock
