@@ -12,11 +12,34 @@ WindowManager::WindowManager(Application* _app)
 {
 	app = _app;
 
-	SCRWIDTH = 1920;
-	SCRHEIGHT = 1080;
+	SCRWIDTH = 1280;
+	SCRHEIGHT = 720;
+	fullscreen = false;
 
 	window = InitialiseGLFW();
 	glfwMakeContextCurrent(window);
+}
+
+void WindowManager::UpdateFullscreen()
+{
+	if (fullscreen) {
+		//Change to fullscreen mode
+
+		//Store current window size and position
+		glfwGetWindowPos(window, &windowedXPos, &windowedYPos);
+		glfwGetWindowSize(window, &SCRWIDTH, &SCRHEIGHT);
+
+		//Get primary monitor and video mode
+		GLFWmonitor* monitor{ glfwGetPrimaryMonitor() };
+		const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
+
+		glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+		glfwMakeContextCurrent(window);
+	}
+	else {
+		//Change to windowed mode
+		glfwSetWindowMonitor(window, NULL, windowedXPos, windowedYPos, SCRWIDTH, SCRHEIGHT, 0);
+	}
 }
 
 //GLFWwindow* WindowManager::GetWindow()
@@ -34,7 +57,7 @@ GLFWwindow* WindowManager::InitialiseGLFW()
 	//glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
-	GLFWwindow* window{ glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "Neki", glfwGetPrimaryMonitor(), NULL)};
+	GLFWwindow* window{ glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "Neki", NULL, NULL)};
 	if (window == NULL) {
 		std::cerr << "Failed to initialise GLFW." << std::endl;
 		glfwTerminate();

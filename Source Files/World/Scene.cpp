@@ -13,6 +13,9 @@ Scene::Scene()
 	drawables = std::vector<Drawable*>();
 	sceneObjects = std::vector<SceneObject*>();
 	glCreateBuffers(1, &lightSourcesBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(Light) * 512, nullptr, GL_DYNAMIC_DRAW);
+	automaticLightUpdates = true;
 	//Purposefully leave activeRenderSource uninitialised
 }
 
@@ -33,14 +36,19 @@ Scene::Scene(std::vector<LightSource*> _lightSources, std::vector<RenderSource*>
 		sceneObjects.push_back(d);
 	}
 
+	automaticLightUpdates = true;
+	lightsChanged = true;
+
 	//Purposefully leave activeRenderSource uninitialised
 	
 	glCreateBuffers(1, &lightSourcesBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(Light) * 512, nullptr, GL_DYNAMIC_DRAW);
 	for (LightSource* ls : lightSources) {
 		ls->sceneParent = this;
 		drawables.push_back(&ls->cube);
-		UpdateLightSources();
 	}
+
 }
 
 Scene::~Scene()
@@ -48,14 +56,24 @@ Scene::~Scene()
 	glDeleteBuffers(1, &lightSourcesBuffer);
 }
 
+void Scene::SetAutomaticLightUpdates(bool val)
+{
+	automaticLightUpdates = val;
+}
+
+bool Scene::GetAutomaticLightUpdates()
+{
+	return automaticLightUpdates;
+}
+
 std::size_t Scene::AddLightSource(LightSource* lightSource)
 {
 	lightSources.push_back(lightSource);
 	lightSource->sceneParent = this;
-	UpdateLightSources();
 	drawables.push_back(&lightSource->cube);
 	sceneObjects.push_back(lightSource);
 	sceneObjects.push_back(&lightSource->cube);
+	lightsChanged = true;
 
 	return lightSources.size();
 }
@@ -70,7 +88,8 @@ void Scene::RemoveLightSource(std::size_t index)
 		}
 	}
 	lightSources.erase(lightSources.begin() + index);
-	UpdateLightSources();
+
+	lightsChanged = true;
 }
 
 void Scene::UpdateLightSources()
@@ -78,9 +97,12 @@ void Scene::UpdateLightSources()
 	std::vector<Light> lightData;
 	for (LightSource* ls : lightSources) {
 		lightData.push_back(ls->light);
+		ls->cube.material.setDiffuseColour(ls->getDiffuseColour());
 	}
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, lightSources[0]->GetPaddedSize() * lightSources.size(), lightData.data(), GL_DYNAMIC_DRAW); //Dynamic draw as this function will be called everytime a light source is added, removed, or modified
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Light) * lightSources.size(), lightData.data()); //Dynamic draw as this function will be called everytime a light source is added, removed, or modified
+
+	lightsChanged = false;
 }
 
 std::size_t Scene::AddRenderSource(RenderSource* renderSource)

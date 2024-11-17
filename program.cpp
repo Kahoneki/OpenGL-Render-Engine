@@ -3,11 +3,14 @@
 #include "Source Files/Application/Renderer.h"
 #include "Source Files/Application/SceneManager.h"
 #include "Source Files/Application/AssetManager.h"
+#include "Source Files/Application/TimeManager.h"
 #include "Source Files/Camera/PlayerCamera.h"
 #include "Source Files/World/Drawable/Cube24.h"
 #include "Source Files/World/Scene.h"
 #include "Source Files/World/LightSource.h"
 #include "Source Files/Shaders/shader.h"
+#include "Source Files/Utility/RandomFunctions.h"
+#include <GLM/gtx/string_cast.hpp>
 
 int main()
 {
@@ -17,88 +20,63 @@ int main()
 	Shader shader{ SHADER_PRESET::BLINN_PHONG };
 	app.renderer->AddShader(&shader);
 	app.renderer->SetActiveShader(0);
+	app.renderer->SetClearColour(glm::vec4(0.8f, 1.0f, 1.0f, 1.0f));
 
 	//Define scene
+	Scene scene;
+
 	PlayerCamera cam{ "Camera", nullptr };
-	
-	Cube24 cube{ "orange cube", glm::vec3(2.0f, 1.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	cube.material.setAmbientColour(glm::vec4(0.2f, 0.2f, 0.1f, 1.0f)); // Ambient: warm subtle light
-	cube.material.setDiffuseColour(glm::vec4(1.0f, 0.5f, 0.2f, 1.0f)); // Diffuse: warm orange color
-	cube.material.setSpecularColour(glm::vec4(0.8f, 0.6f, 0.3f, 1.0f)); // Specular: slightly muted warm shine
-	cube.material.setSpecularPower(64.0f); // Specular strength
-	cube.material.setRimPower(64.0f);
-	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	scene.AddRenderSource(&cam);
+	scene.SetActiveRenderSource(0);
 
-	unsigned int kevinTextureName{ app.assetManager.get()->addTexture("kevin.png") };
-	cube.material.setAlbedoTextureName(kevinTextureName);
-	cube.material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
-
-	// Position set to the right and slightly raised
-	cube.setPosition(cube.getPosition() + glm::vec3(2.0f, 1.0f, 0.0f));
-
-
-	Cube24 cube2{ "Brick Cube", glm::vec3(-2.0f, 1.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	//cube2.material.setAmbientColour(glm::vec4(0.1f, 0.1f, 0.2f, 1.0f)); // Ambient: cool subtle light
-	//cube2.material.setDiffuseColour(glm::vec4(0.2f, 0.3f, 1.0f, 1.0f)); // Diffuse: cool blue
-	//cube2.material.setSpecularColour(glm::vec4(0.5f, 0.6f, 1.0f, 1.0f)); // Specular: blue, shiny
+	Cube24 cube2{ "Brick Cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f), glm::vec3(0.0f) };
 	cube2.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
 	cube2.material.setDiffuseColour(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
 	cube2.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	cube2.material.setSpecularPower(128.0f); // Specular strength
-	cube2.material.setRimPower(128.0f);
+	cube2.material.setRimPower(5.0f);
 	cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-
 	unsigned int brickAlbedoName{ app.assetManager.get()->addTexture("brickwall.jpg") };
 	unsigned int brickNormalName{ app.assetManager.get()->addTexture("brickwall_normal.jpg") };
 	cube2.material.setAlbedoTextureName(brickAlbedoName);
 	cube2.material.setNormalTextureName(brickNormalName);
 	cube2.material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
 	cube2.material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, true);
-
-	// Position set to the left and slightly raised
-	cube2.setPosition(cube2.getPosition() + glm::vec3(-2.0f, 1.0f, 0.0f));
-
-
-	Scene scene;
-	scene.AddRenderSource(&cam);
-	scene.SetActiveRenderSource(0);
-	//scene.AddDrawable(&cube);
 	scene.AddDrawable(&cube2);
 
-	// Warm yellow light
-	LightSource light{
-		"yellow light",
-		glm::vec3(3.0f, 3.0f, 3.0f),
-		glm::vec4(0.2f, 0.2f, 0.1f, 1.0f),  // Ambient: subtle warm
-		glm::vec4(1.0f, 0.9f, 0.6f, 1.0f),  // Diffuse: warm yellow
-		glm::vec4(1.0f, 0.9f, 0.7f, 1.0f),   // Specular: slightly cooler than diffuse
-		nullptr
-	};
+	constexpr std::size_t NUM_LIGHTS{ 8 };
+	LightSource* lights[NUM_LIGHTS];
+	std::vector<std::string> lightNames;
+	for (std::size_t i{ 0 }; i < NUM_LIGHTS; ++i) {
+		lightNames.push_back(std::to_string(i));
+	}
+	for (int i{ 0 }; i < NUM_LIGHTS; ++i) {
+		glm::vec3 specular{ randomVec3(0.0f, 1.0f) };
+		lights[i] = new LightSource(
+			lightNames[i].c_str(),
+			randomVec3ExcludeByDistance(-18.0f, 18.0f, -15.5f, 15.5f),
+			glm::vec4(specular * 0.1f, 1.0f),
+			glm::vec4(specular * 0.3f, 1.0f),
+			glm::vec4(specular, 1.0f),
+			randomFloat((1.0f/NUM_LIGHTS) * 1000.0f, (1.0f/NUM_LIGHTS) * 2400.0f),
+			nullptr
+		);
+		lights[i]->cube.setScale(glm::vec3(3.0f, 3.0f, 3.0f));
+		lights[i]->cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+		scene.AddLightSource(lights[i]);
+	}
 
-	light.cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
 
-	// Cool blue/purple light
-	LightSource light2{
-		"White Light",
-		glm::vec3(-3.0f, 3.0f, -3.0f),
-		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.8f, 0.8f, 0.8f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		//glm::vec4(0.1f, 0.1f, 0.2f, 1.0f),  // Ambient: subtle cool
-		//glm::vec4(0.6f, 0.7f, 1.0f, 1.0f),  // Diffuse: cool blue
-		//glm::vec4(0.7f, 0.8f, 1.0f, 1.0f),   // Specular: slightly brighter than diffuse
-		nullptr
-	};
-
-	light2.cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-
-	//scene.AddLightSource(&light);
-	scene.AddLightSource(&light2);
-
+	//Add scene to scene manager
 	app.sceneManager->AddScene(&scene);
 	app.sceneManager->SetActiveScene(0);
+	app.sceneManager->GetActiveScene()->SetAutomaticLightUpdates(false);
+	app.sceneManager->GetActiveScene()->UpdateLightSources();
 
 	while (app.applicationRunning) {
 		app.RunFrame();
+		for (std::size_t i{ 0 }; i < NUM_LIGHTS; ++i) {
+			lights[i]->setDiffuseColour(glm::vec4(randomVec3(0.0f, 1.0f), 1.0f));
+		}
 	}
 }

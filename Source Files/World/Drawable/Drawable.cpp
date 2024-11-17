@@ -13,9 +13,9 @@ Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, gl
 {
 	//Construct model matrix
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, topLeftFront);
 	model = model * glm::toMat4(glm::quat(rotation));
 	model = glm::scale(model, scale);
+	model = glm::translate(model, topLeftFront / scale);
 
 	glGenVertexArrays(1, &VAO);
 	glCreateBuffers(1, &VBO);
@@ -47,7 +47,7 @@ void Drawable::setPosition(glm::vec3 pos)
 {
 	glm::vec3 currentPos = getPosition();
 	glm::vec3 diff = pos - currentPos;
-	model = glm::translate(model, diff);
+	model = glm::translate(model, diff / getScale());
 	worldPos = pos;
 }
 

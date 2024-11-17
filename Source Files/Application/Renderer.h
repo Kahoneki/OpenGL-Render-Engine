@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <vector>
+#include <GLM/gtc/matrix_transform.hpp>
 
 class Application;
 class Shader;
@@ -19,13 +20,16 @@ public:
 	Renderer(std::vector<Shader*> _shaders);
 	~Renderer(); //Renderer is not responsible for clearing up memory allocated to scenes and shaders
 
-	void Render(Scene* scene) const;
+	void Render(Scene* scene);
 	
 	std::size_t AddShader(Shader* shader); //Returns index
 	void RemoveShader(std::size_t index);
 	void SetActiveShader(std::size_t index);
 	Shader* GetActiveShader();
 	Shader* GetShader(std::size_t index);
+
+	void SetClearColour(glm::vec4 colour);
+	glm::vec4 GetClearColour();
 
 private:
 	Application* app;
@@ -35,9 +39,11 @@ private:
 
 	Shader* lightSourceShader;
 
-	void RenderImGui() const;
+	void RenderImGui();
 
 	bool dropdownStatuses[1]; //ImGui dropdowns
+
+	glm::vec4 clearColour;
 };
 
 #endif

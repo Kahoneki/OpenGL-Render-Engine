@@ -5,6 +5,8 @@
 TimeManager::TimeManager(Application* _app)
 {
 	app = _app;
+	dt = glfwGetTime();
+	lastTime = 0;
 }
 
 void TimeManager::NewFrame()

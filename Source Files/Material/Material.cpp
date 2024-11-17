@@ -112,10 +112,10 @@ const GLsizeiptr Material::GetPaddedSize()
 	size += sizeof(materialData.specularColour); //16 bytes
 
 	size += sizeof(materialData.specularPower); //4 bytes
-	size += 12;
+	//size += 12;
 
 	size += sizeof(materialData.rimPower); //4 bytes
-	size += 12;
+	size += 8;
 
 	size += sizeof(materialData.textureHandles); //16 bytes
 

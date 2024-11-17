@@ -15,18 +15,17 @@ uniform int numLights;
 uniform bool isEmissive;
 
 
-struct LightData
-{
-	vec4 position;
-	
-	vec4 ambientColour;
-	vec4 diffuseColour;
-	vec4 specularColour;
+struct LightData {
+    vec4 position;
+    vec4 ambientColour;
+    vec4 diffuseColour;
+    vec4 specularColour;
+    vec4 intensityPack;  // intensity in x component
 };
 
 layout (binding=0, std140) uniform LightBlock
 {
-	LightData[256] lights;
+	LightData[800] lights;
 } lightSources;
 
 
@@ -37,11 +36,13 @@ struct MaterialData
 	vec4 specularColour;
 	float specularPower;
 	float rimPower;
+//	float padding1[2];
 
 	uint64_t albedoTextureHandle;
 	uint64_t normalTextureHandle;
 
 	uint activePropertiesBitfield;
+//	float padding2[3];
 };
 
 layout (binding=1, std140) uniform MaterialBlock
@@ -106,12 +107,17 @@ void main()
 			worldPosToCamera = normalize(transpose(TBN) * worldPosToCamera); //Go from world space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
 		}
 		else {
-			lightingNormal = worldNormal;
+			lightingNormal = normalize(worldNormal);
 		}
 
 		//Calculate lighting
 		for (int i=0; i<numLights; ++i) {
 			LightData light = lightSources.lights[i];
+
+			if (light.intensityPack.x == 0) {
+				continue;
+			}
+
 			vec3 lightDir = normalize(light.position.xyz - worldPos); //Vector from fragment position to light
 
 			//Normal texture bit
@@ -125,7 +131,13 @@ void main()
 			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, worldPosToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
 			vec4 rim = calculateRimContribution(lightingNormal, worldPosToCamera, light.diffuseColour);
 
-			FragColour += ambient + diffuse + specular + rim;
+			//Attenuate distance based on inverse square law
+			float lengthFromLightToPoint = length(light.position.xyz - worldPos);
+			float lengthFromPointToCamera = length(worldPos - cameraPos);
+			float totalDistanceTravelled = lengthFromLightToPoint + lengthFromPointToCamera;
+			vec4 distanceAttenuatedColour = (ambient + diffuse + specular + rim) / (lengthFromLightToPoint * lengthFromLightToPoint);
+
+			FragColour += distanceAttenuatedColour * light.intensityPack.x;
 		}
 
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {

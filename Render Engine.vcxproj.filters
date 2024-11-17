@@ -139,6 +139,9 @@
     <ClCompile Include="Source Files\External\glad.c">
       <Filter>Source Files\External</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Utility\RandomFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Files\World\Scene.h">
@@ -242,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="Source Files\Application\AssetManager.h">
       <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Utility\RandomFunctions.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

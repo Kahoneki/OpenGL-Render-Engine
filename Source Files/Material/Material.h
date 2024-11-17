@@ -20,9 +20,11 @@ struct MaterialData
 	glm::vec4 specularColour;
 	float specularPower;
 	float rimPower;
+	//float padding1[2];
 
 	glm::u64vec2 textureHandles; //Albedo + Normal
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
+	//float padding2[3];
 
 	MaterialData() {}
 };

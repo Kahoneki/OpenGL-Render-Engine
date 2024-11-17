@@ -157,6 +157,7 @@
     <ClCompile Include="Source Files\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Material\Material.cpp" />
     <ClCompile Include="Source Files\Shaders\shader.cpp" />
+    <ClCompile Include="Source Files\Utility\RandomFunctions.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Cube24.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Cube8.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Drawable.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source Files\Material\Material.h" />
     <ClInclude Include="Source Files\Shaders\shader.h" />
     <ClInclude Include="Source Files\Utility\BindingPoints.h" />
+    <ClInclude Include="Source Files\Utility\RandomFunctions.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube24.h" />
     <ClInclude Include="Source Files\World\Drawable\Cube8.h" />
     <ClInclude Include="Source Files\World\Drawable\Drawable.h" />

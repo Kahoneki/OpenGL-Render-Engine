@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "SceneManager.h"
 #include "WindowManager.h"
+#include "TimeManager.h"
 
 #include "../Utility/BindingPoints.h"
 
@@ -30,6 +31,8 @@ Renderer::Renderer(Application* _app)
 
 	for (bool& d : dropdownStatuses) { d = false; }
 
+	clearColour = glm::vec4(0.0f);
+
 	//Purposefully leave activeShader uninitialised.
 }
 
@@ -39,6 +42,8 @@ Renderer::Renderer(Shader* shader)
 	lightSourceShader = new Shader(SHADER_PRESET::LIGHT_SOURCE);
 
 	for (bool& d : dropdownStatuses) { d = false; }
+
+	clearColour = glm::vec4(0.0f);
 
 	//Purposefully leave activeShader uninitialised.
 }
@@ -50,6 +55,8 @@ Renderer::Renderer(std::vector<Shader*> _shaders)
 
 	for (bool& d : dropdownStatuses) { d = false; }
 
+	clearColour = glm::vec4(0.0f);
+
 	//Purposefully leave activeShader uninitialised.
 }
 
@@ -59,7 +66,7 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::Render(Scene* scene) const {
+void Renderer::Render(Scene* scene) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaders[activeShader]->use();
@@ -83,6 +90,10 @@ void Renderer::Render(Scene* scene) const {
 	}
 
 	//Attach scene's light source buffer to the context's UBO
+	if (app->sceneManager.get()->GetActiveScene()->lightsChanged && app->sceneManager.get()->GetActiveScene()->automaticLightUpdates) {
+		app->sceneManager.get()->GetActiveScene()->UpdateLightSources();
+	}
+	glMemoryBarrier(GL_UNIFORM_BARRIER_BIT);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, app->sceneManager->GetActiveScene()->lightSourcesBuffer);
 	shaders[activeShader]->setInt("numLights", app->sceneManager->GetActiveScene()->lightSources.size());
 
@@ -123,6 +134,17 @@ Shader* Renderer::GetActiveShader()
 Shader* Renderer::GetShader(std::size_t index)
 {
 	return shaders[index];
+}
+
+void Renderer::SetClearColour(glm::vec4 colour)
+{
+	clearColour = colour;
+	glClearColor(colour.r, colour.g, colour.b, colour.a);
+}
+
+glm::vec4 Renderer::GetClearColour()
+{
+	return clearColour;
 }
 
 
@@ -170,6 +192,11 @@ void DrawHeirarchy(SceneObject* s)
 				}
 
 				ImGui::TreePop();
+			}
+
+			float intensity{ ls->getIntensity() };
+			if (ImGui::DragFloat("Intensity", &intensity, 0.1f)) {
+				ls->setIntensity(intensity);
 			}
 		}
 
@@ -243,7 +270,7 @@ void DrawHeirarchy(SceneObject* s)
 						d->material.setSpecularColour(glm::vec4(spec, 0.0f));
 					}
 					float specPow{ d->material.getSpecularPower() };
-					if (ImGui::SliderFloat("Specular Power", &specPow, 0.0f, 256.0f)) {
+					if (ImGui::SliderFloat("Specular Power", &specPow, 0.1f, 256.0f)) {
 						d->material.setSpecularPower(specPow);
 					}
 					float rimPow{ d->material.getRimPower() };
@@ -284,10 +311,34 @@ void DrawHeirarchy(SceneObject* s)
 }
 
 
-void Renderer::RenderImGui() const
+void Renderer::RenderImGui()
 {
 	if (app->editorMode) {
 		ImGui::Begin("Editor");
+
+		ImGui::Text(std::string(std::string("FPS: ") + std::to_string(1.0 / app->timeManager.get()->dt)).c_str());
+
+		if (ImGui::Checkbox("Fullscreen", &app->windowManager.get()->fullscreen)) {
+			app->windowManager.get()->UpdateFullscreen();
+		}
+
+		bool automaticLightUpdates{ app->sceneManager->GetActiveScene()->GetAutomaticLightUpdates() };
+		if (ImGui::Checkbox("Automatic Light Updates", &automaticLightUpdates)) {
+			app->sceneManager->GetActiveScene()->SetAutomaticLightUpdates(automaticLightUpdates);
+		}
+		if (!automaticLightUpdates) {
+			if (ImGui::Button("Update Light Sources") && app->sceneManager.get()->GetActiveScene()->lightsChanged) {
+				app->sceneManager->GetActiveScene()->UpdateLightSources();
+			}
+		}
+
+		if (ImGui::TreeNode("Background Colour")) {
+			float colour[3] = { clearColour.r, clearColour.g, clearColour.b };
+			if (ImGui::ColorPicker3("", colour)) {
+				SetClearColour(glm::vec4(colour[0], colour[1], colour[2], 1.0f));
+			}
+			ImGui::TreePop();
+		}
 
 		for (SceneObject* s : app->sceneManager->GetActiveScene()->sceneObjects) {
 			if (s->parent == nullptr) {
@@ -302,4 +353,3 @@ void Renderer::RenderImGui() const
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
-
