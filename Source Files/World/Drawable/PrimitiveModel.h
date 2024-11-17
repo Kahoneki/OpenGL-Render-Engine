@@ -12,7 +12,7 @@ class Shader;
 class PrimitiveModel : public virtual Drawable
 {
 public:
-	PrimitiveModel(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
+	PrimitiveModel(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
 	void Draw(Shader& shader) override;
 	virtual ~PrimitiveModel() = 0;
 };

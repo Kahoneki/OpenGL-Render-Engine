@@ -3,7 +3,7 @@
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
 
-LightSource::LightSource() : SceneObject("New Light Source", nullptr, glm::vec3(0.0f)), cube("New Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), glm::vec3(1.0f), this)
+LightSource::LightSource() : SceneObject("New Light Source", nullptr, glm::vec3(0.0f)), cube("New Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), this)
 {
 	light.position = glm::vec4(0.0f);
 	light.ambientColour = glm::vec4(1.0f);
@@ -15,7 +15,7 @@ LightSource::LightSource() : SceneObject("New Light Source", nullptr, glm::vec3(
 	cube.material.setDiffuseColour(light.diffuseColour);
 }
 
-LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambientColour, glm::vec4 diffuseColour, glm::vec4 specularColour, float intensity, SceneObject* parent) : SceneObject(name, parent, _position), cube("Light Source Box", _position, glm::vec3(0.2f), glm::vec3(0.0f), glm::vec3(1.0f), this)
+LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambientColour, glm::vec4 diffuseColour, glm::vec4 specularColour, float intensity, SceneObject* parent) : SceneObject(name, parent, _position), cube("Light Source Box", _position, glm::vec3(0.2f), glm::vec3(0.0f), this)
 {
 	light.position = glm::vec4(_position, 0.0f);
 	light.ambientColour = ambientColour;

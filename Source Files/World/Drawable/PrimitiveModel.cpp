@@ -7,7 +7,7 @@
 
 PrimitiveModel::~PrimitiveModel() {}
 
-PrimitiveModel::PrimitiveModel(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : Drawable(name, topLeftFront, scale, rotation, parent)
+PrimitiveModel::PrimitiveModel(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : Drawable(name, center, scale, rotation, parent)
 {
 }
 

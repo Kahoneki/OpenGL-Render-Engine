@@ -19,7 +19,7 @@ class Drawable : public virtual SceneObject
 	friend class Material;
 
 public:
-	Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
+	Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
 	virtual void Draw(Shader& shader);
 	virtual ~Drawable() = 0;
 	
@@ -47,6 +47,9 @@ protected:
 
 	GLenum drawMode;
 	bool indexed;
+
+private:
+	glm::vec3 eulerRotation; //Only used for display purposes
 };
 
 #endif

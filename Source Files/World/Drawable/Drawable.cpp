@@ -9,13 +9,14 @@
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
 
-Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, topLeftFront)
+Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, center)
 {
 	//Construct model matrix
 	model = glm::mat4(1.0f);
-	model = model * glm::toMat4(glm::quat(rotation));
+	model = glm::translate(model, center);
+	model = model * glm::toMat4(glm::quat(glm::radians(rotation)));
 	model = glm::scale(model, scale);
-	model = glm::translate(model, topLeftFront / scale);
+	model = glm::translate(model, -center);
 
 	glGenVertexArrays(1, &VAO);
 	glCreateBuffers(1, &VBO);
@@ -25,7 +26,8 @@ Drawable::Drawable(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, gl
 	material.drawableParent = this;
 	UpdateMaterial();
 
-	worldPos = topLeftFront;
+	worldPos = center;
+	eulerRotation = rotation;
 }
 
 void Drawable::Draw(Shader& shader)
@@ -72,8 +74,7 @@ void Drawable::setScale(glm::vec3 scale)
 
 glm::vec3 Drawable::getRotation()
 {
-	glm::vec3 rotation = glm::degrees(glm::eulerAngles(glm::quat_cast(model)));
-	return rotation;
+	return eulerRotation;
 }
 
 void Drawable::setRotation(glm::vec3 rotation)
@@ -82,6 +83,8 @@ void Drawable::setRotation(glm::vec3 rotation)
 	glm::vec3 diff = rotation - currentRotation;
 	glm::mat4 rotationMatrix = glm::toMat4(glm::quat(glm::radians(diff)));
 	model = model * rotationMatrix;
+
+	eulerRotation = rotation;
 }
 
 

@@ -1,9 +1,9 @@
 #include "Cube24.h"
 
-Cube24::Cube24(const char* name, glm::vec3 topLeftFront, glm::vec3 scale, glm::vec3 rotation, glm::vec3 colour, SceneObject* parent) :
-    SceneObject(name, parent, topLeftFront),
-    Drawable(name, topLeftFront, scale, rotation, parent),
-    PrimitiveModel(name, topLeftFront, scale, rotation, parent)
+Cube24::Cube24(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) :
+    SceneObject(name, parent, center),
+    Drawable(name, center, scale, rotation, parent),
+    PrimitiveModel(name, center, scale, rotation, parent)
 {
 
     vertices = {
