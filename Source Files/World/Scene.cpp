@@ -5,6 +5,7 @@
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
 #include "../Camera/camera.h"
+#include <algorithm> //for std::lower_bound
 
 Scene::Scene()
 {
@@ -27,13 +28,13 @@ Scene::Scene(std::vector<LightSource*> _lightSources, std::vector<RenderSource*>
 	sceneObjects = std::vector<SceneObject*>();
 
 	for (LightSource* ls : lightSources) {
-		sceneObjects.push_back(ls);
+		AddLightSource(ls);
 	}
 	for (RenderSource* rs : renderSources) {
-		sceneObjects.push_back(rs);
+		AddRenderSource(rs);
 	}
 	for (Drawable* d : drawables) {
-		sceneObjects.push_back(d);
+		AddDrawable(d);
 	}
 
 	automaticLightUpdates = true;
@@ -44,10 +45,6 @@ Scene::Scene(std::vector<LightSource*> _lightSources, std::vector<RenderSource*>
 	glCreateBuffers(1, &lightSourcesBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(Light) * 512, nullptr, GL_DYNAMIC_DRAW);
-	for (LightSource* ls : lightSources) {
-		ls->sceneParent = this;
-		drawables.push_back(&ls->cube);
-	}
 
 }
 
@@ -66,11 +63,22 @@ bool Scene::GetAutomaticLightUpdates()
 	return automaticLightUpdates;
 }
 
+std::size_t Scene::AddSceneObject(SceneObject* sceneObject)
+{
+	sceneObjects.push_back(sceneObject);
+	sceneObject->sceneParent = this;
+	return sceneObjects.size();
+}
+
+void Scene::RemoveSceneObject(std::size_t index)
+{
+}
+
 std::size_t Scene::AddLightSource(LightSource* lightSource)
 {
 	lightSources.push_back(lightSource);
 	lightSource->sceneParent = this;
-	drawables.push_back(&lightSource->cube);
+	AddDrawable(&lightSource->cube);
 	sceneObjects.push_back(lightSource);
 	sceneObjects.push_back(&lightSource->cube);
 	lightsChanged = true;
@@ -109,6 +117,7 @@ std::size_t Scene::AddRenderSource(RenderSource* renderSource)
 {
 	renderSources.push_back(renderSource);
 	sceneObjects.push_back(renderSource);
+	renderSource->sceneParent = this;
 	return renderSources.size();
 }
 
@@ -136,8 +145,14 @@ RenderSource* Scene::GetActiveRenderSource()
 
 std::size_t Scene::AddDrawable(Drawable* drawable)
 {
-	drawables.push_back(drawable);
+	//Insert drawable into correct position in drawables vector based on render order
+
+	std::vector<Drawable*>::iterator pos{ std::lower_bound(drawables.begin(), drawables.end(), drawable,
+										  [](Drawable* a, Drawable* b) { return (*a).getRenderOrder() < (*b).getRenderOrder(); }) };
+
+	drawables.insert(pos, drawable);
 	sceneObjects.push_back(drawable);
+	drawable->sceneParent = this;
 	return drawables.size();
 }
 
@@ -151,4 +166,17 @@ void Scene::RemoveDrawable(std::size_t index)
 		}
 	}
 	drawables.erase(drawables.begin() + index);
+}
+
+void Scene::ReorderDrawable(Drawable* drawable)
+{
+	for (std::size_t i{ 0 }; i < drawables.size(); ++i) {
+		if (drawables[i] == drawable) {
+			drawables.erase(drawables.begin() + i);
+			//Get position where drawable should be to maintain render order
+			std::vector<Drawable*>::iterator pos{ std::lower_bound(drawables.begin(), drawables.end(), drawable,
+																   [](Drawable* a, Drawable* b) { return (*a).getRenderOrder() < (*b).getRenderOrder(); }) };
+			drawables.insert(pos, drawable);
+		}
+	}
 }

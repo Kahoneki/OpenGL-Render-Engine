@@ -6,13 +6,13 @@ in vec2 texCoord;
 in vec3 worldNormal;
 in vec3 worldTangent;
 in vec3 worldBitangent;
-in vec3 worldPos;
+in vec3 transform;
 in vec3 cameraPos;
 
 out vec4 FragColour;
 
 uniform int numLights;
-uniform bool isEmissive;
+uniform bool useOnlyDiffuse;
 
 
 struct LightData {
@@ -70,7 +70,7 @@ vec4 calculateRimContribution(vec3 normal, vec3 view, vec4 lightColour) {
 //
 //FragColour starts at 0
 //If colour bit:
-//	If emissive:
+//	If diffuse only:
 //		FragColour = diffuse;
 //		return;
 //	If normal texture: set normal
@@ -82,7 +82,7 @@ vec4 calculateRimContribution(vec3 normal, vec3 view, vec4 lightColour) {
 //Else:
 //	If albedo texture: FragColour = albedo
 //
-//Note: isEmissive and the active properties bitfield are per-draw-call, they do not vary per-invocation. This means branch divergence on a warp is not an issue.
+//Note: useOnlyDiffuse and the active properties bitfield are per-draw-call, they do not vary per-invocation. This means branch divergence on a warp is not an issue.
 
 void main()
 {
@@ -90,7 +90,7 @@ void main()
 
 	//Colour bit
 	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
-		if (isEmissive) {
+		if (useOnlyDiffuse) {
 			FragColour = material.matData.diffuseColour;
 			return;
 		}
@@ -99,10 +99,10 @@ void main()
 
 		//Normal texture bit - will determine whether to use view space or tangent space
 		vec3 lightingNormal; //Normal used in lighting calculations
-		vec3 worldPosToCamera = normalize(cameraPos - worldPos);
+		vec3 transformToCamera = normalize(cameraPos - transform);
 		if ((material.matData.activePropertiesBitfield & 4u) != 0u) {
 			lightingNormal = normalize(texture(sampler2D(material.matData.normalTextureHandle), texCoord).rgb * 2.0f - vec3(1.0f));
-			worldPosToCamera = normalize(transpose(TBN) * worldPosToCamera); //Go from world space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
+			transformToCamera = normalize(transpose(TBN) * transformToCamera); //Go from world space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
 		}
 		else {
 			lightingNormal = normalize(worldNormal);
@@ -116,7 +116,7 @@ void main()
 				continue;
 			}
 
-			vec3 lightDir = normalize(light.position.xyz - worldPos); //Vector from fragment position to light
+			vec3 lightDir = normalize(light.position.xyz - transform); //Vector from fragment position to light
 
 			//Normal texture bit
 			if ((material.matData.activePropertiesBitfield & 4u) != 0u) {
@@ -126,12 +126,12 @@ void main()
 
 			vec4 ambient = material.matData.ambientColour * light.ambientColour;
 			vec4 diffuse = max(dot(lightingNormal, lightDir), 0.0f) * material.matData.diffuseColour * light.diffuseColour;
-			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, worldPosToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
-			vec4 rim = calculateRimContribution(lightingNormal, worldPosToCamera, light.diffuseColour);
+			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, transformToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
+			vec4 rim = calculateRimContribution(lightingNormal, transformToCamera, light.diffuseColour);
 
 			//Attenuate distance based on inverse square law
-			float lengthFromLightToPoint = length(light.position.xyz - worldPos);
-			float lengthFromPointToCamera = length(worldPos - cameraPos);
+			float lengthFromLightToPoint = length(light.position.xyz - transform);
+			float lengthFromPointToCamera = length(transform - cameraPos);
 			float totalDistanceTravelled = lengthFromLightToPoint + lengthFromPointToCamera;
 			vec4 distanceAttenuatedColour = (ambient + diffuse + specular + rim) / (lengthFromLightToPoint * lengthFromLightToPoint);
 

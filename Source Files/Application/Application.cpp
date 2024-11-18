@@ -48,10 +48,25 @@ Application::~Application() {
 
 void Application::RunFrame()
 {
+	glm::vec3 oldPos, newPos;
+	Camera* activeCam{ dynamic_cast<Camera*>(sceneManager.get()->GetActiveScene()->GetActiveRenderSource()) };
+	if (activeCam) {
+		//Store camera position at start of frame
+		oldPos = activeCam->getPosition();
+	}
+
 	timeManager->NewFrame();
 	inputManager->ProcessInputs(windowManager->GetWindow(), timeManager->dt);
 	renderer->Render(sceneManager->GetActiveScene());
-	
+
+	if (activeCam) {
+		//Store camera position at end of frame
+		glm::vec3 newPos{ activeCam->getPosition() };
+
+		//Pass to camera to use for high-precision collision calculations
+		activeCam->GenerateInbetweenFramePositions(oldPos, newPos);
+	}
+
 	applicationRunning = !glfwWindowShouldClose(windowManager->GetWindow());
 }
 
@@ -65,10 +80,12 @@ void Application::InitialiseGLAD()
 	}
 
 	glViewport(0, 0, windowManager->SCRWIDTH, windowManager->SCRHEIGHT);
-	//glClearColor(0.8f, 1.0f, 1.0f, 1.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glClearStencil(0);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
 
-LightSource::LightSource() : SceneObject("New Light Source", nullptr, glm::vec3(0.0f)), cube("New Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), this)
+LightSource::LightSource() : SceneObject("New Light Source", nullptr, Transform(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f))), cube("New Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), this)
 {
 	light.position = glm::vec4(0.0f);
 	light.ambientColour = glm::vec4(1.0f);
@@ -11,11 +11,11 @@ LightSource::LightSource() : SceneObject("New Light Source", nullptr, glm::vec3(
 	light.specularColour = glm::vec4(1.0f);
 	light.intensityPack = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
 
-	cube.isEmissive = true;
+	cube.useOnlyDiffuse = true;
 	cube.material.setDiffuseColour(light.diffuseColour);
 }
 
-LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambientColour, glm::vec4 diffuseColour, glm::vec4 specularColour, float intensity, SceneObject* parent) : SceneObject(name, parent, _position), cube("Light Source Box", _position, glm::vec3(0.2f), glm::vec3(0.0f), this)
+LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambientColour, glm::vec4 diffuseColour, glm::vec4 specularColour, float intensity, SceneObject* parent) : SceneObject(name, parent, Transform(_position, glm::vec3(1.0f), glm::vec3(0.0f))), cube("Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), this)
 {
 	light.position = glm::vec4(_position, 0.0f);
 	light.ambientColour = ambientColour;
@@ -23,7 +23,7 @@ LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambien
 	light.specularColour = specularColour;
 	light.intensityPack = glm::vec4(intensity, 0.0f, 0.0f, 0.0f);
 
-	cube.isEmissive = true;
+	cube.useOnlyDiffuse = true;
 	cube.material.setDiffuseColour(light.diffuseColour);
 }
 
@@ -34,10 +34,10 @@ LightSource::~LightSource()
 
 void LightSource::setPosition(glm::vec3 pos)
 {
-	worldPos = pos;
+	SceneObject::setPosition(pos);
 	light.position = glm::vec4(pos, 0.0f);
 	sceneParent->lightsChanged = true;
-	cube.setPosition(pos);
+	//cube.setPosition(pos);
 }
 
 glm::vec4 LightSource::getAmbientColour()

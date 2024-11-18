@@ -44,8 +44,6 @@ public:
 private:
 
 	[[no_discard]] const GLsizeiptr GetPaddedSize();
-
-	Scene* sceneParent;
 	Light light;
 
 };

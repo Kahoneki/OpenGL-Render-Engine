@@ -7,7 +7,7 @@
 #include "../World/Scene.h"
 
 InputManager::InputManager(Application* _app)
-	: app(_app), firstMouse(true), lastX(0.0f), lastY(0.0f), f3Pressed(false)
+	: app(_app), firstMouse(true), lastX(0.0f), lastY(0.0f), f3Pressed(false), flip(false)
 {
 }
 
@@ -53,7 +53,7 @@ void InputManager::ProcessMouse(double xposIn, double yposIn)
 		}
 
 		float xoffset = xpos - lastX;
-		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+		float yoffset = lastY - ypos; //Reversed since y-coordinates go from bottom to top
 
 		lastX = xpos;
 		lastY = ypos;

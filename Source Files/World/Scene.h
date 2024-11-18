@@ -25,6 +25,9 @@ public:
 	void SetAutomaticLightUpdates(bool val);
 	bool GetAutomaticLightUpdates();
 
+	std::size_t AddSceneObject(SceneObject* sceneObject); //Returns index - this function should only be used on standalone SceneObjects (if SceneObject is an instance of a derived class (e.g.: Drawable), use the appropriate function call for that type (e.g.: AddDrawable()))
+	void RemoveSceneObject(std::size_t index);
+
 	std::size_t AddLightSource(LightSource* lightSource); //Returns index
 	void RemoveLightSource(std::size_t index);
 	void UpdateLightSources();
@@ -37,7 +40,9 @@ public:
 
 	std::size_t AddDrawable(Drawable* drawable); //Returns index
 	void RemoveDrawable(std::size_t index);
+	void ReorderDrawable(Drawable* drawable); //Reorders drawable in drawables vector based on drawable's new renderOrder
 
+	std::vector<Drawable*> drawables;
 
 private:
 
@@ -48,8 +53,6 @@ private:
 
 	std::vector<RenderSource*> renderSources; //E.g.: cameras
 	std::size_t activeRenderSource;
-
-	std::vector<Drawable*> drawables;
 
 	std::vector<SceneObject*> sceneObjects; //Contains all light sources, render sources, and drawables
 };

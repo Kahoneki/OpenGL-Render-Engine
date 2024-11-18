@@ -39,14 +39,20 @@ public:
 		}
 		if (glfwGetKey(window, GLFW_KEY_F3) != GLFW_PRESS && f3Pressed)
 			f3Pressed = false;
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+			flip = false;
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+			flip = true;
 	}
 	void ProcessMouse(double xposIn, double yposIn);
 	void ProcessScroll(double yOffset);
 
+	bool flip;
+	bool firstMouse;
+
 private:
 	Application* app;
 
-	bool firstMouse;
 	float lastX;
 	float lastY;
 	bool f3Pressed;

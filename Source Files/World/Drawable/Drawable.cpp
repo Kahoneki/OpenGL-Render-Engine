@@ -5,19 +5,14 @@
 #include "../../Application/Application.h"
 #include "../../Application/Renderer.h"
 #include "../../Shaders/shader.h"
+#include "../Scene.h"
 
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
+#include <climits>
 
-Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, center)
+Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, Transform(center, scale, rotation))
 {
-	//Construct model matrix
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, center);
-	model = model * glm::toMat4(glm::quat(glm::radians(rotation)));
-	model = glm::scale(model, scale);
-	model = glm::translate(model, -center);
-
 	glGenVertexArrays(1, &VAO);
 	glCreateBuffers(1, &VBO);
 	glCreateBuffers(1, &EBO);
@@ -26,15 +21,16 @@ Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec
 	material.drawableParent = this;
 	UpdateMaterial();
 
-	worldPos = center;
 	eulerRotation = rotation;
+
+	renderOrder = 0;
 }
 
 void Drawable::Draw(Shader& shader)
 {
 	UpdateMaterial();
-	shader.setMat4("model", model);
-	shader.setBool("isEmissive", isEmissive);
+	shader.setMat4("model", GetHeirarchicalModelMatrix());
+	shader.setBool("useOnlyDiffuse", useOnlyDiffuse);
 }
 
 Drawable::~Drawable() {
@@ -45,46 +41,17 @@ Drawable::~Drawable() {
 }
 
 
-void Drawable::setPosition(glm::vec3 pos)
+unsigned int Drawable::getRenderOrder()
 {
-	glm::vec3 currentPos = getPosition();
-	glm::vec3 diff = pos - currentPos;
-	model = glm::translate(model, diff / getScale());
-	worldPos = pos;
+	return renderOrder;
 }
 
-glm::vec3 Drawable::getScale() {
-	glm::vec3 scale;
-	scale.x = glm::length(glm::vec3(model[0])); // First column
-	scale.y = glm::length(glm::vec3(model[1])); // Second column
-	scale.z = glm::length(glm::vec3(model[2])); // Third column
-	return scale;
-}
-
-void Drawable::setScale(glm::vec3 scale)
+void Drawable::setRenderOrder(unsigned int val)
 {
-	glm::vec3 currentScale = getScale();
-	glm::vec3 scaleFactor{
-		scale.x / currentScale.x,
-		scale.y / currentScale.y,
-		scale.z / currentScale.z
-	};
-	model = glm::scale(model, scaleFactor);
-}
-
-glm::vec3 Drawable::getRotation()
-{
-	return eulerRotation;
-}
-
-void Drawable::setRotation(glm::vec3 rotation)
-{
-	glm::vec3 currentRotation = getRotation();
-	glm::vec3 diff = rotation - currentRotation;
-	glm::mat4 rotationMatrix = glm::toMat4(glm::quat(glm::radians(diff)));
-	model = model * rotationMatrix;
-
-	eulerRotation = rotation;
+	renderOrder = val;
+	if (sceneParent) {
+		sceneParent->ReorderDrawable(this);
+	}
 }
 
 

@@ -123,6 +123,12 @@ Shader::Shader(SHADER_PRESET preset)
         fragmentFilepath = "light_source.frag";
         break;
     }
+    case SHADER_PRESET::FBO:
+    {
+        vertexFilepath = "fbo.vert";
+        fragmentFilepath = "fbo.frag";
+        break;
+    }
     default:
     {
         std::cerr << "Shader preset not found: " << preset << std::endl;

@@ -47,12 +47,16 @@ public:
 	//----METHODS----//
 
 	void setPosition(glm::vec3 pos) override;
+	void setRotation(glm::vec3 rot) override;
 
 	//Returns the view matrix calculated using euler angles and the LookAt matrix
 	glm::mat4 GetViewMatrix() const;
 
 	//Calculates the front vector from the camera's updated euler angles
 	void updateCameraVectors();
+
+	void GenerateInbetweenFramePositions(glm::vec3 oldPos, glm::vec3 newPos);
+	glm::vec3 interpolatedPositionsBetweenFrames[10]; //Used for collision calculations at high velocities
 };
 
 

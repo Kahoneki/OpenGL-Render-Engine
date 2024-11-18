@@ -1,7 +1,7 @@
 #include "Cube8.h"
 
 Cube8::Cube8(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) :
-	SceneObject(name, parent, center),
+	SceneObject(name, parent, Transform(center, scale, rotation)),
 	Drawable(name, center, scale, rotation, parent),
 	PrimitiveModel(name, center, scale, rotation, parent)
 {

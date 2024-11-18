@@ -8,7 +8,7 @@ out vec2 texCoord;
 out vec3 worldNormal;
 out vec3 worldTangent;
 out vec3 worldBitangent;
-out vec3 worldPos;
+out vec3 transform;
 out vec3 cameraPos;
 
 uniform mat4 model;
@@ -24,7 +24,7 @@ void main()
 	worldTangent = normalize(mat3(model) * aTangent);
 	worldBitangent = cross(worldNormal, worldTangent);
 	
-	worldPos = vec4(model * vec4(aPos, 1.0f)).xyz; //Vertex position in world-space
+	transform = vec4(model * vec4(aPos, 1.0f)).xyz; //Vertex position in world-space
 	cameraPos = inverse(view)[3].xyz;
 		
 	gl_Position = projection * view * model * vec4(aPos, 1.0f);

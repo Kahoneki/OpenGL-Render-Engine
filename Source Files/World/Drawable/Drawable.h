@@ -22,19 +22,15 @@ public:
 	Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent);
 	virtual void Draw(Shader& shader);
 	virtual ~Drawable() = 0;
-	
-	void setPosition(glm::vec3 pos) override;
-	glm::vec3 getScale();
-	void setScale(glm::vec3 scale);
-	glm::vec3 getRotation();
-	void setRotation(glm::vec3 rotation);
+
+	unsigned int getRenderOrder();
+	void setRenderOrder(unsigned int val);
 
 	Material material;
 
-	bool isEmissive; //When using a shader with lighting calculations, this toggle, if true, will skip the calculations and use a diffuse term instead
+	bool useOnlyDiffuse; //When using a shader with lighting calculations, this toggle, if true, will skip the calculations and use a diffuse term instead
 
 protected:
-	glm::mat4 model;
 	unsigned int materialBuffer;
 	void UpdateMaterial();
 
@@ -47,6 +43,8 @@ protected:
 
 	GLenum drawMode;
 	bool indexed;
+
+	unsigned int renderOrder; //Used to sort Scene::drawables vector (lower value = earlier render). Not unique. Default value = 0
 
 private:
 	glm::vec3 eulerRotation; //Only used for display purposes

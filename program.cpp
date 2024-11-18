@@ -7,6 +7,7 @@
 #include "Source Files/Camera/PlayerCamera.h"
 #include "Source Files/World/Drawable/Cube24.h"
 #include "Source Files/World/Drawable/Plane.h"
+#include "Source Files/World/Drawable/Special/Portal.h"
 #include "Source Files/World/Scene.h"
 #include "Source Files/World/LightSource.h"
 #include "Source Files/Shaders/shader.h"
@@ -30,34 +31,61 @@ int main()
 	scene.AddRenderSource(&cam);
 	scene.SetActiveRenderSource(0);
 
-	Cube24 cube{ "Brick Cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f), glm::vec3(0.0f) };
-	cube.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
-	cube.material.setDiffuseColour(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
-	cube.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	cube.material.setSpecularPower(128.0f); // Specular strength
-	cube.material.setRimPower(5.0f);
-	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	unsigned int brickAlbedoName{ app.assetManager.get()->addTexture("brickwall.jpg") };
-	unsigned int brickNormalName{ app.assetManager.get()->addTexture("brickwall_normal.jpg") };
-	cube.material.setAlbedoTextureName(brickAlbedoName);
-	cube.material.setNormalTextureName(brickNormalName);
-	cube.material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
-	cube.material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, true);
-	scene.AddDrawable(&cube);
-
-	Plane plane{"Brick Plane", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f), glm::vec3(-90.0f, 0.0f, 0.0f) };
+	Plane plane{"Brick Plane", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f), glm::vec3(-90.0f, 0.0f, 0.0f) };
 	plane.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
 	plane.material.setDiffuseColour(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
 	plane.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane.material.setSpecularPower(128.0f); // Specular strength
 	plane.material.setRimPower(5.0f);
 	plane.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	unsigned int brickAlbedoName{ app.assetManager.get()->addTexture("brickwall.jpg") };
+	unsigned int brickNormalName{ app.assetManager.get()->addTexture("brickwall_normal.jpg") };
 	plane.material.setAlbedoTextureName(brickAlbedoName);
 	plane.material.setNormalTextureName(brickNormalName);
 	plane.material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
 	plane.material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, true);
 	scene.AddDrawable(&plane);
 
+	Cube24 cube{ "Cube", glm::vec3(-3.5f, 1.0f, 4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	cube.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	cube.material.setDiffuseColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	cube.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	cube.material.setSpecularPower(128.0f); // Specular strength
+	cube.material.setRimPower(5.0f);
+	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	cube.useOnlyDiffuse = true;
+	scene.AddDrawable(&cube);
+
+	Cube24 cube2{ "Cube2", glm::vec3(3.5f, 1.0f, -4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	cube2.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	cube2.material.setDiffuseColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	cube2.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	cube2.material.setSpecularPower(128.0f); // Specular strength
+	cube2.material.setRimPower(5.0f);
+	cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	cube2.useOnlyDiffuse = true;
+	scene.AddDrawable(&cube2);
+
+	Portal portal1{ "Portal 1", glm::vec3(-5.0f, 3.0f, 0.0f), glm::vec3(1.25f, 3.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f) };
+	portal1.portal.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	portal1.portal.material.setDiffuseColour(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
+	portal1.portal.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	portal1.portal.material.setSpecularPower(128.0f); // Specular strength
+	portal1.portal.material.setRimPower(5.0f);
+	portal1.portal.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	scene.AddDrawable(&portal1);
+
+	Portal portal2{ "Portal 2", glm::vec3(5.0f, 3.0f, 0.0f), glm::vec3(1.25f, 3.0f, 0.1f), glm::vec3(0.0f, 180.0f, 0.0f) };
+	portal2.portal.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	portal2.portal.material.setDiffuseColour(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
+	portal2.portal.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	portal2.portal.material.setSpecularPower(128.0f); // Specular strength
+	portal2.portal.material.setRimPower(5.0f);
+	portal2.portal.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	scene.AddDrawable(&portal2);
+
+	portal1.SetOtherPortal(&portal2);
+	portal2.SetOtherPortal(&portal1);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };

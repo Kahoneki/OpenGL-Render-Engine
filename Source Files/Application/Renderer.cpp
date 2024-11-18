@@ -68,7 +68,9 @@ Renderer::~Renderer()
 
 void Renderer::Render(Scene* scene) {
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glStencilMask(0xFF);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glStencilMask(0x00);
 	shaders[activeShader]->use();
 
 	ImGui_ImplOpenGL3_NewFrame();
@@ -79,7 +81,7 @@ void Renderer::Render(Scene* scene) {
 	RenderSource* rs{ app->sceneManager->GetActiveScene()->GetActiveRenderSource() };
 	Camera* c{ dynamic_cast<Camera*>(rs) };
 	if (c) {
-		shaders[activeShader]->setMat4("view", dynamic_cast<const Camera*>(rs)->GetViewMatrix());
+		//shaders[activeShader]->setMat4("view", dynamic_cast<const Camera*>(rs)->GetViewMatrix());
 		PlayerCamera* pc{ dynamic_cast<PlayerCamera*>(rs) };
 		if (pc) {
 			shaders[activeShader]->setMat4("projection", glm::perspective(glm::radians(pc->Fov), static_cast<float>(app->windowManager->SCRWIDTH) / static_cast<float>(app->windowManager->SCRWIDTH), pc->nearPlaneDistance, pc->farPlaneDistance));
@@ -97,9 +99,16 @@ void Renderer::Render(Scene* scene) {
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, app->sceneManager->GetActiveScene()->lightSourcesBuffer);
 	shaders[activeShader]->setInt("numLights", app->sceneManager->GetActiveScene()->lightSources.size());
 
-	//Loop through all drawables in the active scene and call draw function
-	for (Drawable* drawable : app->sceneManager->GetActiveScene()->drawables) {
-		drawable->Draw(*shaders[activeShader]);
+	//Loop through all drawables in the active scene and call draw function - if drawable.renderOrder changes between items, place a memory barrier to maintain render order
+	if (app->sceneManager->GetActiveScene()->drawables.size() > 0) {
+		unsigned int previousRenderOrder{ app->sceneManager->GetActiveScene()->drawables[0]->getRenderOrder() };
+		for (Drawable* drawable : app->sceneManager->GetActiveScene()->drawables) {
+			if (drawable->getRenderOrder() != previousRenderOrder) {
+				glMemoryBarrier(GL_ALL_BARRIER_BITS);
+				previousRenderOrder = drawable->getRenderOrder();
+			}
+			drawable->Draw(*shaders[activeShader]);
+		}
 	}
 
 
@@ -213,10 +222,9 @@ void DrawHeirarchy(SceneObject* s)
 					if (ImGui::DragFloat3("Position", &pos.x, 0.1f)) {
 						c->setPosition(pos);
 					}
-					glm::vec2 rotation{ c->Pitch, c->Yaw};
-					if (ImGui::DragFloat2("Rotation", &rotation.x, 0.1f)) {
-						c->Pitch = rotation.x;
-						c->Yaw = rotation.y;
+					glm::vec3 rotation{ c->getRotation() };
+					if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f)) {
+						c->setRotation(rotation);
 						c->updateCameraVectors();
 					}
 
@@ -302,8 +310,8 @@ void DrawHeirarchy(SceneObject* s)
 			}
 		}
 
-		if (s->child != nullptr) {
-			DrawHeirarchy(s->child);
+		for (SceneObject* child : s->children) {
+			DrawHeirarchy(child);
 		}
 
 		ImGui::TreePop();

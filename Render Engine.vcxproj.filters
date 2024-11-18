@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ea57d36a-b21b-4a9f-b5ac-3c5a3803be51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\World\Drawable\Special">
+      <UniqueIdentifier>{408c7a9e-7332-4b28-862c-1f753588043a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\World\Scene.cpp">
@@ -141,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="Source Files\Utility\RandomFunctions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Special\Portal.cpp">
+      <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Special\FramebufferQuad.cpp">
+      <Filter>Source Files\World\Drawable\Special</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +258,12 @@
     <ClInclude Include="Source Files\Utility\RandomFunctions.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Special\Portal.h">
+      <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Special\FramebufferQuad.h">
+      <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl">
@@ -279,6 +294,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="Source Files\Shaders\light_source.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\fbo.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\fbo.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

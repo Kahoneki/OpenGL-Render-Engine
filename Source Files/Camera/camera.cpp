@@ -1,10 +1,13 @@
 #include "camera.h"
 #include <iostream>
 #include "camera.h"
+#include <GLM/gtx/string_cast.hpp>
+#include "../Application/Application.h"
+#include "../Application/InputManager.h"
 
 
 //Vector Constructor
-Camera::Camera(const char* name, SceneObject* parent, glm::vec3 position, glm::vec3 up, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, position)
+Camera::Camera(const char* name, SceneObject* parent, glm::vec3 position, glm::vec3 up, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, Transform(position, glm::vec3(0.0f), glm::vec3(pitch, yaw, 0.0f)))
 {
 	Position = position;
 	WorldUp = up;
@@ -20,7 +23,7 @@ Camera::Camera(const char* name, SceneObject* parent, glm::vec3 position, glm::v
 }
 
 //Scalar Constructor
-Camera::Camera(const char* name, SceneObject* parent, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, glm::vec3(posX, posY, posZ))
+Camera::Camera(const char* name, SceneObject* parent, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch, float nearPlaneDist, float farPlaneDist) : RenderSource(name, parent, Transform(glm::vec3(posX, posY, posZ), glm::vec3(0.0f), glm::vec3(pitch, yaw, 0.0f)))
 {
 	Position = glm::vec3(posX, posY, posZ);
 	WorldUp = glm::vec3(upX, upY, upZ);
@@ -42,8 +45,16 @@ Camera::~Camera()
 
 void Camera::setPosition(glm::vec3 pos)
 {
-	worldPos = pos;
+	SceneObject::setPosition(pos);
 	Position = pos;
+}
+
+void Camera::setRotation(glm::vec3 rot)
+{
+	SceneObject::setRotation(rot);
+	Yaw = rot.x;
+	Pitch = rot.y;
+	updateCameraVectors();
 }
 
 //Returns the view matrix calculated using euler angles and the LookAt matrix
@@ -66,4 +77,12 @@ void Camera::updateCameraVectors()
 	//Calculate the new Right and Up vectors
 	Right = glm::normalize(glm::cross(Front, WorldUp));
 	Up = glm::normalize(glm::cross(Right, Front));
+}
+
+void Camera::GenerateInbetweenFramePositions(glm::vec3 oldPos, glm::vec3 newPos)
+{
+	glm::vec3 deltaPos{ newPos - oldPos };
+	for (std::size_t i{ 0 }; i < 10; ++i) {
+		interpolatedPositionsBetweenFrames[i] = oldPos + (deltaPos / glm::vec3(10.0f)) * glm::vec3(i);
+	}
 }

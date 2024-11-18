@@ -165,6 +165,8 @@
     <ClCompile Include="Source Files\World\Drawable\Mesh.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Plane.cpp" />
     <ClCompile Include="Source Files\World\Drawable\PrimitiveModel.cpp" />
+    <ClCompile Include="Source Files\World\Drawable\Special\FramebufferQuad.cpp" />
+    <ClCompile Include="Source Files\World\Drawable\Special\Portal.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Sphere.cpp" />
     <ClCompile Include="Source Files\World\LightSource.cpp" />
     <ClCompile Include="Source Files\World\Scene.cpp" />
@@ -202,12 +204,16 @@
     <ClInclude Include="Source Files\World\Drawable\Mesh.h" />
     <ClInclude Include="Source Files\World\Drawable\Plane.h" />
     <ClInclude Include="Source Files\World\Drawable\PrimitiveModel.h" />
+    <ClInclude Include="Source Files\World\Drawable\Special\FramebufferQuad.h" />
+    <ClInclude Include="Source Files\World\Drawable\Special\Portal.h" />
     <ClInclude Include="Source Files\World\Drawable\Sphere.h" />
     <ClInclude Include="Source Files\World\LightSource.h" />
     <ClInclude Include="Source Files\World\Scene.h" />
     <ClInclude Include="Source Files\World\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Source Files\Shaders\fbo.frag" />
+    <None Include="Source Files\Shaders\fbo.vert" />
     <None Include="Source Files\Shaders\frag.glsl" />
     <None Include="Source Files\Shaders\light_source.frag" />
     <None Include="Source Files\Shaders\light_source.vert" />

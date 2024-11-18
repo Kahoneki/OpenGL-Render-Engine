@@ -55,6 +55,8 @@ void PlayerCamera::ProcessMouseMovement(float xOffset, float yOffset, GLboolean 
 			Pitch = -89.0f;
 	}
 
+	SceneObject::setRotation(glm::vec3(Yaw, Pitch, 0.0f));
+
 	//Update Front, Right, and Up vectors using the updated euler angles
 	updateCameraVectors();
 }

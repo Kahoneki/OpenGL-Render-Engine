@@ -1,6 +1,6 @@
 #include "RenderSource.h"
 
-RenderSource::RenderSource(const char* name, SceneObject* parent, glm::vec3 worldPos) : SceneObject(name, parent, worldPos)
+RenderSource::RenderSource(const char* name, SceneObject* parent, Transform transform) : SceneObject(name, parent, transform)
 {
 	name = "New Render Source";
 	parent = nullptr;
