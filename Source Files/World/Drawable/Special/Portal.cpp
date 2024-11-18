@@ -4,6 +4,7 @@
 #include "../../../Application/Renderer.h"
 #include "../../../Application/SceneManager.h"
 #include "../../../Application/InputManager.h"
+#include "../../../Application/WindowManager.h"
 #include "../../Scene.h"
 #include "../../../Camera/Camera.h"
 #include <iostream>
@@ -88,7 +89,7 @@ void Portal::Draw(Shader& shader)
     shader.use();
     glDepthFunc(GL_LESS);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    
+
 
     //Re-render all drawables that have been rendered this frame besides portals (those with a render order < any portals')
     unsigned int previousRenderOrder{ Application::getInstance().sceneManager->GetActiveScene()->drawables[0]->getRenderOrder() };
@@ -167,7 +168,7 @@ void Portal::CheckForCameraCollision()
     if ((glm::dot(portalNorm, portalToCam) < 0) && inPortal) {
 
         //Camera has moved to other side of portal, teleport it to other portal
-        glm::mat4 cameraRelativeToPortal{ glm::inverse(portal.GetHeirarchicalModelMatrix()) * glm::inverse(camera->GetViewMatrix()) };
+        glm::mat4 cameraRelativeToPortal{ glm::inverse(renderRegion.GetHeirarchicalModelMatrix()) * glm::inverse(camera->GetViewMatrix()) };
         glm::mat4 newTransform{ otherPortal->renderRegion.GetHeirarchicalModelMatrix() * cameraRelativeToPortal };
         camera->setPosition(newTransform[3]);
 
@@ -193,6 +194,8 @@ void Portal::CheckForCameraCollision()
             float yaw{ glm::degrees(atan2(front.z, front.x)) };
             camera->setRotation(glm::vec3(yaw, pitch, 0.0f));
         }
+
+        camera->setPosition(camera->getPosition() + camera->Front * portal.getScale());
 
         Portal::cameraCanTeleport = false;
     }
