@@ -43,6 +43,9 @@
     <Filter Include="Source Files\World\Drawable\Special">
       <UniqueIdentifier>{408c7a9e-7332-4b28-862c-1f753588043a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Postprocess">
+      <UniqueIdentifier>{d6f824e4-63db-4297-af58-0d41b4133eb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\World\Scene.cpp">
@@ -150,6 +153,12 @@
     </ClCompile>
     <ClCompile Include="Source Files\World\Drawable\Special\FramebufferQuad.cpp">
       <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\World\Drawable\Special\PostprocessOverlay.cpp">
+      <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Shaders\compute_shader.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +273,12 @@
     <ClInclude Include="Source Files\World\Drawable\Special\FramebufferQuad.h">
       <Filter>Source Files\World\Drawable\Special</Filter>
     </ClInclude>
+    <ClInclude Include="Source Files\World\Drawable\Special\PostprocessOverlay.h">
+      <Filter>Source Files\World\Drawable\Special</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Shaders\compute_shader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\frag.glsl">
@@ -301,6 +316,9 @@
     </None>
     <None Include="Source Files\Shaders\fbo.vert">
       <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Source Files\Shaders\Postprocess\saturation.glsl">
+      <Filter>Source Files\Shaders\Postprocess</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

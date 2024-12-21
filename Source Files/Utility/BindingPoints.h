@@ -4,7 +4,8 @@
 enum BINDING_POINT
 {
 	LIGHT_SOURCES = 0,
-	MATERIAL = 1
+	MATERIAL = 1,
+	FBO_TEXTURES = 2,
 };
 
 #endif

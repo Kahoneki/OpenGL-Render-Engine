@@ -68,6 +68,12 @@ Renderer::~Renderer()
 
 void Renderer::Render(Scene* scene) {
 
+	RenderSource* rs{ app->sceneManager->GetActiveScene()->GetActiveRenderSource() };
+	if (rs->postprocessOverlay.activeShaders.size() > 0) {
+		//There are postprocessing effects active, bind the offscreen framebuffer for deferred rendering
+		glBindFramebuffer(GL_FRAMEBUFFER, rs->postprocessOverlay.fbo);
+	}
+
 	glStencilMask(0xFF);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glStencilMask(0x00);
@@ -78,7 +84,6 @@ void Renderer::Render(Scene* scene) {
 	ImGui::NewFrame();
 
 	//Set view and projection matrices
-	RenderSource* rs{ app->sceneManager->GetActiveScene()->GetActiveRenderSource() };
 	Camera* c{ dynamic_cast<Camera*>(rs) };
 	if (c) {
 		//shaders[activeShader]->setMat4("view", dynamic_cast<const Camera*>(rs)->GetViewMatrix());
@@ -109,6 +114,16 @@ void Renderer::Render(Scene* scene) {
 			}
 			drawable->Draw(*shaders[activeShader]);
 		}
+	}
+
+
+	if (rs->postprocessOverlay.activeShaders.size() > 0) {
+		//There are postprocessing effects active, rebind the default framebuffer and render them
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glStencilMask(0xFF);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glStencilMask(0x00);
+		rs->postprocessOverlay.Render();
 	}
 
 

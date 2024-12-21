@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef DRAWABLE_H
+#define DRAWABLE_H
 
 #include "../SceneObject.h"
 #include "../../Material/Material.h"

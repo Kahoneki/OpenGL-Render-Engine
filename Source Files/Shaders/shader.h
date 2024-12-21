@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include "GLAD/glad.h"
+#include "../World/Drawable/Special/PostprocessOverlay.h"
 #include <GLM/gtc/matrix_transform.hpp>
 
 #include <string>
@@ -15,6 +16,7 @@ enum SHADER_PRESET
 	BLINN_PHONG,
 	LIGHT_SOURCE,
 	FBO,
+	POSTPROCESS,
 };
 
 
@@ -23,6 +25,7 @@ class Shader
 public:
 	Shader(const char* vertexFilepath, const char* fragmentFilepath);
 	Shader(SHADER_PRESET preset);
+	Shader(); //For polymorphism
 	~Shader();
 
 	unsigned int id;

@@ -77,6 +77,8 @@ GLFWwindow* WindowManager::InitialiseGLFW()
 void WindowManager::framebuffer_size_callback_impl(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	SCRWIDTH = width;
+	SCRHEIGHT = height;
 }
 
 void WindowManager::mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn)

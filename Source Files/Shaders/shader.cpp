@@ -87,7 +87,6 @@ Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
 
 Shader::Shader(SHADER_PRESET preset)
 {
-
     const char* vertexFilepath;
     const char* fragmentFilepath;
 
@@ -138,80 +137,10 @@ Shader::Shader(SHADER_PRESET preset)
     }
     }
 
-    //1. Retrieve the vertex/fragment source code from filePath
-    std::string vertexCode;
-    std::string fragmentCode;
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    //Ensure ifstream objects can throw exceptions:
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    try
-    {
-        //Open files
-        char cwd[MAX_PATH];
-        GetCurrentDirectoryA(MAX_PATH, cwd);
-        vShaderFile.open(std::string(cwd).append("/Source Files/Shaders/").append(vertexFilepath));
-        fShaderFile.open(std::string(cwd).append("/Source Files/Shaders/").append(fragmentFilepath));
-        std::stringstream vShaderStream, fShaderStream;
-        //Read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
-        //Close file handlers
-        vShaderFile.close();
-        fShaderFile.close();
-        //Convert stream into string
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();
-    }
-    catch (std::ifstream::failure e)
-    {
-        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-    }
-    const char* vShaderCode = vertexCode.c_str();
-    const char* fShaderCode = fragmentCode.c_str();
-
-
-    //2. Compile and link shaders
-    unsigned int vert{ glCreateShader(GL_VERTEX_SHADER) };
-    unsigned int frag{ glCreateShader(GL_FRAGMENT_SHADER) };
-    glShaderSource(vert, 1, &vShaderCode, NULL);
-    glShaderSource(frag, 1, &fShaderCode, NULL);
-    glCompileShader(vert);
-    {
-        int success;
-        char infoLog[512];
-        glGetShaderiv(vert, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(vert, 512, NULL, infoLog);
-            std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl << infoLog << std::endl;
-            glDeleteShader(vert);
-            exit(-1);
-        }
-    }
-
-    glCompileShader(frag);
-    {
-        int success;
-        char infoLog[512];
-        glGetShaderiv(frag, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(frag, 512, NULL, infoLog);
-            std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl << infoLog << std::endl;
-            glDeleteShader(frag);
-            exit(-1);
-        }
-    }
-
-    id = glCreateProgram();
-    glAttachShader(id, vert);
-    glAttachShader(id, frag);
-    glLinkProgram(id);
-
-    //Deallocate vert and frag resources
-    glDeleteShader(vert);
-    glDeleteShader(frag);
+    *this = Shader(vertexFilepath, fragmentFilepath);
 }
+
+Shader::Shader() {}
 
 Shader::~Shader()
 {

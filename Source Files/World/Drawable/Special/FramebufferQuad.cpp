@@ -33,6 +33,13 @@ FramebufferQuad::FramebufferQuad() : framebufferShader(Shader(SHADER_PRESET::FBO
 	glBindVertexArray(0);
 }
 
+FramebufferQuad::~FramebufferQuad()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+}
+
 void FramebufferQuad::Draw()
 {
 	framebufferShader.use();
