@@ -14,8 +14,10 @@
 #include "Source Files/Utility/RandomFunctions.h"
 #include <GLM/gtx/string_cast.hpp>
 
+
 int main()
 {
+
 	Application& app{ Application::getInstance() };
 
 	//Define renderer

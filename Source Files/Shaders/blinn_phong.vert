@@ -18,7 +18,6 @@ uniform mat4 projection;
 
 void main()
 {
-
 	texCoord = aTexCoord;
 	worldNormal = normalize(mat3(model) * aNormal);
 	worldTangent = normalize(mat3(model) * aTangent);

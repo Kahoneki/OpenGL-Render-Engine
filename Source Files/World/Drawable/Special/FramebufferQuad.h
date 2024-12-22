@@ -17,7 +17,7 @@ private:
     unsigned int VAO;
     unsigned int VBO;
     unsigned int EBO;
-    Shader& framebufferShader;
+    Shader framebufferShader;
 };
 
 #endif

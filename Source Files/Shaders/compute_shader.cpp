@@ -7,7 +7,9 @@
 #include "Windows.h"
 #include <string>
 
-ComputeShader::ComputeShader(const char* shaderFilepath)
+#include "../World/Drawable/Special/PostprocessOverlay.h"
+
+void ComputeShader::ComputeShaderConstructor(const char* shaderFilepath)
 {
     std::string code;
     std::ifstream shaderFile;
@@ -53,6 +55,11 @@ ComputeShader::ComputeShader(const char* shaderFilepath)
 }
 
 
+ComputeShader::ComputeShader(const char* shaderFilepath)
+{
+    ComputeShaderConstructor(shaderFilepath);
+}
+
 ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect)
 {
     const char* shaderFilepath;
@@ -90,5 +97,5 @@ ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect)
     }
     }
 
-    *this = ComputeShader(shaderFilepath);
+   ComputeShaderConstructor(shaderFilepath);
 }

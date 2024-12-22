@@ -2,7 +2,6 @@
 #define SHADER_H
 
 #include "GLAD/glad.h"
-#include "../World/Drawable/Special/PostprocessOverlay.h"
 #include <GLM/gtc/matrix_transform.hpp>
 
 #include <string>
@@ -39,6 +38,9 @@ public:
 	void setVec2(const char* name, const glm::vec2& value) const;
 	void setVec2Array(const char* name, const std::vector<glm::vec2>& values) const;
 	void setVec3(const char* name, const glm::vec3& value) const;
+
+protected:
+	void ShaderConstructor(const char* vertexFilepath, const char* fragmentFilepath);
 };
 
 #endif

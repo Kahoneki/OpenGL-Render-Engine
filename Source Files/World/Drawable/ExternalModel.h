@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef EXTERNALMODEL_H
+#define EXTERNALMODEL_H
 
 #include <ASSIMP/scene.h>
 

@@ -9,7 +9,7 @@
 #include "Windows.h"
 #include <string>
 
-Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
+void Shader::ShaderConstructor(const char* vertexFilepath, const char* fragmentFilepath)
 {
     //1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -39,7 +39,7 @@ Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
     }
     catch (std::ifstream::failure e)
     {
-        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << std::endl << "VERTEX_FILEPATH: " << vertexFilepath << std::endl << "FRAGMENT FILEPATH: " << fragmentFilepath << std::endl;
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -57,7 +57,7 @@ Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
         glGetShaderiv(vert, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(vert, 512, NULL, infoLog);
-            std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl << infoLog << std::endl;
+            std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl << "VERTEX_FILEPATH: " << vertexFilepath << std::endl << "FRAGMENT FILEPATH: " << fragmentFilepath << std::endl << infoLog << std::endl;
             glDeleteShader(vert);
             exit(-1);
         }
@@ -69,7 +69,7 @@ Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
         glGetShaderiv(frag, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(frag, 512, NULL, infoLog);
-            std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl << infoLog << std::endl;
+            std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl << "FRAGMENT FILEPATH: " << fragmentFilepath << std::endl << infoLog << std::endl;
             glDeleteShader(frag);
             exit(-1);
         }
@@ -83,6 +83,11 @@ Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
     //Deallocate vert and frag resources
     glDeleteShader(vert);
     glDeleteShader(frag);
+}
+
+Shader::Shader(const char* vertexFilepath, const char* fragmentFilepath)
+{
+    ShaderConstructor(vertexFilepath, fragmentFilepath);
 }
 
 Shader::Shader(SHADER_PRESET preset)
@@ -137,7 +142,7 @@ Shader::Shader(SHADER_PRESET preset)
     }
     }
 
-    *this = Shader(vertexFilepath, fragmentFilepath);
+    ShaderConstructor(vertexFilepath, fragmentFilepath);
 }
 
 Shader::Shader() {}
@@ -196,7 +201,6 @@ void Shader::setVec2(const char* name, const glm::vec2& value) const
 void Shader::setVec2Array(const char* name, const std::vector<glm::vec2>& values) const
 {
     //Convert std::vector<glm::vec2> to std::vector<GLfloat>
-    //std::memcpy(floatValues.data(), values.data(), sizeof(values));
     std::vector<GLfloat> floatValues;
     for (const glm::vec2& val : values) {
         floatValues.push_back(val.x);

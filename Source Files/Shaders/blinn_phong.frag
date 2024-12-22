@@ -1,6 +1,8 @@
 #version 460 core
 #extension GL_ARB_bindless_texture : require
-#extension GL_ARB_gpu_shader_int64 : require
+#ifdef GL_ARB_gpu_shader_int64
+	#extension GL_ARB_gpu_shader_int64 : enable
+#endif
 
 in vec2 texCoord;
 in vec3 worldNormal;
@@ -37,8 +39,15 @@ struct MaterialData
 	float specularPower;
 	float rimPower;
 
-	uint64_t albedoTextureHandle;
-	uint64_t normalTextureHandle;
+	#ifdef GL_ARB_gpu_shader_int64
+		uint64_t albedoTextureHandle;
+		uint64_t normalTextureHandle;
+	#else
+		uint albedoTextureHandleLow;
+		uint albedoTextureHandleHigh;
+		uint normalTextureHandleLow;
+		uint normalTextureHandleHigh;
+	#endif
 
 	uint activePropertiesBitfield;
 };
@@ -101,7 +110,11 @@ void main()
 		vec3 lightingNormal; //Normal used in lighting calculations
 		vec3 transformToCamera = normalize(cameraPos - transform);
 		if ((material.matData.activePropertiesBitfield & 4u) != 0u) {
-			lightingNormal = normalize(texture(sampler2D(material.matData.normalTextureHandle), texCoord).rgb * 2.0f - vec3(1.0f));
+			#ifdef GL_ARB_gpu_shader_int64
+				lightingNormal = normalize(texture(sampler2D(material.matData.normalTextureHandle), texCoord).rgb * 2.0f - vec3(1.0f));
+			#else
+				lightingNormal = normalize(texture(sampler2D(uvec2(material.matData.normalTextureHandleLow, material.matData.normalTextureHandleHigh)), texCoord).rgb * 2.0f - vec3(1.0f));
+			#endif
 			transformToCamera = normalize(transpose(TBN) * transformToCamera); //Go from world space to tangent space - TBN is orthogonal (vectors are perpendicular and normalised) so transpose = inverse. Transpose is a cheaper operation than inverse.
 		}
 		else {
@@ -139,13 +152,21 @@ void main()
 		}
 
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
-			FragColour *= texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
+			#ifdef GL_ARB_gpu_shader_int64
+				FragColour *= texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
+			#else
+				FragColour *= texture(sampler2D(uvec2(material.matData.albedoTextureHandleLow, material.matData.albedoTextureHandleHigh)), texCoord);
+			#endif
 		}
 	}
 
 	else {
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
-			FragColour = texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
+			#ifdef GL_ARB_gpu_shader_int64
+				FragColour = texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
+			#else
+				FragColour = texture(sampler2D(uvec2(material.matData.albedoTextureHandleLow, material.matData.albedoTextureHandleHigh)), texCoord);
+			#endif
 		}
 	}
 }
