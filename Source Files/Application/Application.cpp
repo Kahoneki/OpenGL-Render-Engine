@@ -67,6 +67,7 @@ void Application::RunFrame()
 		activeCam->GenerateInbetweenFramePositions(oldPos, newPos);
 	}
 
+	glfwPollEvents();
 	applicationRunning = !glfwWindowShouldClose(windowManager->GetWindow());
 }
 

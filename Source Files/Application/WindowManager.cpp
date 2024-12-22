@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+void framebuffer_iconify_callback(GLFWwindow* window, int iconified);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
@@ -15,6 +16,7 @@ WindowManager::WindowManager(Application* _app)
 	SCRWIDTH = 1280;
 	SCRHEIGHT = 720;
 	fullscreen = false;
+	minimised = false;
 
 	window = InitialiseGLFW();
 	glfwMakeContextCurrent(window);
@@ -67,6 +69,7 @@ GLFWwindow* WindowManager::InitialiseGLFW()
 	glfwSetWindowUserPointer(window, this);
 
 	glfwSetFramebufferSizeCallback(window, &framebuffer_size_callback);
+	glfwSetWindowIconifyCallback(window, &framebuffer_iconify_callback);
 	glfwSetCursorPosCallback(window, &mouse_callback);
 	glfwSetScrollCallback(window, &scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -74,23 +77,51 @@ GLFWwindow* WindowManager::InitialiseGLFW()
 	return window;
 }
 
+void WindowManager::framebuffer_iconify_callback_impl(GLFWwindow* window, int iconified)
+{
+	minimised = iconified;
+	if (!minimised)
+	{
+		glfwFocusWindow(window);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+}
+
 void WindowManager::framebuffer_size_callback_impl(GLFWwindow* window, int width, int height)
 {
+	// if (width == 0 || height == 0) {
+	// 	minimised = true;
+	// 	return;
+	// }
+	// else {
+	// 	minimised = false;
+	// }
 	glViewport(0, 0, width, height);
 	SCRWIDTH = width;
 	SCRHEIGHT = height;
 }
 
-void WindowManager::mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn)
+void WindowManager::mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn) const
 {
 	app->inputManager->ProcessMouse(xposIn, yposIn);
 }
 
-void WindowManager::scroll_callback_impl(GLFWwindow* window, double xOffset, double yOffset)
+void WindowManager::scroll_callback_impl(GLFWwindow* window, double xOffset, double yOffset) const
 {
 	app->inputManager->ProcessScroll(yOffset);
 }
 
+bool WindowManager::getMinimised()
+{
+	return minimised;
+}
+
+
+void framebuffer_iconify_callback(GLFWwindow* window, int iconified)
+{
+	WindowManager* wm = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
+	wm->framebuffer_iconify_callback_impl(window, iconified);
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

@@ -66,7 +66,13 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::Render(Scene* scene) {
+void Renderer::Render(Scene* scene)
+{
+
+	//Dont render if window is minimised
+	if (app->windowManager->getMinimised()) {
+		return;
+	}
 
 	RenderSource* rs{ app->sceneManager->GetActiveScene()->GetActiveRenderSource() };
 	if (rs->postprocessOverlay.activeShaders.size() > 0) {
@@ -129,7 +135,6 @@ void Renderer::Render(Scene* scene) {
 
 	RenderImGui();
 	glfwSwapBuffers(app->windowManager->GetWindow());
-	glfwPollEvents();
 }
 
 

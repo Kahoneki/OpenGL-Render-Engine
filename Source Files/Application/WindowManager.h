@@ -18,10 +18,13 @@ public:
 	int SCRWIDTH;
 	int SCRHEIGHT;
 
+	void framebuffer_iconify_callback_impl(GLFWwindow* window, int iconified);
 	void framebuffer_size_callback_impl(GLFWwindow* window, int width, int height);
-	void mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn);
-	void scroll_callback_impl(GLFWwindow* window, double xOffset, double yOffset);
+	void mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn) const;
+	void scroll_callback_impl(GLFWwindow* window, double xOffset, double yOffset) const;
 
+	bool getMinimised();
+	
 private:
 	Application* app;
 
@@ -32,6 +35,8 @@ private:
 	bool fullscreen;
 	int windowedXPos;
 	int windowedYPos;
+
+	bool minimised;
 };
 
 #endif
