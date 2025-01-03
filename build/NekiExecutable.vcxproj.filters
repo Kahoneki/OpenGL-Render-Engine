@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Shaders\compute_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Shaders\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\TimeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Application\WindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Camera\PlayerCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Camera\RenderSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Camera\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\External\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\External\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Material\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Utility\Maths\Ray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\Utility\RandomFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Cube24.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Cube8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Drawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\ExternalModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\PrimitiveModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Special\FramebufferQuad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Special\Portal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Special\PostprocessOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Drawable\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\LightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\World\SceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\Source Files\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shiny\Desktop\Code\Render-Engine\program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\shiny\Desktop\Code\Render-Engine\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{883D6F46-1CCF-3FDA-8806-1D7F395CAD0B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

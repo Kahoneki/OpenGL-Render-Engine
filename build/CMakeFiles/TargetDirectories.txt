@@ -1,0 +1,3 @@
+C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/NekiExecutable.dir
+C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/ZERO_CHECK.dir
