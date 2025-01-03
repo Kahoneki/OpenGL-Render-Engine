@@ -121,7 +121,7 @@ int main()
 	while (app.applicationRunning) {
 		app.RunFrame();
 		for (std::size_t i{ 0 }; i < NUM_LIGHTS; ++i) {
-			lights[i]->setDiffuseColour(glm::vec4(randomVec3(0.0f, 1.0f), 1.0f));
+			lights[i]->setDiffuseColour(glm::vec4(randomVec3(0.0f, 1.0f) * 0.3f, 1.0f));
 		}
 	}
 }
