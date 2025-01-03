@@ -13,7 +13,7 @@
 #include "../World/Scene.h"
 #include "../World/Drawable/Drawable.h"
 #include "../Camera/RenderSource.h"
-#include "../Shaders/shader.h"
+#include "../../Shaders/shader.h"
 #include "../World/LightSource.h"
 #include "../Camera/camera.h"
 #include "../Camera/PlayerCamera.h"

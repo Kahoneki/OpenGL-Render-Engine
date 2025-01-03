@@ -1,7 +1,7 @@
 #include "ExternalModel.h"
 
 #include "Mesh.h"
-#include "../../Shaders/shader.h"
+#include "../../../Shaders/shader.h"
 #include "../../External/stb_image.h"
 
 #include <ASSIMP/Importer.hpp>

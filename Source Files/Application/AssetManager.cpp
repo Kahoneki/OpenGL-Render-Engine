@@ -28,6 +28,9 @@ unsigned int AssetManager::addTexture(const char* filepath)
 {
 	char directory[255]{ "Resource Files/" };
 	strcat_s(directory, sizeof(directory), filepath);
+
+	std::cout << "\n\n\n\nDIRECTORY IS: " << directory << "\n\n\n\n";
+
 	int width, height, nrChannels;
 	unsigned char* data{ stbi_load(directory, &width, &height, &nrChannels, 0) };
 

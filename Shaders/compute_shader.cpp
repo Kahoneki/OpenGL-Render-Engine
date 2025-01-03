@@ -7,7 +7,7 @@
 #include "Windows.h"
 #include <string>
 
-#include "../World/Drawable/Special/PostprocessOverlay.h"
+#include "../Source Files/World/Drawable/Special/PostprocessOverlay.h"
 
 void ComputeShader::ComputeShaderConstructor(const char* shaderFilepath)
 {
@@ -18,7 +18,7 @@ void ComputeShader::ComputeShaderConstructor(const char* shaderFilepath)
     {
         char cwd[MAX_PATH];
         GetCurrentDirectoryA(MAX_PATH, cwd);
-        shaderFile.open(std::string(cwd).append("/Source Files/").append(shaderFilepath));
+        shaderFile.open(std::string(cwd).append("/Shaders/").append(shaderFilepath));
         std::stringstream shaderStream;
         shaderStream << shaderFile.rdbuf();
         shaderFile.close();
@@ -78,7 +78,7 @@ ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect)
         }
         case POSTPROCESSING_EFFECT::SATURATION:
         {
-            shaderFilepath = "Postprocess/saturation.frag";
+            shaderFilepath = "Postprocess/saturation.comp";
             break;
         }
         default:

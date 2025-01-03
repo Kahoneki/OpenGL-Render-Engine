@@ -6,7 +6,7 @@
 
 #include <GLM/glm.hpp>
 
-#include "../../Shaders/shader.h"
+#include "../../../Shaders/shader.h"
 
 
 struct Vertex {

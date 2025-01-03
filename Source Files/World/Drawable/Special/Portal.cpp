@@ -1,5 +1,5 @@
 #include "Portal.h"
-#include "../../../Shaders/shader.h"
+#include "../../../../Shaders/shader.h"
 #include "../../../Application/Application.h"
 #include "../../../Application/Renderer.h"
 #include "../../../Application/SceneManager.h"
@@ -10,6 +10,8 @@
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
 
+#include "../../../Utility/Maths/Ray.h"
+
 unsigned int Portal::numPortalsInScene = 0;
 bool Portal::cameraCanTeleport = true;
 
@@ -18,7 +20,7 @@ Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 ro
     Drawable(name, center, scale, rotation, parent),
     PrimitiveModel(name, center, scale, rotation, parent),
     portal("Container", glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f), this),
-    renderRegion("Render Region", glm::vec3(0.0f, 0.0f, 1.01f), glm::vec3(1.0f), glm::vec3(0.0f), this)
+    renderRegion("Render Region", glm::vec3(0.0f, 0.0f, 1.01f), glm::vec3(1.8f, 1.8f, 1.0f), glm::vec3(0.0f), this)
 {
     renderOrder = UINT_MAX - Portal::numPortalsInScene;
     ++Portal::numPortalsInScene;
@@ -130,21 +132,16 @@ void Portal::CheckForCameraCollision()
 {
 
     Camera* camera{ dynamic_cast<Camera*>(sceneParent->GetActiveRenderSource()) };
+
+    //Try cheap check first
     bool inPortal{ pointInsideModelMatrix(camera->getPosition(), portal.GetHeirarchicalModelMatrix()) };
     bool inOtherPortal{ pointInsideModelMatrix(camera->getPosition(), otherPortal->GetHeirarchicalModelMatrix()) };
     
     if (!inPortal && !inOtherPortal) {
-        //Use high-precision collision check with camera's inbetween-frame interpolated positions
-        for (const glm::vec3& pos : camera->interpolatedPositionsBetweenFrames) {
-            if (pointInsideModelMatrix(pos, portal.GetHeirarchicalModelMatrix())) {
-                inPortal = true;
-                break;
-            }
-            else if (pointInsideModelMatrix(pos, otherPortal->GetHeirarchicalModelMatrix())) {
-                inOtherPortal = true;
-                break;
-            }
-        }
+        //Cheap check failed, use more expensive ray-plane intersection test
+        Ray ray{ Ray(camera->positionLastFrame, camera->getPosition()) };
+        inPortal = ray.IntersectsWithPlane(renderRegion);
+        inOtherPortal = ray.IntersectsWithPlane(otherPortal->renderRegion);
     }
 
     if (!inPortal && !inOtherPortal) {
@@ -195,7 +192,7 @@ void Portal::CheckForCameraCollision()
             camera->setRotation(glm::vec3(yaw, pitch, 0.0f));
         }
 
-        camera->setPosition(camera->getPosition() + camera->Front * portal.getScale());
+        camera->setPosition(camera->getPosition() + otherPortalNorm * otherPortal->getScale() * glm::vec3(2));
 
         Portal::cameraCanTeleport = false;
     }

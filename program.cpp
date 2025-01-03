@@ -10,7 +10,7 @@
 #include "Source Files/World/Drawable/Special/Portal.h"
 #include "Source Files/World/Scene.h"
 #include "Source Files/World/LightSource.h"
-#include "Source Files/Shaders/shader.h"
+#include "Shaders/shader.h"
 #include "Source Files/Utility/RandomFunctions.h"
 #include <GLM/gtx/string_cast.hpp>
 

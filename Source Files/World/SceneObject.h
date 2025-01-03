@@ -13,10 +13,10 @@ struct Transform
 	glm::vec3 scale;
 	glm::vec3 rotation;
 
-	inline Transform() : position(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), rotation(glm::vec3(0.0f)) {};
-	inline Transform(glm::vec3 _position, glm::vec3 _scale, glm::vec3 _rotation) : position(_position), scale(_scale), rotation(_rotation) {};
+	inline Transform() : position(glm::vec3(0.0f)), scale(glm::vec3(0.0f)), rotation(glm::vec3(0.0f)) {}
+	inline Transform(glm::vec3 _position, glm::vec3 _scale, glm::vec3 _rotation) : position(_position), scale(_scale), rotation(_rotation) {}
 	
-	inline glm::mat4 GetMatrix() {
+	inline glm::mat4 GetMatrix() const {
 		glm::mat4 mat = glm::mat4(1.0f);
 		mat = glm::translate(mat, position); // Translate first (global position)
 		mat = mat * glm::toMat4(glm::quat(glm::radians(rotation))); // Apply local rotation
@@ -46,7 +46,7 @@ public:
 	glm::vec3 getScale() const;
 	glm::vec3 getRotation() const;
 
-	glm::mat4 GetHeirarchicalModelMatrix();
+	glm::mat4 GetHeirarchicalModelMatrix() const;
 
 	SceneObject* parent;
 	std::vector<SceneObject*> children;

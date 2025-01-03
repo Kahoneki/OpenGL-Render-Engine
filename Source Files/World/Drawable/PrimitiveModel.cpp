@@ -1,6 +1,6 @@
 #include "PrimitiveModel.h"
 
-#include "../../Shaders/shader.h"
+#include "../../../Shaders/shader.h"
 
 #include <GLAD/glad.h>
 #include <iostream>

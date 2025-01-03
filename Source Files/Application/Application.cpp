@@ -11,7 +11,7 @@
 #include "SceneManager.h"
 #include "AssetManager.h"
 #include "Renderer.h"
-#include "../Shaders/shader.h"
+#include "../../Shaders/shader.h"
 
 #include <iostream>
 
@@ -48,7 +48,7 @@ Application::~Application() {
 
 void Application::RunFrame()
 {
-	glm::vec3 oldPos, newPos;
+	glm::vec3 oldPos;
 	Camera* activeCam{ dynamic_cast<Camera*>(sceneManager.get()->GetActiveScene()->GetActiveRenderSource()) };
 	if (activeCam) {
 		//Store camera position at start of frame
@@ -60,11 +60,7 @@ void Application::RunFrame()
 	renderer->Render(sceneManager->GetActiveScene());
 
 	if (activeCam) {
-		//Store camera position at end of frame
-		glm::vec3 newPos{ activeCam->getPosition() };
-
-		//Pass to camera to use for high-precision collision calculations
-		activeCam->GenerateInbetweenFramePositions(oldPos, newPos);
+		activeCam->positionLastFrame = oldPos;
 	}
 
 	glfwPollEvents();

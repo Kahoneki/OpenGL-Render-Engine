@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "../../Shaders/shader.h"
+#include "../../../Shaders/shader.h"
 #include "mesh.h"
 
 class Model

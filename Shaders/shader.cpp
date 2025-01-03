@@ -24,8 +24,8 @@ void Shader::ShaderConstructor(const char* vertexFilepath, const char* fragmentF
         //Open files
         char cwd[MAX_PATH];
         GetCurrentDirectoryA(MAX_PATH, cwd);
-        vShaderFile.open(std::string(cwd).append("/Source Files/Shaders/").append(vertexFilepath));
-        fShaderFile.open(std::string(cwd).append("/Source Files/Shaders/").append(fragmentFilepath));
+        vShaderFile.open(std::string(cwd).append("/Shaders/").append(vertexFilepath));
+        fShaderFile.open(std::string(cwd).append("/Shaders/").append(fragmentFilepath));
         std::stringstream vShaderStream, fShaderStream;
         //Read file's buffer contents into streams
         vShaderStream << vShaderFile.rdbuf();

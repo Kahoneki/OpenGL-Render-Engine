@@ -55,8 +55,7 @@ public:
 	//Calculates the front vector from the camera's updated euler angles
 	void updateCameraVectors();
 
-	void GenerateInbetweenFramePositions(glm::vec3 oldPos, glm::vec3 newPos);
-	glm::vec3 interpolatedPositionsBetweenFrames[10]; //Used for collision calculations at high velocities
+	glm::vec3 positionLastFrame;
 };
 
 

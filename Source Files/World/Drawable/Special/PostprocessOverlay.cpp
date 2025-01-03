@@ -2,7 +2,7 @@
 #include "../../../Application/Application.h"
 #include "../../../Application/WindowManager.h"
 #include "../../../Utility/BindingPoints.h"
-#include "../../../Shaders/compute_shader.h"
+#include "../../../../Shaders/compute_shader.h"
 #include <iostream>
 
 

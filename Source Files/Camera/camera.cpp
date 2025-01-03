@@ -19,6 +19,8 @@ Camera::Camera(const char* name, SceneObject* parent, glm::vec3 position, glm::v
 	nearPlaneDistance = nearPlaneDist;
 	farPlaneDistance = farPlaneDist;
 
+	positionLastFrame = glm::vec3(0);
+	
 	updateCameraVectors();
 }
 
@@ -35,6 +37,8 @@ Camera::Camera(const char* name, SceneObject* parent, float posX, float posY, fl
 	nearPlaneDistance = nearPlaneDist;
 	farPlaneDistance = farPlaneDist;
 
+	positionLastFrame = glm::vec3(0);
+	
 	updateCameraVectors();
 }
 
@@ -77,12 +81,4 @@ void Camera::updateCameraVectors()
 	//Calculate the new Right and Up vectors
 	Right = glm::normalize(glm::cross(Front, WorldUp));
 	Up = glm::normalize(glm::cross(Right, Front));
-}
-
-void Camera::GenerateInbetweenFramePositions(glm::vec3 oldPos, glm::vec3 newPos)
-{
-	glm::vec3 deltaPos{ newPos - oldPos };
-	for (std::size_t i{ 0 }; i < 10; ++i) {
-		interpolatedPositionsBetweenFrames[i] = oldPos + (deltaPos / glm::vec3(10.0f)) * glm::vec3(i);
-	}
 }

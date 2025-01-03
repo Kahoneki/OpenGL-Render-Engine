@@ -1,4 +1,5 @@
 #include "Plane.h"
+#include <GLM/vec4.hpp>
 
 Plane::Plane(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) :
 	SceneObject(name, parent, Transform(center, scale, rotation)),
@@ -8,13 +9,13 @@ Plane::Plane(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rota
 
 	vertices = {
 		//Position             //Texture     //Normal              //Tangent
-		// Front face: (z = 0.0f instead of 1.0f to ensure origin center at 0,0,0 rather than 0,0,1)
-		-1.0f, -1.0f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-left
-		-1.0f,  1.0f,  0.0f,   0.0f, 1.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-left
-		 1.0f,  1.0f,  0.0f,   1.0f, 1.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-right
-		-1.0f, -1.0f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-left
-		 1.0f,  1.0f,  0.0f,   1.0f, 1.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-right
-		 1.0f, -1.0f,  0.0f,   1.0f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-right
+		// Front face: (z = 0.0f)
+		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-left
+		-0.5f,  0.5f,  0.0f,   0.0f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-left
+		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-right
+		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-left
+		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-right
+		 0.5f, -0.5f,  0.0f,   0.5f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-right
 	};
 
 	glGenVertexArrays(1, &VAO);
@@ -34,4 +35,22 @@ Plane::Plane(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rota
 
 	drawMode = GL_TRIANGLES;
 	indexed = false;
+}
+
+
+std::pair<glm::vec3, glm::vec3> Plane::GetWorldAxes() const
+{
+	//Get local axes
+	glm::vec3 uLocal{ vertices[5] - vertices[0] }; //Bottom left to bottom right
+	glm::vec3 vLocal{ vertices[1] - vertices[0] }; //Bottom left to top left
+
+	//Convert to homogeneous
+	glm::vec4 uLocalHomogeneous{ glm::vec4(uLocal, 1.0f) };
+	glm::vec4 vLocalHomogeneous{ glm::vec4(vLocal, 1.0f) };
+
+	//Convert to world space
+	glm::vec4 uWorld{ GetHeirarchicalModelMatrix() * uLocalHomogeneous };
+	glm::vec4 vWorld{ GetHeirarchicalModelMatrix() * vLocalHomogeneous };
+	
+	return std::make_pair<glm::vec3, glm::vec3>(glm::vec3(uWorld.x, uWorld.y, uWorld.z), glm::vec3(vWorld.x, vWorld.y, vWorld.z));
 }

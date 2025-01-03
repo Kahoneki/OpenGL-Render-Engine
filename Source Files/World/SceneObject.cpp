@@ -55,7 +55,7 @@ glm::vec3 SceneObject::getRotation() const
 	return transform.rotation;
 }
 
-glm::mat4 SceneObject::GetHeirarchicalModelMatrix()
+glm::mat4 SceneObject::GetHeirarchicalModelMatrix() const
 {
 	return parent == nullptr ? transform.GetMatrix() : parent->GetHeirarchicalModelMatrix() * transform.GetMatrix();
 }

@@ -4,7 +4,7 @@
 #include "../../Utility/BindingPoints.h"
 #include "../../Application/Application.h"
 #include "../../Application/Renderer.h"
-#include "../../Shaders/shader.h"
+#include "../../../Shaders/shader.h"
 #include "../Scene.h"
 
 #include <iostream>
@@ -20,6 +20,8 @@ Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec
 	glCreateBuffers(1, &materialBuffer);
 	material.drawableParent = this;
 	UpdateMaterial();
+
+	useOnlyDiffuse = false;
 
 	eulerRotation = rotation;
 
