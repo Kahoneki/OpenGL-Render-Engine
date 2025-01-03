@@ -8,7 +8,7 @@
 #include "../../Scene.h"
 #include "../../../Camera/Camera.h"
 #include <iostream>
-#include <../vendor/include/GLM/gtx/string_cast.hpp>
+#include <GLM/gtx/string_cast.hpp>
 
 #include "../../../Utility/Maths/Ray.h"
 

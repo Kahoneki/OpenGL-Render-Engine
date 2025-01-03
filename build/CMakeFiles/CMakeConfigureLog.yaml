@@ -24,7 +24,7 @@ events:
       The output was:
       0
       MSBuild version 17.9.5+33de0b227 for .NET Framework
-      Build started 03/01/2025 11:08:07.
+      Build started 03/01/2025 11:43:29.
       
       Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\3.29.3\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
       PrepareForBuild:
@@ -53,7 +53,7 @@ events:
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:00.68
+      Time Elapsed 00:00:01.17
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -79,7 +79,7 @@ events:
       The output was:
       0
       MSBuild version 17.9.5+33de0b227 for .NET Framework
-      Build started 03/01/2025 11:08:08.
+      Build started 03/01/2025 11:43:30.
       
       Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\3.29.3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
       PrepareForBuild:
@@ -108,7 +108,7 @@ events:
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:00.67
+      Time Elapsed 00:00:01.04
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -127,8 +127,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-749m83"
-      binary: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-749m83"
+      source: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-hqnnog"
+      binary: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-hqnnog"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -137,40 +137,40 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-749m83'
+        Change Dir: 'C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-hqnnog'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_92056.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_df3cb.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.9.5+33de0b227 for .NET Framework
-        Build started 03/01/2025 11:08:09.
+        Build started 03/01/2025 11:43:32.
         
-        Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-749m83\\cmTC_92056.vcxproj" on node 1 (default targets).
+        Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hqnnog\\cmTC_df3cb.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_92056.dir\\Debug\\".
+          Creating directory "cmTC_df3cb.dir\\Debug\\".
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          Creating directory "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-749m83\\Debug\\".
-          Creating directory "cmTC_92056.dir\\Debug\\cmTC_92056.tlog\\".
+          Creating directory "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hqnnog\\Debug\\".
+          Creating directory "cmTC_df3cb.dir\\Debug\\cmTC_df3cb.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_92056.dir\\Debug\\cmTC_92056.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-          Touching "cmTC_92056.dir\\Debug\\cmTC_92056.tlog\\unsuccessfulbuild".
+          Creating "cmTC_df3cb.dir\\Debug\\cmTC_df3cb.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_df3cb.dir\\Debug\\cmTC_df3cb.tlog\\unsuccessfulbuild".
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_92056.dir\\Debug\\\\" /Fd"cmTC_92056.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_df3cb.dir\\Debug\\\\" /Fd"cmTC_df3cb.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.39.33519 for x64
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_92056.dir\\Debug\\\\" /Fd"cmTC_92056.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_df3cb.dir\\Debug\\\\" /Fd"cmTC_df3cb.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
           CMakeCCompilerABI.c
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-749m83\\Debug\\cmTC_92056.exe" /INCREMENTAL /ILK:"cmTC_92056.dir\\Debug\\cmTC_92056.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-749m83/Debug/cmTC_92056.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-749m83/Debug/cmTC_92056.lib" /MACHINE:X64  /machine:x64 cmTC_92056.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_92056.vcxproj -> C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-749m83\\Debug\\cmTC_92056.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hqnnog\\Debug\\cmTC_df3cb.exe" /INCREMENTAL /ILK:"cmTC_df3cb.dir\\Debug\\cmTC_df3cb.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-hqnnog/Debug/cmTC_df3cb.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-hqnnog/Debug/cmTC_df3cb.lib" /MACHINE:X64  /machine:x64 cmTC_df3cb.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_df3cb.vcxproj -> C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hqnnog\\Debug\\cmTC_df3cb.exe
         FinalizeBuildStatus:
-          Deleting file "cmTC_92056.dir\\Debug\\cmTC_92056.tlog\\unsuccessfulbuild".
-          Touching "cmTC_92056.dir\\Debug\\cmTC_92056.tlog\\cmTC_92056.lastbuildstate".
-        Done Building Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-749m83\\cmTC_92056.vcxproj" (default targets).
+          Deleting file "cmTC_df3cb.dir\\Debug\\cmTC_df3cb.tlog\\unsuccessfulbuild".
+          Touching "cmTC_df3cb.dir\\Debug\\cmTC_df3cb.tlog\\cmTC_df3cb.lastbuildstate".
+        Done Building Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hqnnog\\cmTC_df3cb.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:00.64
+        Time Elapsed 00:00:01.44
         
       exitCode: 0
   -
@@ -210,8 +210,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-lhvpo3"
-      binary: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-lhvpo3"
+      source: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-jgo6qq"
+      binary: "C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-jgo6qq"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -221,40 +221,40 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-lhvpo3'
+        Change Dir: 'C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-jgo6qq'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ac517.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_3a29a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.9.5+33de0b227 for .NET Framework
-        Build started 03/01/2025 11:08:10.
+        Build started 03/01/2025 11:43:34.
         
-        Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lhvpo3\\cmTC_ac517.vcxproj" on node 1 (default targets).
+        Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jgo6qq\\cmTC_3a29a.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_ac517.dir\\Debug\\".
+          Creating directory "cmTC_3a29a.dir\\Debug\\".
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          Creating directory "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lhvpo3\\Debug\\".
-          Creating directory "cmTC_ac517.dir\\Debug\\cmTC_ac517.tlog\\".
+          Creating directory "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jgo6qq\\Debug\\".
+          Creating directory "cmTC_3a29a.dir\\Debug\\cmTC_3a29a.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_ac517.dir\\Debug\\cmTC_ac517.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-          Touching "cmTC_ac517.dir\\Debug\\cmTC_ac517.tlog\\unsuccessfulbuild".
+          Creating "cmTC_3a29a.dir\\Debug\\cmTC_3a29a.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_3a29a.dir\\Debug\\cmTC_3a29a.tlog\\unsuccessfulbuild".
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_ac517.dir\\Debug\\\\" /Fd"cmTC_ac517.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_3a29a.dir\\Debug\\\\" /Fd"cmTC_3a29a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.39.33519 for x64
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_ac517.dir\\Debug\\\\" /Fd"cmTC_ac517.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_3a29a.dir\\Debug\\\\" /Fd"cmTC_3a29a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lhvpo3\\Debug\\cmTC_ac517.exe" /INCREMENTAL /ILK:"cmTC_ac517.dir\\Debug\\cmTC_ac517.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-lhvpo3/Debug/cmTC_ac517.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-lhvpo3/Debug/cmTC_ac517.lib" /MACHINE:X64  /machine:x64 cmTC_ac517.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_ac517.vcxproj -> C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lhvpo3\\Debug\\cmTC_ac517.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jgo6qq\\Debug\\cmTC_3a29a.exe" /INCREMENTAL /ILK:"cmTC_3a29a.dir\\Debug\\cmTC_3a29a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-jgo6qq/Debug/cmTC_3a29a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/shiny/Desktop/Code/Render-Engine/build/CMakeFiles/CMakeScratch/TryCompile-jgo6qq/Debug/cmTC_3a29a.lib" /MACHINE:X64  /machine:x64 cmTC_3a29a.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_3a29a.vcxproj -> C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jgo6qq\\Debug\\cmTC_3a29a.exe
         FinalizeBuildStatus:
-          Deleting file "cmTC_ac517.dir\\Debug\\cmTC_ac517.tlog\\unsuccessfulbuild".
-          Touching "cmTC_ac517.dir\\Debug\\cmTC_ac517.tlog\\cmTC_ac517.lastbuildstate".
-        Done Building Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lhvpo3\\cmTC_ac517.vcxproj" (default targets).
+          Deleting file "cmTC_3a29a.dir\\Debug\\cmTC_3a29a.tlog\\unsuccessfulbuild".
+          Touching "cmTC_3a29a.dir\\Debug\\cmTC_3a29a.tlog\\cmTC_3a29a.lastbuildstate".
+        Done Building Project "C:\\Users\\shiny\\Desktop\\Code\\Render-Engine\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jgo6qq\\cmTC_3a29a.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:00.72
+        Time Elapsed 00:00:00.99
         
       exitCode: 0
   -
