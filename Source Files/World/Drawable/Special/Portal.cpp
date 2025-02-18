@@ -11,9 +11,13 @@
 #include <GLM/gtx/string_cast.hpp>
 
 #include "../../../Utility/Maths/Ray.h"
+#include <GLM/gtx/euler_angles.hpp>
+#include <GLM/gtx/matrix_decompose.hpp>
 
 unsigned int Portal::numPortalsInScene = 0;
 bool Portal::cameraCanTeleport = true;
+float Portal::teleportCooldown = 1.0f;
+float Portal::teleportCooldownTimer = 0.0f;
 
 Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) :
     SceneObject(name, parent, Transform(center, scale, rotation)),
@@ -32,9 +36,20 @@ Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 ro
     renderRegion.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
 }
 
-void Portal::SetOtherPortal(Portal* portal)
+void Portal::SetOtherPortal(Portal* _portal)
 {
-    otherPortal = portal;
+    otherPortal = _portal;
+    if (name == "Portal 1")
+    {
+        glm::vec3 portalPos{ portal.GetHeirarchicalModelMatrix()[3] };
+        glm::vec3 renderRegionPos{ renderRegion.GetHeirarchicalModelMatrix()[3] };
+        glm::vec3 portalNorm{ glm::normalize(renderRegionPos - portalPos) };
+
+        glm::vec3 otherPortalPos{ otherPortal->GetHeirarchicalModelMatrix()[3] };
+        glm::vec3 otherRenderRegionPos{ otherPortal->renderRegion.GetHeirarchicalModelMatrix()[3] };
+        glm::vec3 otherPortalNorm{ glm::normalize(otherRenderRegionPos - otherPortalPos) };
+        std::cout << "Portal 1 norm: " << glm::to_string(portalNorm) << "\nPortal 2 norm: " << glm::to_string(otherPortalNorm) << '\n';
+    }
 }
 
 void Portal::Draw(Shader& shader)
@@ -128,53 +143,70 @@ bool pointInsideModelMatrix(glm::vec3 p, glm::mat4 m)
         transformedPoint.z >= (-1.0f - epsilon) && transformedPoint.z <= (1.0f + epsilon));
 }
 
+
 void Portal::CheckForCameraCollision()
 {
-
-    Camera* camera{ dynamic_cast<Camera*>(sceneParent->GetActiveRenderSource()) };
-
-    //Try cheap check first
-    bool inPortal{ pointInsideModelMatrix(camera->getPosition(), portal.GetHeirarchicalModelMatrix()) };
-    bool inOtherPortal{ pointInsideModelMatrix(camera->getPosition(), otherPortal->GetHeirarchicalModelMatrix()) };
-    
-    if (!inPortal && !inOtherPortal) {
-        //Cheap check failed, use more expensive ray-plane intersection test
-        Ray ray{ Ray(camera->positionLastFrame, camera->getPosition()) };
-        inPortal = ray.IntersectsWithPlane(renderRegion);
-        inOtherPortal = ray.IntersectsWithPlane(otherPortal->renderRegion);
-    }
-
-    if (!inPortal && !inOtherPortal) {
-        Portal::cameraCanTeleport = true;
-    }
-
-    if (!Portal::cameraCanTeleport) {
+    //Handle teleport cooldown logic
+    if (!Portal::cameraCanTeleport)
+    {
+        Portal::teleportCooldownTimer -= Application::getInstance().timeManager->dt;
+        if (Portal::teleportCooldownTimer <= 0.0f)
+        {
+            Portal::cameraCanTeleport = true;
+        }
         return;
     }
 
-    glm::vec3 portalPos{ portal.GetHeirarchicalModelMatrix()[3] };
-    glm::vec3 renderRegionPos{ renderRegion.GetHeirarchicalModelMatrix()[3] };
-    glm::vec3 portalNorm{ glm::normalize(renderRegionPos - portalPos) };
+    //Check if camera intersects with portal
+    Camera* camera{ dynamic_cast<Camera*>(sceneParent->GetActiveRenderSource()) };
+    Ray ray{ camera->positionLastFrame, camera->getPosition() };
+    if (ray.IntersectsWithPlane(renderRegion))
+    {
+        if (!Portal::cameraCanTeleport)
+        {
+            return;
+        }
 
-    glm::vec3 otherPortalPos{ otherPortal->GetHeirarchicalModelMatrix()[3] };
-    glm::vec3 otherRenderRegionPos{ otherPortal->renderRegion.GetHeirarchicalModelMatrix()[3] };
-    glm::vec3 otherPortalNorm{ glm::normalize(otherRenderRegionPos - otherPortalPos) };
+        Portal::cameraCanTeleport = false;
 
-    glm::vec3 portalToCam{ camera->getPosition() - renderRegionPos };
+        //Camera has intersected with portal and is ready to teleport
+        
+        //Calculate new position
+        //1. Get camera's world transformation matrix
+        //2. Get portal's local space transformation matrix (inverse of world matrix)
+        //3. Transform camera into portal's local space to get camera's transformation relative to this portal's local space
+        //4. Get other portal's world space transformation matrix
+        //5. Transform the transformation from step 3 to the other portal's world space
+        //6. Extract position from matrix column
+        //7. Push camera slightly in the direction of the other portal's normal to avoid repeat collisions
 
-    if ((glm::dot(portalNorm, portalToCam) < 0) && inPortal) {
+        //For example:
+        //If, in world space, the camera is at x=3, this portal is at x=1, and the other portal is at x=4
+        //When the camera is transformed to this portal's local space, it will be at x=2 - effectively the difference between the two world space transformations
+        //When that transformation (x=2) is transformed according to the other portal's world space matrix, it will result in x=6
+        //This means the camera's position after all the transformations will be x=6
+        //This makes sense as the camera was +2 on the x from this portal, so it should be +2 on the x from the other portal
 
-        //Camera has moved to other side of portal, teleport it to other portal
-        glm::mat4 cameraRelativeToPortal{ glm::inverse(renderRegion.GetHeirarchicalModelMatrix()) * glm::inverse(camera->GetViewMatrix()) };
-        glm::mat4 newTransform{ otherPortal->renderRegion.GetHeirarchicalModelMatrix() * cameraRelativeToPortal };
-        camera->setPosition(newTransform[3]);
+        glm::mat4 cameraWorldMatrix{ glm::inverse(camera->GetViewMatrix()) };
+        glm::mat4 localPortalMatrix{ glm::inverse(renderRegion.GetHeirarchicalModelMatrix()) };
+        glm::mat4 cameraRelativeToPortal{ localPortalMatrix * glm::inverse(camera->GetViewMatrix()) };
+        glm::mat4 otherPortalWorldMatrix{ otherPortal->renderRegion.GetHeirarchicalModelMatrix() };
+        glm::mat4 newCameraWorldMatrix{ otherPortalWorldMatrix * cameraRelativeToPortal };
+        glm::vec3 otherPortalNorm{ glm::normalize(glm::vec3(otherPortalWorldMatrix * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f))) };
+        float nudgeFactor{ 0.0f }; //Optional - distance to nudge user in direction of destination portal, bandaid to counteract glitchy behaviour
+        camera->setPosition(glm::vec3(newCameraWorldMatrix[3]) + (otherPortalNorm * nudgeFactor));
 
-        // Calculate rotation axis and angle using dot product
+        
+        //Correct for rotation
+        glm::vec3 portalNorm{ glm::normalize(glm::vec3(renderRegion.GetHeirarchicalModelMatrix() * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f))) };
+
+        //Calculate rotation axis and angle using dot product
         double dotProduct{ glm::dot(portalNorm, otherPortalNorm) };
-        if (dotProduct == -1) {
+        if (dotProduct == -1)
+        {
             //Vectors are opposite, no rotation needed
         }
-        else  {
+        else {
             if (dotProduct == 1) {
                 //Vectors are parallel, nudge otherPortalNorm very slightly to avoid NaN cross product
                 otherPortalNorm.x += 0.00000001;
@@ -192,8 +224,6 @@ void Portal::CheckForCameraCollision()
             camera->setRotation(glm::vec3(yaw, pitch, 0.0f));
         }
 
-        camera->setPosition(camera->getPosition() + otherPortalNorm * otherPortal->getScale() * glm::vec3(2));
-
-        Portal::cameraCanTeleport = false;
+        Portal::teleportCooldownTimer = Portal::teleportCooldown;
     }
 }

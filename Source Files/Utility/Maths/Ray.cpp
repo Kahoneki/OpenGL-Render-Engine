@@ -1,5 +1,7 @@
 ﻿#include "Ray.h"
 #include "../../World/Drawable/Plane.h"
+#include <iostream>
+#include <GLM/gtx/string_cast.hpp>
 
 //Disable deprecation warning in EIGEN/Dense
 #pragma warning(disable : 4996)
@@ -13,52 +15,48 @@ Ray::Ray(glm::vec3 _origin, glm::vec3 _endpoint)
 
 bool Ray::IntersectsWithPlane(const Plane& plane)
 {
+    //Standard plane equation: Point a is on infinite plane with known point p and normal n if (a-p).n = 0
     glm::vec3 p{ plane.getPosition() };
     std::pair<glm::vec3, glm::vec3> axes{ plane.GetWorldAxes() };
-    glm::vec3 a{ axes.first };
-    glm::vec3 b{ axes.second };
+    glm::vec3 n{ glm::normalize(glm::cross(axes.first, axes.second)) };
 
+    //Standard ray equation: R(t) = o+td {0 <= t <= 1 for finite rays}
     glm::vec3 o{ origin };
     glm::vec3 d{ endpoint - origin };
 
-    //Equations of ray and plane can be equated
-    //r = p + ua + vb
-    //r = o + td
-    //->p + ua + vb = o + td
-
-    //Convert to parametric form
-    //p.x + ua.x + vb.x = o.x + td.x
-    //p.y + ua.y + vb.y = o.y + td.y
-    //p.z + ua.z + vb.z = o.z + td.z
-
-    //Organise into form suitable for system of equations
-    //ua.x + vb.x - td.x = o.x - p.x
-    //ua.y + vb.y - td.y = o.y - p.y
-    //ua.z + vb.z - td.z = o.z - p.z
-
-    //Create coefficient matrix
-    Eigen::Matrix3d A;
-    A << a.x, b.x, -d.x,
-         a.y, b.y, -d.y,
-         a.z, b.z, -d.z;
-
-    //Create right hand vector
-    Eigen::Vector3d B;
-    B << o.x - p.x,
-         o.y - p.y,
-         o.z - p.z;
-
-    //Solve system of equations
-    Eigen::VectorXd x = A.colPivHouseholderQr().solve(B);
-
-    //Verify that solution is real
-    Eigen::VectorXd B_calculated = A * x;
-    double tolerance = 1e-9;
-    if ((B - B_calculated).norm() > tolerance)
+    //Check edge case where ray and plane are parallel - avoid division by 0 error in next step
+    double denom{ glm::dot(d, n) };
+    if (std::abs(denom) < 1e-6)
     {
-        //Solution does not exist
+        //Ray is parallel to the plane (or very close to it)
         return false;
     }
-    //Solution exists, intersection only occurs if solution in range u,v,t [0,1]
-    return (x[0] >= 0 && x[0] <= 1 && x[1] >= 0 && x[1] <= 1 && x[2] >= 0 && x[2] <= 1);
+
+    //Substitute R(t) into plane equation
+    //Plane eqn: (a-p).n = 0
+    //Ray eqn: R(t) = o+td
+    //=> (o+td-p).n = 0
+    //=> (o-p).n + (td).n = 0
+    //=> (o-p).n + t(d.n) = 0
+    //=> t = ((p-o).n) / (d.n)
+    double t{ glm::dot((p-o), n) / denom };
+    
+    //Check that 0 <= t <= 1
+    if (t < 0 || t > 1)
+    {
+        //The infinite extension of the finite ray intersects with the plane, but not this finite ray
+        return false;
+    }
+
+    //The finite ray intersects with the infinite plane!
+    //Now check if the finite ray intersects with the finite plane
+    
+    //Convert intersection point to plane's local coordinates
+    glm::vec3 intersectionPoint{ o + glm::vec3(t) * d };
+    glm::mat4 inverseModelMatrix{ glm::inverse(plane.GetHeirarchicalModelMatrix()) };
+    glm::vec3 localIntersectionPoint{ glm::vec3(inverseModelMatrix * glm::vec4(intersectionPoint, 1.0f)) };
+
+    //Check if localIntersectionPoint lies within the plane's vertex position bounds (-0.5f to 0.5f on both axes)
+    //If it does, the finite ray intersects with the finite plane
+    return (std::abs(localIntersectionPoint.x) <= 0.5f && std::abs(localIntersectionPoint.y) <= 0.5f);
 }

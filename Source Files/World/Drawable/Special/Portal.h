@@ -30,6 +30,8 @@ private:
 
     void CheckForCameraCollision();
     static bool cameraCanTeleport;
+    static float teleportCooldown;
+    static float teleportCooldownTimer;
 };
 
 #endif

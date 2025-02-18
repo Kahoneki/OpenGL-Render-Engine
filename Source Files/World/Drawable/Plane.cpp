@@ -10,12 +10,12 @@ Plane::Plane(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rota
 	vertices = {
 		//Position             //Texture     //Normal              //Tangent
 		// Front face: (z = 0.0f)
-		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-left
-		-0.5f,  0.5f,  0.0f,   0.0f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-left
-		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-right
-		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-left
-		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Top-right
-		 0.5f, -0.5f,  0.0f,   0.5f, 0.0f,   0.0f,  0.0f,  0.5f,   0.5f,  0.0f,  0.0f,  // Bottom-right
+		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-left
+		-0.5f,  0.5f,  0.0f,   0.0f, 0.5f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-left
+		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-right
+		-0.5f, -0.5f,  0.0f,   0.0f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-left
+		 0.5f,  0.5f,  0.0f,   0.5f, 0.5f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Top-right
+		 0.5f, -0.5f,  0.0f,   0.5f, 0.0f,   0.0f,  0.0f,  1.0f,   1.0f,  0.0f,  0.0f,  // Bottom-right
 	};
 
 	glGenVertexArrays(1, &VAO);

@@ -14,7 +14,8 @@ AssetManager::AssetManager(std::size_t _maxTextures)
 
 AssetManager::~AssetManager()
 {
-	for (std::size_t i{ 0 }; i < textureBuffers.size(); ++i) {
+	//Iterate in reverse order to safely erase
+	for (int i{ static_cast<int>(textureBuffers.size() - 1) }; i >= 0; --i) {
 		glMakeTextureHandleNonResidentARB(textureHandles[textureBuffers[i]]);
 		textureBuffers.erase(textureBuffers.begin() + i);
 	}
