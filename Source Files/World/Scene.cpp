@@ -108,7 +108,7 @@ void Scene::UpdateLightSources()
 		ls->cube.material.setDiffuseColour(ls->getDiffuseColour());
 	}
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::LIGHT_SOURCES, lightSourcesBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Light) * lightSources.size(), lightData.data()); //Dynamic draw as this function will be called everytime a light source is added, removed, or modified
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Light) * lightSources.size(), lightData.data());
 
 	lightsChanged = false;
 }

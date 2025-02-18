@@ -11,7 +11,7 @@ public:
     FramebufferQuad();
     ~FramebufferQuad();
 
-    void Draw(); //Remember to rebind your previous shader after calling
+    void Draw();
 
 private:
     unsigned int VAO;

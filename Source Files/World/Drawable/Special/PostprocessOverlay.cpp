@@ -9,9 +9,14 @@
 PostprocessOverlay::PostprocessOverlay()
 {
 
-	//FBO setup
-	int SCRWIDTH{ Application::getInstance().windowManager.get()->SCRWIDTH };
-	int SCRHEIGHT{ Application::getInstance().windowManager.get()->SCRHEIGHT };
+	//Store currently bound FBO for rebinding after this FBO's setup
+	int drawFbo, readFbo;
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
+	glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
+
+	//Create FBO of screen size with RGBA8 colour texture and D32S8 depth-stencil texture
+	const int SCRWIDTH{ Application::getInstance().windowManager.get()->SCRWIDTH };
+	const int SCRHEIGHT{ Application::getInstance().windowManager.get()->SCRHEIGHT };
 
 	glCreateFramebuffers(1, &fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -22,19 +27,31 @@ PostprocessOverlay::PostprocessOverlay()
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	colTexHandle = glGetTextureHandleARB(colTex);
 	glMakeTextureHandleResidentARB(colTexHandle);
+	fboTextureHandles.input.x = colTexHandle;
 
 	glCreateTextures(GL_TEXTURE_2D, 1, &depthStencilTex);
 	glTextureStorage2D(depthStencilTex, 1, GL_DEPTH32F_STENCIL8, SCRWIDTH, SCRHEIGHT);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, depthStencilTex, 0);
 	depthStencilTexHandle = glGetTextureHandleARB(depthStencilTex);
 	glMakeTextureHandleResidentARB(depthStencilTexHandle);
+	fboTextureHandles.input.y = depthStencilTexHandle;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, readFbo);
 
+
+	//Create intermediate colour buffer images for ping-pong buffering between multiple shader passes
+	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol1Image);
+	glTextureStorage2D(intermediateCol1Image, 1, GL_RGBA8, SCRWIDTH, SCRHEIGHT);
+
+	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol2Image);
+	glTextureStorage2D(intermediateCol2Image, 1, GL_RGBA8, SCRWIDTH, SCRHEIGHT);
 	
-	//SSBO setup
-	glCreateBuffers(1, &fboTexturesBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::FBO_TEXTURES, fboTexturesBuffer);
+
+	//UBO setup
+	glCreateBuffers(1, &fboTextureHandlesBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::FBO_TEXTURE_HANDLES, fboTextureHandlesBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(FBOTextureHandles), &fboTextureHandles, GL_STATIC_DRAW);
 }
 
 PostprocessOverlay::~PostprocessOverlay()
@@ -44,12 +61,48 @@ PostprocessOverlay::~PostprocessOverlay()
 	glDeleteTextures(1, &colTex);
 	glMakeTextureHandleNonResidentARB(depthStencilTexHandle);
 	glDeleteTextures(1, &depthStencilTex);
+	glDeleteTextures(1, &intermediateCol1Image);
+	glDeleteTextures(1, &intermediateCol2Image);
 }
 
 
 void PostprocessOverlay::Render(unsigned int outputFbo)
 {
+	int SCRWIDTH{ Application::getInstance().windowManager.get()->SCRWIDTH };
+	int SCRHEIGHT{ Application::getInstance().windowManager.get()->SCRHEIGHT };
 
+	//Copy data from colTex to intermediateCol1Image
+	//Bind intermediateCol1Image to image unit 0
+	//Bind intermediateCol2Image to image unit 1
+	//Initialise output tracker to track which image has the most recent output (initially 1)
+	//For all postprocessing effects in activeShaders:
+	//	Bind the shader
+	//	Run the shader
+	//	Swap image units of intermediateCol1Image and intermediateCol2Image
+	//Draw framebuffer quad
+
+	glCopyImageSubData(colTex, GL_TEXTURE_2D, 0, 0, 0, 0, intermediateCol1Image, GL_TEXTURE_2D, 0, 0, 0, 0, SCRWIDTH, SCRHEIGHT, 1);
+	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	
+	bool swap{ true };
+	for (std::unordered_map<POSTPROCESSING_EFFECT, ComputeShader*>::iterator it{ activeShaders.begin() }; it != activeShaders.end(); ++it)
+	{
+		it->second->use();
+		glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
+		if (swap)
+		{
+			glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+			glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		}
+		else
+		{
+			glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+			glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		}
+		swap = !swap;
+	}
+	fbQuad.Draw();
 }
 
 

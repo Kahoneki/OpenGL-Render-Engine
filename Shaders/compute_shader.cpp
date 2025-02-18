@@ -60,7 +60,7 @@ ComputeShader::ComputeShader(const char* shaderFilepath)
     ComputeShaderConstructor(shaderFilepath);
 }
 
-ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect)
+ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect=POSTPROCESSING_EFFECT::NONE)
 {
     const char* shaderFilepath;
 

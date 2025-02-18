@@ -90,6 +90,10 @@ int main()
 	portal2.SetOtherPortal(&portal1);
 
 
+	//Postprocess effects
+	cam.postprocessOverlay.AddPostprocessingEffect(POSTPROCESSING_EFFECT::SATURATION);
+
+
 	constexpr std::size_t NUM_LIGHTS{ 8 };
 	LightSource* lights[NUM_LIGHTS];
 	std::vector<std::string> lightNames;

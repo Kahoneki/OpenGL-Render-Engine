@@ -42,10 +42,17 @@ FramebufferQuad::~FramebufferQuad()
 
 void FramebufferQuad::Draw()
 {
+	//Store current shader id to restore after drawing
+	int id;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+
 	framebufferShader.use();
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glMemoryBarrier(GL_ALL_BARRIER_BITS);
+
+	//Restore state
+	glUseProgram(id);
 }
