@@ -124,11 +124,7 @@ void Renderer::Render(Scene* scene)
 
 
 	if (rs->postprocessOverlay.activeShaders.size() > 0) {
-		//There are postprocessing effects active, rebind the default framebuffer and render them
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glStencilMask(0xFF);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glStencilMask(0x00);
+		//There are postprocessing effects active
 		rs->postprocessOverlay.Render();
 	}
 

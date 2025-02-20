@@ -90,18 +90,32 @@ void PostprocessOverlay::Render(unsigned int outputFbo)
 	{
 		it->second->use();
 		glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
-		if (swap)
-		{
-			glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-			glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-		}
-		else
-		{
-			glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-			glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-		}
+		//if (swap)
+		//{
+		//	glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		//	glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		//}
+		//else
+		//{
+		//	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		//	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		//}
 		swap = !swap;
 	}
+	//if (swap)
+	//{
+	//	glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+	//	glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	//}
+	//else
+	//{
+	//	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+	//	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	//}
+	glBindFramebuffer(GL_FRAMEBUFFER, outputFbo);
+	glStencilMask(0xFF);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glStencilMask(0x00);
 	fbQuad.Draw();
 }
 
