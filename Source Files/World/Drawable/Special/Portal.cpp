@@ -24,7 +24,8 @@ Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 ro
     Drawable(name, center, scale, rotation, parent),
     PrimitiveModel(name, center, scale, rotation, parent),
     portal("Container", glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f), this),
-    renderRegion("Render Region", glm::vec3(0.0f, 0.0f, 1.01f), glm::vec3(1.8f, 1.8f, 1.0f), glm::vec3(0.0f), this)
+    renderRegion("Render Region", glm::vec3(0.0f, 0.0f, 1.01f), glm::vec3(1.8f, 1.8f, 1.0f), glm::vec3(0.0f), this),
+    fbQuad(SHADER_PRESET::FBO_PORTAL)
 {
     renderOrder = UINT_MAX - Portal::numPortalsInScene;
     ++Portal::numPortalsInScene;

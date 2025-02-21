@@ -124,8 +124,8 @@ void Renderer::Render(Scene* scene)
 
 
 	if (rs->postprocessOverlay.activeShaders.size() > 0) {
-		//There are postprocessing effects active
-		rs->postprocessOverlay.Render();
+		//There are postprocessing effects active, draw them to the default framebuffer (0)
+		rs->postprocessOverlay.Render(0);
 	}
 
 

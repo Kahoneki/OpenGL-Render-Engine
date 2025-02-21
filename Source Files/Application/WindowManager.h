@@ -1,6 +1,9 @@
 #ifndef WINDOWMANAGER_H
 #define WINDOWMANAGER_H
 
+#include <vector>
+#include <functional>
+
 class Application;
 class GLFWwindow;
 
@@ -24,6 +27,8 @@ public:
 	void scroll_callback_impl(GLFWwindow* window, double xOffset, double yOffset) const;
 
 	bool getMinimised();
+
+	void JoinScreenSizeChangeCallbacksList(std::function<void(int scrwidth, int scrheight)> callback);
 	
 private:
 	Application* app;
@@ -31,12 +36,21 @@ private:
 	GLFWwindow* window;
 
 	[[nodiscard]] GLFWwindow* InitialiseGLFW();
+	
 	void UpdateFullscreen();
 	bool fullscreen;
+	//For restoring state after returning from fullscreen
 	int windowedXPos;
 	int windowedYPos;
+	int windowedSCRWIDTH;
+	int windowedSCRHEIGHT;
 
 	bool minimised;
+
+	//Functions to be called by WindowManager when the screen size changes
+	//This is for things that rely on the screen size - i.e.: PostprocessOverlay
+	std::vector<std::function<void(int scrwidth, int scrheight)>> screenSizeChangeCallbacks;
+	void NotifyScreenSizeChangeListeners();
 };
 
 #endif

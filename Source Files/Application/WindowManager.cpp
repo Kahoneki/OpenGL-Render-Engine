@@ -29,18 +29,32 @@ void WindowManager::UpdateFullscreen()
 
 		//Store current window size and position
 		glfwGetWindowPos(window, &windowedXPos, &windowedYPos);
-		glfwGetWindowSize(window, &SCRWIDTH, &SCRHEIGHT);
+		glfwGetWindowSize(window, &windowedSCRWIDTH, &windowedSCRHEIGHT);
 
 		//Get primary monitor and video mode
 		GLFWmonitor* monitor{ glfwGetPrimaryMonitor() };
 		const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
 
-		glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+		SCRWIDTH = mode->width;
+		SCRHEIGHT = mode->height;
+		glfwSetWindowMonitor(window, monitor, 0, 0, SCRWIDTH, SCRHEIGHT, mode->refreshRate);
 		glfwMakeContextCurrent(window);
+		NotifyScreenSizeChangeListeners();
 	}
 	else {
 		//Change to windowed mode
-		glfwSetWindowMonitor(window, NULL, windowedXPos, windowedYPos, SCRWIDTH, SCRHEIGHT, 0);
+		SCRWIDTH = windowedSCRWIDTH;
+		SCRHEIGHT = windowedSCRHEIGHT;
+		glfwSetWindowMonitor(window, NULL, windowedXPos, windowedYPos, windowedSCRWIDTH, windowedSCRHEIGHT, 0);
+		NotifyScreenSizeChangeListeners();
+	}
+}
+
+void WindowManager::NotifyScreenSizeChangeListeners()
+{
+	for (const std::function<void(int scrwidth, int scrheight)> foo : screenSizeChangeCallbacks)
+	{
+		foo(SCRWIDTH, SCRHEIGHT);
 	}
 }
 
@@ -89,16 +103,10 @@ void WindowManager::framebuffer_iconify_callback_impl(GLFWwindow* window, int ic
 
 void WindowManager::framebuffer_size_callback_impl(GLFWwindow* window, int width, int height)
 {
-	// if (width == 0 || height == 0) {
-	// 	minimised = true;
-	// 	return;
-	// }
-	// else {
-	// 	minimised = false;
-	// }
 	glViewport(0, 0, width, height);
 	SCRWIDTH = width;
 	SCRHEIGHT = height;
+	NotifyScreenSizeChangeListeners();
 }
 
 void WindowManager::mouse_callback_impl(GLFWwindow* window, double xposIn, double yposIn) const
@@ -114,6 +122,11 @@ void WindowManager::scroll_callback_impl(GLFWwindow* window, double xOffset, dou
 bool WindowManager::getMinimised()
 {
 	return minimised;
+}
+
+void WindowManager::JoinScreenSizeChangeCallbacksList(std::function<void(int scrwidth, int scrheight)> callback)
+{
+	screenSizeChangeCallbacks.push_back(callback);
 }
 
 

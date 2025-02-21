@@ -127,10 +127,16 @@ Shader::Shader(SHADER_PRESET preset)
         fragmentFilepath = "light_source.frag";
         break;
     }
-    case SHADER_PRESET::FBO:
+    case SHADER_PRESET::FBO_PORTAL:
     {
         vertexFilepath = "fbo.vert";
-        fragmentFilepath = "fbo.frag";
+        fragmentFilepath = "fboPortal.frag";
+        break;
+    }
+    case SHADER_PRESET::FBO_POSTPROCESS:
+    {
+        vertexFilepath = "fbo.vert";
+        fragmentFilepath = "fboPostProcess.frag";
         break;
     }
     default:

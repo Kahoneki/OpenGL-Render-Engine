@@ -42,6 +42,6 @@ void main()
 	if (P.x > imageSize(inputImg).x || P.y > imageSize(inputImg).y) { return; }
 
 	vec4 col = imageLoad(inputImg, P);
-	vec4 satCol = saturate(col, 1.0);
+	vec4 satCol = saturate(col, 0.2);
 	imageStore(outputImg, P, satCol);
 }

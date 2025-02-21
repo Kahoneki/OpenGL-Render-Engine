@@ -1,6 +1,6 @@
 #include "FramebufferQuad.h"
 
-FramebufferQuad::FramebufferQuad() : framebufferShader(Shader(SHADER_PRESET::FBO))
+FramebufferQuad::FramebufferQuad(SHADER_PRESET shader) : framebufferShader(Shader(shader))
 {
 	float quadVertices[] = {
 		// positions            // texture coords

@@ -8,7 +8,7 @@ class FramebufferQuad
 {
 public:
     //Full screen-space quad with texture coordinates
-    FramebufferQuad();
+    FramebufferQuad(SHADER_PRESET shader);
     ~FramebufferQuad();
 
     void Draw();

@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-PostprocessOverlay::PostprocessOverlay()
+PostprocessOverlay::PostprocessOverlay() : fbQuad(SHADER_PRESET::FBO_POSTPROCESS)
 {
 
 	//Store currently bound FBO for rebinding after this FBO's setup
@@ -52,6 +52,10 @@ PostprocessOverlay::PostprocessOverlay()
 	glCreateBuffers(1, &fboTextureHandlesBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::FBO_TEXTURE_HANDLES, fboTextureHandlesBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(FBOTextureHandles), &fboTextureHandles, GL_STATIC_DRAW);
+
+
+	//Join callbacks list for screen size changes
+	Application::getInstance().windowManager.get()->JoinScreenSizeChangeCallbacksList([this](int scrwidth, int scrheight) { OnScreenSizeChange(scrwidth, scrheight); });
 }
 
 PostprocessOverlay::~PostprocessOverlay()
@@ -90,33 +94,76 @@ void PostprocessOverlay::Render(unsigned int outputFbo)
 	{
 		it->second->use();
 		glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
-		//if (swap)
-		//{
-		//	glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-		//	glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-		//}
-		//else
-		//{
-		//	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-		//	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-		//}
+		if (swap)
+		{
+			glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+			glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		}
+		else
+		{
+			glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+			glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+		}
 		swap = !swap;
 	}
-	//if (swap)
-	//{
-	//	glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-	//	glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-	//}
-	//else
-	//{
-	//	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-	//	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-	//}
+	if (swap)
+	{
+		glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	}
+	else
+	{
+		glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, outputFbo);
 	glStencilMask(0xFF);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glStencilMask(0x00);
 	fbQuad.Draw();
+}
+
+void PostprocessOverlay::OnScreenSizeChange(int scrwidth, int scrheight)
+{
+	//Recreate textures with new size
+	glMakeTextureHandleNonResidentARB(colTexHandle);
+	glDeleteTextures(1, &colTex);
+	glMakeTextureHandleNonResidentARB(depthStencilTexHandle);
+	glDeleteTextures(1, &depthStencilTex);
+	glDeleteTextures(1, &intermediateCol1Image);
+	glDeleteTextures(1, &intermediateCol2Image);
+
+	//Store currently bound FBO for rebinding after
+	int drawFbo, readFbo;
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
+	glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	glCreateTextures(GL_TEXTURE_2D, 1, &colTex);
+	glTextureStorage2D(colTex, 1, GL_RGBA8, scrwidth, scrheight);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, colTex, 0);
+	colTexHandle = glGetTextureHandleARB(colTex);
+	glMakeTextureHandleResidentARB(colTexHandle);
+	fboTextureHandles.input.x = colTexHandle;
+
+	glCreateTextures(GL_TEXTURE_2D, 1, &depthStencilTex);
+	glTextureStorage2D(depthStencilTex, 1, GL_DEPTH32F_STENCIL8, scrwidth, scrheight);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, depthStencilTex, 0);
+	depthStencilTexHandle = glGetTextureHandleARB(depthStencilTex);
+	glMakeTextureHandleResidentARB(depthStencilTexHandle);
+	fboTextureHandles.input.y = depthStencilTexHandle;
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, readFbo);
+
+
+	//Create intermediate colour buffer images for ping-pong buffering between multiple shader passes
+	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol1Image);
+	glTextureStorage2D(intermediateCol1Image, 1, GL_RGBA8, scrwidth, scrheight);
+
+	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol2Image);
+	glTextureStorage2D(intermediateCol2Image, 1, GL_RGBA8, scrwidth, scrheight);
 }
 
 

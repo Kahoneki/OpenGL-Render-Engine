@@ -2778,7 +2778,7 @@
     <None Include="Shaders\blinn_phong.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\fbo.frag">
+    <None Include="Shaders\fboPostProcess.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\fbo.vert">
@@ -2810,6 +2810,9 @@
     </None>
     <None Include="Shaders\Postprocess\saturation.comp">
       <Filter>Shaders\Postprocess</Filter>
+    </None>
+    <None Include="Shaders\fboPortal.frag">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

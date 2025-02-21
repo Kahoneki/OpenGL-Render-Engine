@@ -53,6 +53,8 @@ private:
     
     void Render(unsigned int outputFbo=0); //Render all active postprocessing effects onto `fbo` before rendering the final result to `outputFbo`
 
+    void OnScreenSizeChange(int scrwidth, int scrheight); //Called by WindowManager as callback
+
 };
 
 #endif

@@ -1048,7 +1048,8 @@
   <ItemGroup>
     <None Include="Shaders\blinn_phong.frag" />
     <None Include="Shaders\blinn_phong.vert" />
-    <None Include="Shaders\fbo.frag" />
+    <None Include="Shaders\fboPortal.frag" />
+    <None Include="Shaders\fboPostProcess.frag" />
     <None Include="Shaders\fbo.vert" />
     <None Include="Shaders\frag.glsl" />
     <None Include="Shaders\light_source.frag" />
