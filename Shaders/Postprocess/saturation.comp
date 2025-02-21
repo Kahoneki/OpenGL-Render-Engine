@@ -28,6 +28,17 @@ layout (binding=2, std140) uniform HandleBlock
 } handles;
 
 
+struct SaturationData
+{
+	float factor;
+};
+
+layout (binding=3, std140) uniform SatDataBlock
+{
+	SaturationData data;
+} satData;
+
+
 vec4 saturate(vec4 col, float saturationFactor)
 {
 	vec3 luminanceGreyscale = vec3(dot(col.rgb, vec3(0.299, 0.587, 0.114))); //Calculate luminance greyscale based on standard weight values
@@ -42,6 +53,6 @@ void main()
 	if (P.x > imageSize(inputImg).x || P.y > imageSize(inputImg).y) { return; }
 
 	vec4 col = imageLoad(inputImg, P);
-	vec4 satCol = saturate(col, 0.2);
+	vec4 satCol = saturate(col, satData.data.factor);
 	imageStore(outputImg, P, satCol);
 }

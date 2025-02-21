@@ -46,6 +46,9 @@
     <Filter Include="Shaders\Postprocess">
       <UniqueIdentifier>{f5be99ac-93ff-4909-96d3-0bb5650e8d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Postprocessing Effects">
+      <UniqueIdentifier>{446feec4-44b9-4d4c-bd44-ed09749e4f23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\World\Scene.cpp">
@@ -162,6 +165,12 @@
     </ClCompile>
     <ClCompile Include="Shaders\shader.cpp">
       <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Postprocessing Effects\Saturation.cpp">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Postprocessing Effects\PostprocessingEffect.cpp">
+      <Filter>Source Files\Postprocessing Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2768,6 +2777,15 @@
     </ClInclude>
     <ClInclude Include="Shaders\shader.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Postprocessing Effects\Saturation.h">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Postprocessing Effects\PostprocessingEffect.h">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Postprocessing Effects\PostprocessingEffects.h">
+      <Filter>Source Files\Postprocessing Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

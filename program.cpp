@@ -11,6 +11,7 @@
 #include "Source Files/World/Scene.h"
 #include "Source Files/World/LightSource.h"
 #include "Shaders/shader.h"
+#include "Source Files/Postprocessing Effects/PostprocessingEffects.h"
 #include "Source Files/Utility/RandomFunctions.h"
 #include <GLM/gtx/string_cast.hpp>
 
@@ -91,7 +92,9 @@ int main()
 
 
 	//Postprocess effects
-	cam.postprocessOverlay.AddPostprocessingEffect(POSTPROCESSING_EFFECT::SATURATION);
+	PPEffect::Saturation satEffect;
+	satEffect.SetFactor(0.2f);
+	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };

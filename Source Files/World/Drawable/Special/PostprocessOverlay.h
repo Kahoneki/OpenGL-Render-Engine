@@ -3,7 +3,8 @@
 
 #include "../PrimitiveModel.h"
 #include "FramebufferQuad.h"
-#include <unordered_map>
+#include <vector>
+#include "../../../Postprocessing Effects/PostprocessingEffect.h"
 
 
 class ComputeShader;
@@ -28,8 +29,8 @@ public:
     PostprocessOverlay();
     ~PostprocessOverlay();
 
-    void AddPostprocessingEffect(POSTPROCESSING_EFFECT effect);
-    void RemovePostprocessingEffect(POSTPROCESSING_EFFECT effect);
+    void AddPostprocessingEffect(PPEffect::PostprocessingEffect* effect);
+    void RemovePostprocessingEffect(PPEffect::PostprocessingEffect* effect);
 
 private:
     FramebufferQuad fbQuad;
@@ -49,7 +50,7 @@ private:
     unsigned int intermediateCol1Image;
     unsigned int intermediateCol2Image;
     
-    std::unordered_map<POSTPROCESSING_EFFECT, ComputeShader*> activeShaders; //All currently active postprocessing effects
+    std::vector<PPEffect::PostprocessingEffect*> activeEffects;
     
     void Render(unsigned int outputFbo=0); //Render all active postprocessing effects onto `fbo` before rendering the final result to `outputFbo`
 

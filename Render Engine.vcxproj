@@ -158,6 +158,8 @@
     <ClCompile Include="Source Files\imgui\imgui_tables.cpp" />
     <ClCompile Include="Source Files\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Material\Material.cpp" />
+    <ClCompile Include="Source Files\Postprocessing Effects\PostprocessingEffect.cpp" />
+    <ClCompile Include="Source Files\Postprocessing Effects\Saturation.cpp" />
     <ClCompile Include="Source Files\Utility\Maths\Ray.cpp" />
     <ClCompile Include="Source Files\Utility\RandomFunctions.cpp" />
     <ClCompile Include="Source Files\World\Drawable\Cube24.cpp" />
@@ -199,6 +201,9 @@
     <ClInclude Include="Source Files\imgui\imstb_textedit.h" />
     <ClInclude Include="Source Files\imgui\imstb_truetype.h" />
     <ClInclude Include="Source Files\Material\Material.h" />
+    <ClInclude Include="Source Files\Postprocessing Effects\PostprocessingEffect.h" />
+    <ClInclude Include="Source Files\Postprocessing Effects\PostprocessingEffects.h" />
+    <ClInclude Include="Source Files\Postprocessing Effects\Saturation.h" />
     <ClInclude Include="Source Files\Utility\BindingPoints.h" />
     <ClInclude Include="Source Files\Utility\Maths\Ray.h" />
     <ClInclude Include="Source Files\Utility\RandomFunctions.h" />

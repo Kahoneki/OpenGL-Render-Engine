@@ -16,6 +16,7 @@
 #include "../../Shaders/shader.h"
 #include "../World/LightSource.h"
 #include "../Camera/camera.h"
+#include "../Postprocessing Effects/PostprocessingEffects.h"
 #include "../Camera/PlayerCamera.h"
 #include <iostream>
 
@@ -75,7 +76,7 @@ void Renderer::Render(Scene* scene)
 	}
 
 	RenderSource* rs{ app->sceneManager->GetActiveScene()->GetActiveRenderSource() };
-	if (rs->postprocessOverlay.activeShaders.size() > 0) {
+	if (rs->postprocessOverlay.activeEffects.size() > 0) {
 		//There are postprocessing effects active, bind the offscreen framebuffer for deferred rendering
 		glBindFramebuffer(GL_FRAMEBUFFER, rs->postprocessOverlay.fbo);
 	}
@@ -123,7 +124,7 @@ void Renderer::Render(Scene* scene)
 	}
 
 
-	if (rs->postprocessOverlay.activeShaders.size() > 0) {
+	if (rs->postprocessOverlay.activeEffects.size() > 0) {
 		//There are postprocessing effects active, draw them to the default framebuffer (0)
 		rs->postprocessOverlay.Render(0);
 	}
@@ -173,7 +174,7 @@ glm::vec4 Renderer::GetClearColour()
 }
 
 
-void DrawHeirarchy(SceneObject* s)
+void Renderer::DrawHeirarchy(SceneObject* s)
 {
 	if (ImGui::TreeNode(s->name)) {
 
@@ -244,6 +245,25 @@ void DrawHeirarchy(SceneObject* s)
 						c->updateCameraVectors();
 					}
 
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Postprocess Effects"))
+				{
+					for (PPEffect::PostprocessingEffect* e : c->postprocessOverlay.activeEffects)
+					{
+						if (dynamic_cast<PPEffect::Saturation*>(e))
+						{
+							if (ImGui::TreeNode("Saturation"))
+							{
+								PPEffect::Saturation* s{ dynamic_cast<PPEffect::Saturation*>(e) };
+								float satFactor{ s->GetFactor() };
+								ImGui::SliderFloat("Factor", &satFactor, 0.0f, 3.0f);
+								s->SetFactor(satFactor);
+
+								ImGui::TreePop();
+							}
+						}
+					}
 					ImGui::TreePop();
 				}
 

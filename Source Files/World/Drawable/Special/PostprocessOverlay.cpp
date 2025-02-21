@@ -3,6 +3,7 @@
 #include "../../../Application/WindowManager.h"
 #include "../../../Utility/BindingPoints.h"
 #include "../../../../Shaders/compute_shader.h"
+#include "../../../Postprocessing Effects/PostprocessingEffect.h"
 #include <iostream>
 
 
@@ -90,9 +91,9 @@ void PostprocessOverlay::Render(unsigned int outputFbo)
 	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 	
 	bool swap{ true };
-	for (std::unordered_map<POSTPROCESSING_EFFECT, ComputeShader*>::iterator it{ activeShaders.begin() }; it != activeShaders.end(); ++it)
+	for (PPEffect::PostprocessingEffect* ppe : activeEffects)
 	{
-		it->second->use();
+		ppe->PrepareState();
 		glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
 		if (swap)
 		{
@@ -167,21 +168,25 @@ void PostprocessOverlay::OnScreenSizeChange(int scrwidth, int scrheight)
 }
 
 
-void PostprocessOverlay::AddPostprocessingEffect(POSTPROCESSING_EFFECT effect)
+void PostprocessOverlay::AddPostprocessingEffect(PPEffect::PostprocessingEffect* effect)
 {
-	if (activeShaders.count(effect) != 0) {
-		//Effect already in map
-		std::cerr << "Attempted to add post-processing effect to overlay that was already using the effect. Effect: " << effect << std::endl;
+	if (std::find(activeEffects.begin(), activeEffects.end(), effect) != activeEffects.end())
+	{
+		//Effect already in vector
+		std::cerr << "Attempted to add post-processing effect to overlay that was already using the effect." << std::endl;
 		return;
 	}
-
-	activeShaders[effect] = new ComputeShader(SHADER_PRESET::POSTPROCESS, effect);
+	activeEffects.push_back(effect);
 }
 
-void PostprocessOverlay::RemovePostprocessingEffect(POSTPROCESSING_EFFECT effect)
+void PostprocessOverlay::RemovePostprocessingEffect(PPEffect::PostprocessingEffect* effect)
 {
-	if (!activeShaders.erase(effect)) {
+	std::vector<PPEffect::PostprocessingEffect*>::iterator it{ std::find(activeEffects.begin(), activeEffects.end(), effect) };
+	if (it == activeEffects.end())
+	{
 		//Effect not in map
-		std::cerr << "Attempted to remove post-processing effect from overlay that wasn't using the effect. Effect: " << effect << '\n';
+		std::cerr << "Attempted to remove post-processing effect from overlay that wasn't using the effect." << std::endl;
+		return;
 	}
+	activeEffects.erase(it);
 }

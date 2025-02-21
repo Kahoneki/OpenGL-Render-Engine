@@ -7,6 +7,7 @@
 class Application;
 class Shader;
 class Scene;
+class SceneObject;
 
 /*Main class - holds Scene, and Shader references, call Renderer::Render() to render the active scene with the active rendersource and active shader*/
 
@@ -40,6 +41,7 @@ private:
 	Shader* lightSourceShader;
 
 	void RenderImGui();
+	void DrawHeirarchy(SceneObject* s);
 
 	bool dropdownStatuses[1]; //ImGui dropdowns
 
