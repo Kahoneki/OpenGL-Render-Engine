@@ -5,13 +5,13 @@
 
 namespace PPEffect
 {
-	Saturation::Saturation()
+	Saturation::Saturation() : PostprocessingEffect(1)
 	{
-		data = new SaturationData();
-		reinterpret_cast<SaturationData*>(data)->factor = 1.0f;
-		UpdateUBO();
+		data.push_back(new SaturationData());
+		reinterpret_cast<SaturationData*>(data[0])->factor = 1.0f;
+		UpdateUBO(0);
 
-		shader = new ComputeShader(SHADER_PRESET::POSTPROCESS, POSTPROCESSING_EFFECT::SATURATION);
+		shaders.push_back(new ComputeShader(SHADER_PRESET::POSTPROCESS, POSTPROCESSING_EFFECT::SATURATION));
 	}
 	
 	Saturation::~Saturation()
@@ -20,13 +20,13 @@ namespace PPEffect
 
 	void Saturation::SetFactor(float val)
 	{
-		reinterpret_cast<SaturationData*>(data)->factor = val;
-		UpdateUBO();
+		reinterpret_cast<SaturationData*>(data[0])->factor = val;
+		UpdateUBO(0);
 	}
 	
 	float Saturation::GetFactor()
 	{
-		return reinterpret_cast<SaturationData*>(data)->factor;
+		return reinterpret_cast<SaturationData*>(data[0])->factor;
 	}
 
 	::size_t Saturation::GetDataSize() const
