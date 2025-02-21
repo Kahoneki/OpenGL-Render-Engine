@@ -198,13 +198,15 @@ void Portal::CheckForCameraCollision()
         
         //Optional - nudge camera forward until it is in front of the portal - bandaid to counteract glitchy behaviour
         float preNudgeFactor{ 0.1f }; //distance to nudge user in direction of destination portal per-step
-        float postNudgeAmount{ 0.1f }; //distance to nudge user in direction of destination portal after player is in front if they were moved by preNudge
+        float postNudgeAmount{ 0.1f }; //distance to nudge user in direction of destination portal after player is in front if they were moved by pre-nudge
         bool nudged{ false };
+        //pre-nudge
         while (glm::dot(camera->getPosition() - otherPortalNorm, otherPortalNorm) < 0)
         {
             nudged = true;
             camera->setPosition(camera->getPosition() + (otherPortalNorm * preNudgeFactor));
         }
+        //post-nudge
         if (nudged)
         {
             camera->setPosition(camera->getPosition() + (otherPortalNorm * postNudgeAmount));
