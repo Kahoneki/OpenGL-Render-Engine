@@ -161,7 +161,7 @@ void Portal::CheckForCameraCollision()
     //Check if camera intersects with portal
     Camera* camera{ dynamic_cast<Camera*>(sceneParent->GetActiveRenderSource()) };
     Ray ray{ camera->positionLastFrame, camera->getPosition() };
-    if (ray.IntersectsWithPlane(renderRegion))
+    if (ray.IntersectsWithPlane(renderRegion, -0.3f, 0.2f))
     {
         if (!Portal::cameraCanTeleport)
         {
@@ -197,10 +197,17 @@ void Portal::CheckForCameraCollision()
         camera->setPosition(glm::vec3(newCameraWorldMatrix[3]));
         
         //Optional - nudge camera forward until it is in front of the portal - bandaid to counteract glitchy behaviour
-        float nudgeFactor{ 0.1f }; //distance to nudge user in direction of destination portal
+        float preNudgeFactor{ 0.1f }; //distance to nudge user in direction of destination portal per-step
+        float postNudgeAmount{ 0.1f }; //distance to nudge user in direction of destination portal after player is in front if they were moved by preNudge
+        bool nudged{ false };
         while (glm::dot(camera->getPosition() - otherPortalNorm, otherPortalNorm) < 0)
         {
-            camera->setPosition(camera->getPosition() + (otherPortalNorm * nudgeFactor));
+            nudged = true;
+            camera->setPosition(camera->getPosition() + (otherPortalNorm * preNudgeFactor));
+        }
+        if (nudged)
+        {
+            camera->setPosition(camera->getPosition() + (otherPortalNorm * postNudgeAmount));
         }
 
         

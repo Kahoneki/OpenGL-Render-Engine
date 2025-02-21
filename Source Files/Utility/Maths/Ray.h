@@ -14,7 +14,7 @@ struct Ray
 
     Ray(glm::vec3 _origin, glm::vec3 _endpoint);
 
-    bool IntersectsWithPlane(const Plane& plane);
+    bool IntersectsWithPlane(const Plane& plane, float startRayBuffer=0, float endRayBuffer=0);
 };
 
 

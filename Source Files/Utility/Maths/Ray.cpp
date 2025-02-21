@@ -13,7 +13,7 @@ Ray::Ray(glm::vec3 _origin, glm::vec3 _endpoint)
     endpoint = _endpoint;
 }
 
-bool Ray::IntersectsWithPlane(const Plane& plane)
+bool Ray::IntersectsWithPlane(const Plane& plane, float startRayBuffer, float endRayBuffer)
 {
     //Standard plane equation: Point a is on infinite plane with known point p and normal n if (a-p).n = 0
     glm::vec3 p{ plane.getPosition() };
@@ -21,8 +21,8 @@ bool Ray::IntersectsWithPlane(const Plane& plane)
     glm::vec3 n{ glm::normalize(glm::cross(axes.first, axes.second)) };
 
     //Standard ray equation: R(t) = o+td {0 <= t <= 1 for finite rays}
-    glm::vec3 o{ origin };
-    glm::vec3 d{ endpoint - origin };
+    glm::vec3 o{ origin - startRayBuffer };
+    glm::vec3 d{ (endpoint + endRayBuffer) - origin };
 
     //Check edge case where ray and plane are parallel - avoid division by 0 error in next step
     double denom{ glm::dot(d, n) };
@@ -40,7 +40,7 @@ bool Ray::IntersectsWithPlane(const Plane& plane)
     //=> (o-p).n + t(d.n) = 0
     //=> t = ((p-o).n) / (d.n)
     double t{ glm::dot((p-o), n) / denom };
-    
+
     //Check that 0 <= t <= 1
     if (t < 0 || t > 1)
     {
