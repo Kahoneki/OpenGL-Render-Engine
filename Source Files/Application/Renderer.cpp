@@ -249,11 +249,15 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 				}
 				if (ImGui::TreeNode("Postprocess Effects"))
 				{
+					std::size_t saturationCount{ 0 };
 					for (PPEffect::PostprocessingEffect* e : c->postprocessOverlay.activeEffects)
 					{
 						if (dynamic_cast<PPEffect::Saturation*>(e))
 						{
-							if (ImGui::TreeNode("Saturation"))
+							saturationCount++;
+							std::string name{ "Saturation " };
+							name += std::to_string(saturationCount);
+							if (ImGui::TreeNode(name.c_str()))
 							{
 								PPEffect::Saturation* s{ dynamic_cast<PPEffect::Saturation*>(e) };
 								float satFactor{ s->GetFactor() };

@@ -92,9 +92,12 @@ int main()
 
 
 	//Postprocess effects
-	PPEffect::Saturation satEffect;
-	satEffect.SetFactor(0.2f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect);
+	PPEffect::Saturation satEffect1;
+	satEffect1.SetFactor(1.0f);
+	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect1);
+	PPEffect::Saturation satEffect2;
+	satEffect2.SetFactor(1.0f);
+	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect2);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };
