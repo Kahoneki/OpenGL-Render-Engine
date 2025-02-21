@@ -194,8 +194,14 @@ void Portal::CheckForCameraCollision()
         glm::mat4 otherPortalWorldMatrix{ otherPortal->renderRegion.GetHeirarchicalModelMatrix() };
         glm::mat4 newCameraWorldMatrix{ otherPortalWorldMatrix * cameraRelativeToPortal };
         glm::vec3 otherPortalNorm{ glm::normalize(glm::vec3(otherPortalWorldMatrix * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f))) };
-        float nudgeFactor{ 1.8f }; //Optional - distance to nudge user in direction of destination portal, bandaid to counteract glitchy behaviour
-        camera->setPosition(glm::vec3(newCameraWorldMatrix[3]) + (otherPortalNorm * nudgeFactor));
+        camera->setPosition(glm::vec3(newCameraWorldMatrix[3]));
+        
+        //Optional - nudge camera forward until it is in front of the portal - bandaid to counteract glitchy behaviour
+        float nudgeFactor{ 0.1f }; //distance to nudge user in direction of destination portal
+        while (glm::dot(camera->getPosition() - otherPortalNorm, otherPortalNorm) < 0)
+        {
+            camera->setPosition(camera->getPosition() + (otherPortalNorm * nudgeFactor));
+        }
 
         
         //Correct for rotation
