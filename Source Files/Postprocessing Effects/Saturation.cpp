@@ -29,7 +29,7 @@ namespace PPEffect
 		return reinterpret_cast<SaturationData*>(data[0])->factor;
 	}
 
-	::size_t Saturation::GetDataSize() const
+	std::size_t Saturation::GetDataSize() const
 	{
 		return sizeof(SaturationData);
 	}

@@ -72,13 +72,21 @@ PostprocessOverlay::~PostprocessOverlay()
 
 
 //Run all passes of a single shader
-void PostprocessOverlay::RunShader(PPEffect::PostprocessingEffect* ppe)
+void PostprocessOverlay::RunShader(PPEffect::PostprocessingEffect* ppe, bool& swap)
 {
 	int SCRWIDTH{ Application::getInstance().windowManager.get()->SCRWIDTH };
 	int SCRHEIGHT{ Application::getInstance().windowManager.get()->SCRHEIGHT };
 
-	bool swap{ true };
 	std::size_t numPasses{ ppe->GetNumPasses() };
+
+	//if (numPasses == 1)
+	//{
+	//	ppe->PrepareState(0);
+	//	glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
+	//	return;
+	//}
+
+	
 	for (std::size_t i{ 0 }; i < numPasses; ++i)
 	{
 		ppe->PrepareState(i);
@@ -95,6 +103,8 @@ void PostprocessOverlay::RunShader(PPEffect::PostprocessingEffect* ppe)
 		}
 		swap = !swap;
 	}
+	//glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+	//glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 }
 
 
@@ -108,18 +118,27 @@ void PostprocessOverlay::Render(unsigned int outputFbo)
 	//Bind intermediateCol2Image to image unit 1
 	//Initialise output tracker to track which image has the most recent output (initially 1)
 	//For all postprocessing effects in activeShaders:
-	//	Bind the shader
-	//	Run the shader
-	//	Swap image units of intermediateCol1Image and intermediateCol2Image
+	//	Run all shader passes, swapping intermediateColImage 1 and 2 between passes
 	//Draw framebuffer quad
 
 	glCopyImageSubData(colTex, GL_TEXTURE_2D, 0, 0, 0, 0, intermediateCol1Image, GL_TEXTURE_2D, 0, 0, 0, 0, SCRWIDTH, SCRHEIGHT, 1);
 	glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 	glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 
+	bool swap{ true };
 	for (PPEffect::PostprocessingEffect* ppe : activeEffects)
 	{
-		RunShader(ppe);
+		RunShader(ppe, swap);
+	}
+	if (swap)
+	{
+		glBindImageTexture(0, intermediateCol2Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		glBindImageTexture(1, intermediateCol1Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+	}
+	else
+	{
+		glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+		glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, outputFbo);

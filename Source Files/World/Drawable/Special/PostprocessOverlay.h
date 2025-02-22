@@ -53,7 +53,7 @@ private:
     std::vector<PPEffect::PostprocessingEffect*> activeEffects;
     
     //For internal use only - use Render() instead
-    void RunShader(PPEffect::PostprocessingEffect* ppe);
+    void RunShader(PPEffect::PostprocessingEffect* ppe, bool& swap);
 
     void Render(unsigned int outputFbo=0); //Render all active postprocessing effects onto `fbo` before rendering the final result to `outputFbo`
 

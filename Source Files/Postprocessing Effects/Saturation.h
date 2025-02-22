@@ -2,6 +2,7 @@
 #define SATURATION_H
 
 #include "PostprocessingEffect.h"
+#include <cstddef>
 
 namespace PPEffect
 {
@@ -19,7 +20,7 @@ namespace PPEffect
 		void SetFactor(float val);
 		float GetFactor();
 
-		::size_t GetDataSize() const override;
+		std::size_t GetDataSize() const override;
 	};
 }
 
