@@ -44,6 +44,7 @@ PostprocessOverlay::PostprocessOverlay() : fbQuad(SHADER_PRESET::FBO_POSTPROCESS
 	//Create intermediate colour buffer images for ping-pong buffering between multiple shader passes
 	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol1Image);
 	glTextureStorage2D(intermediateCol1Image, 1, GL_RGBA8, SCRWIDTH, SCRHEIGHT);
+	glBindTexture(GL_TEXTURE_2D, intermediateCol1Image);
 
 	glCreateTextures(GL_TEXTURE_2D, 1, &intermediateCol2Image);
 	glTextureStorage2D(intermediateCol2Image, 1, GL_RGBA8, SCRWIDTH, SCRHEIGHT);

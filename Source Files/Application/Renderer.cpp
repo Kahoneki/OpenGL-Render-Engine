@@ -291,7 +291,7 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 							{
 								PPEffect::Fisheye* f{ dynamic_cast<PPEffect::Fisheye*>(e) };
 								float fEyeStrength{ f->GetStrength() };
-								ImGui::SliderFloat("Strength", &fEyeStrength, 0.0f, 1.0f);
+								ImGui::SliderFloat("Strength", &fEyeStrength, 0.0f, 3.0f);
 								f->SetStrength(fEyeStrength);
 
 								ImGui::TreePop();

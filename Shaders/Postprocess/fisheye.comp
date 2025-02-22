@@ -43,9 +43,16 @@ layout (binding=3, std140) uniform FEyeDataBlock
 vec2 fisheye(vec2 texCoord01, float fisheyeStrength)
 {
 	vec2 texCoord0Centre = texCoord01*2-1; //Texture coordinate with origin in centre ([0:1] -> [-1:1])
-	float dist = length(texCoord0Centre);
-	float magnitude = mix(fisheyeStrength, 0, dist);
-	return texCoord0Centre + normalize(texCoord0Centre) * magnitude;
+	float radius = length(texCoord0Centre);
+	float angle = atan(texCoord0Centre.y, texCoord0Centre.x);
+	
+	//Simple polynomial fisheye approximation
+	float distortedRadius = radius * (1.0 + fisheyeStrength * radius * radius);
+	distortedRadius = min(distortedRadius, 1.0);
+	vec2 distortedTexCoord = vec2(distortedRadius * cos(angle), distortedRadius * sin(angle));
+	distortedTexCoord = distortedTexCoord * 0.5 + 0.5; //[-1,1] -> [0:1]
+
+	return distortedTexCoord;
 }
 
 
@@ -54,7 +61,11 @@ void main()
 	ivec2 P = ivec2(gl_GlobalInvocationID.xy);
 	if (P.x > imageSize(inputImg).x || P.y > imageSize(inputImg).y) { return; }
 
-	vec4 col = imageLoad(inputImg, P);
-	vec2 newTexCoord = fisheye(vec2(P)/imageSize(inputImg), fEyeData.data.strength);
-	imageStore(outputImg, ivec2(newTexCoord*imageSize(inputImg)), col);
+	//Work in reverse to avoid gaps in image - get tex coord in output image and reverse the distortion to see where that lands in the input image, then sample that point for the output
+	vec2 outputTexCoord = vec2(P) / imageSize(outputImg);
+	vec2 reverseFisheyeTexCoord = fisheye(outputTexCoord, fEyeData.data.strength);
+	reverseFisheyeTexCoord = clamp(reverseFisheyeTexCoord, 0.0, 1.0);
+
+	vec4 col = imageLoad(inputImg, ivec2(reverseFisheyeTexCoord * imageSize(inputImg)));
+	imageStore(outputImg, P, col);
 }
