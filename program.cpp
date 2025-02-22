@@ -98,12 +98,18 @@ int main()
 	PPEffect::Saturation satEffect2;
 	satEffect2.SetFactor(1.0f);
 	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect2);
-	PPEffect::Saturation satEffect3;
-	satEffect3.SetFactor(1.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect3);
-	PPEffect::Saturation satEffect4;
-	satEffect4.SetFactor(1.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect4);
+	//PPEffect::Saturation satEffect3;
+	//satEffect3.SetFactor(1.0f);
+	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect3);
+	//PPEffect::Saturation satEffect4;
+	//satEffect4.SetFactor(1.0f);
+	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect4);
+	PPEffect::Vignette vigEffect1;
+	vigEffect1.SetStrength(0.0f);
+	cam.postprocessOverlay.AddPostprocessingEffect(&vigEffect1);
+	PPEffect::Fisheye fEyeEffect1;
+	fEyeEffect1.SetStrength(0.0f);
+	cam.postprocessOverlay.AddPostprocessingEffect(&fEyeEffect1);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };

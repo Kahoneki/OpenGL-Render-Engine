@@ -249,7 +249,7 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 				}
 				if (ImGui::TreeNode("Postprocess Effects"))
 				{
-					std::size_t saturationCount{ 0 };
+					std::size_t saturationCount{ 0 }, vignetteCount{ 0 }, fisheyeCount{ 0 };
 					for (PPEffect::PostprocessingEffect* e : c->postprocessOverlay.activeEffects)
 					{
 						if (dynamic_cast<PPEffect::Saturation*>(e))
@@ -263,6 +263,36 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 								float satFactor{ s->GetFactor() };
 								ImGui::SliderFloat("Factor", &satFactor, 0.0f, 3.0f);
 								s->SetFactor(satFactor);
+
+								ImGui::TreePop();
+							}
+						}
+						if (dynamic_cast<PPEffect::Vignette*>(e))
+						{
+							vignetteCount++;
+							std::string name{ "Vignette " };
+							name += std::to_string(vignetteCount);
+							if (ImGui::TreeNode(name.c_str()))
+							{
+								PPEffect::Vignette* v{ dynamic_cast<PPEffect::Vignette*>(e) };
+								float vigStrength{ v->GetStrength() };
+								ImGui::SliderFloat("Strength", &vigStrength, 0.0f, 1.0f);
+								v->SetStrength(vigStrength);
+
+								ImGui::TreePop();
+							}
+						}
+						if (dynamic_cast<PPEffect::Fisheye*>(e))
+						{
+							fisheyeCount++;
+							std::string name{ "Fisheye " };
+							name += std::to_string(fisheyeCount);
+							if (ImGui::TreeNode(name.c_str()))
+							{
+								PPEffect::Fisheye* f{ dynamic_cast<PPEffect::Fisheye*>(e) };
+								float fEyeStrength{ f->GetStrength() };
+								ImGui::SliderFloat("Strength", &fEyeStrength, 0.0f, 1.0f);
+								f->SetStrength(fEyeStrength);
 
 								ImGui::TreePop();
 							}

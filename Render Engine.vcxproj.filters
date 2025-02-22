@@ -172,6 +172,12 @@
     <ClCompile Include="Source Files\Postprocessing Effects\PostprocessingEffect.cpp">
       <Filter>Source Files\Postprocessing Effects</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Postprocessing Effects\Vignette.cpp">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Postprocessing Effects\Fisheye.cpp">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Files\World\Scene.h">
@@ -2787,6 +2793,12 @@
     <ClInclude Include="Source Files\Postprocessing Effects\PostprocessingEffects.h">
       <Filter>Source Files\Postprocessing Effects</Filter>
     </ClInclude>
+    <ClInclude Include="Source Files\Postprocessing Effects\Vignette.h">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Files\Postprocessing Effects\Fisheye.h">
+      <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source Files\Shaders\Postprocess\saturation.comp" />
@@ -2831,6 +2843,12 @@
     </None>
     <None Include="Shaders\fboPortal.frag">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Postprocess\vignette.comp">
+      <Filter>Shaders\Postprocess</Filter>
+    </None>
+    <None Include="Shaders\Postprocess\fisheye.comp">
+      <Filter>Shaders\Postprocess</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

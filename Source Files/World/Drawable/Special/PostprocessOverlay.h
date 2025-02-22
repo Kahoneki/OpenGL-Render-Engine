@@ -13,6 +13,8 @@ enum POSTPROCESSING_EFFECT
 {
     NONE,
     SATURATION,
+    VIGNETTE,
+    FISHEYE,
 };
 
 struct FBOTextureHandles

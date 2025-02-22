@@ -78,14 +78,6 @@ void PostprocessOverlay::RunShader(PPEffect::PostprocessingEffect* ppe, bool& sw
 	int SCRHEIGHT{ Application::getInstance().windowManager.get()->SCRHEIGHT };
 
 	std::size_t numPasses{ ppe->GetNumPasses() };
-
-	//if (numPasses == 1)
-	//{
-	//	ppe->PrepareState(0);
-	//	glDispatchCompute((SCRWIDTH + 31) / 32, (SCRHEIGHT + 31) / 32, 1);
-	//	return;
-	//}
-
 	
 	for (std::size_t i{ 0 }; i < numPasses; ++i)
 	{
@@ -103,8 +95,6 @@ void PostprocessOverlay::RunShader(PPEffect::PostprocessingEffect* ppe, bool& sw
 		}
 		swap = !swap;
 	}
-	//glBindImageTexture(0, intermediateCol1Image, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-	//glBindImageTexture(1, intermediateCol2Image, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 }
 
 

@@ -1,0 +1,60 @@
+#version 460 core
+#extension GL_ARB_bindless_texture : require
+#ifdef GL_ARB_gpu_shader_int64
+	#extension GL_ARB_gpu_shader_int64 : enable
+#endif
+
+layout (local_size_x = 32, local_size_y = 32) in;
+
+layout (binding=0, rgba8) readonly uniform image2D inputImg;
+layout (binding=1, rgba8) writeonly uniform image2D outputImg;
+
+struct FBOTextureHandles
+{
+	#ifdef GL_ARB_gpu_shader_int64
+		uint64_t inputCol;
+		uint64_t inputDepth;
+	#else
+		uint inputColLow;
+		uint inputColHigh;
+		uint inputDepthLow;
+		uint inputDepthHigh;
+	#endif
+};
+
+layout (binding=2, std140) uniform HandleBlock
+{
+	FBOTextureHandles data;
+} handles;
+
+
+struct FisheyeData
+{
+	float strength;
+};
+
+layout (binding=3, std140) uniform FEyeDataBlock
+{
+	FisheyeData data;
+} fEyeData;
+
+
+//Returns new texcoord
+vec2 fisheye(vec2 texCoord01, float fisheyeStrength)
+{
+	vec2 texCoord0Centre = texCoord01*2-1; //Texture coordinate with origin in centre ([0:1] -> [-1:1])
+	float dist = length(texCoord0Centre);
+	float magnitude = mix(fisheyeStrength, 0, dist);
+	return texCoord0Centre + normalize(texCoord0Centre) * magnitude;
+}
+
+
+void main()
+{
+	ivec2 P = ivec2(gl_GlobalInvocationID.xy);
+	if (P.x > imageSize(inputImg).x || P.y > imageSize(inputImg).y) { return; }
+
+	vec4 col = imageLoad(inputImg, P);
+	vec2 newTexCoord = fisheye(vec2(P)/imageSize(inputImg), fEyeData.data.strength);
+	imageStore(outputImg, ivec2(newTexCoord*imageSize(inputImg)), col);
+}

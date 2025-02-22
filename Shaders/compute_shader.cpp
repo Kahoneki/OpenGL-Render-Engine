@@ -81,6 +81,16 @@ ComputeShader::ComputeShader(SHADER_PRESET preset, POSTPROCESSING_EFFECT effect=
             shaderFilepath = "Postprocess/saturation.comp";
             break;
         }
+        case POSTPROCESSING_EFFECT::VIGNETTE:
+        {
+            shaderFilepath = "Postprocess/vignette.comp";
+            break;
+        }
+        case POSTPROCESSING_EFFECT::FISHEYE:
+        {
+            shaderFilepath = "Postprocess/fisheye.comp";
+            break;
+        }
         default:
             std::cerr << "Postprocessing effect not found: " << effect << std::endl;
             shaderFilepath = "";
