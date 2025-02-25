@@ -400,3 +400,5 @@ FodyWeavers.xsd
 # Exception for Debug folder created by CMake
 !build/Debug/
 !build/Debug/*
+
+!Resource Files/*.obj

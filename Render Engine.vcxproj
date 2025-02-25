@@ -1071,7 +1071,6 @@
     <None Include="Shaders\static_material.frag" />
     <None Include="Shaders\static_material.vert" />
     <None Include="Shaders\vert.glsl" />
-    <None Include="Source Files\Shaders\Postprocess\saturation.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource Files\brickwall.jpg" />

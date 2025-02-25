@@ -2804,7 +2804,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source Files\Shaders\Postprocess\saturation.comp" />
     <None Include="Shaders\blinn_phong.frag">
       <Filter>Shaders</Filter>
     </None>
