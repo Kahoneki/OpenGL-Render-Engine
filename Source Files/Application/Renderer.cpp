@@ -376,6 +376,11 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 					d->material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, normal);
 				}
 
+				bool specular = d->material.GetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT);
+				if (ImGui::Checkbox("Specular Texture", &specular)) {
+					d->material.SetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT, normal);
+				}
+
 				ImGui::TreePop();
 			}
 		}

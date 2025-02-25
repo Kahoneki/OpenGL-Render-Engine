@@ -6,20 +6,26 @@
 #include <vector>
 
 #include "../../../Shaders/shader.h"
-#include "mesh.h"
+#include "Mesh.h"
+#include "../Scene.h"
+#include <unordered_map>
 
-class Model
+class ExternalModel : public Drawable
 {
 public:
+
+	ExternalModel(const std::string& path, Scene& _sceneParent, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent=nullptr);
+	void Draw(Shader& shader) override;
+
+private:
 	//Model data
 	std::vector<Mesh> meshes;
 	std::string directory;
 	std::vector<Texture> textures_loaded;
 
-	Model(std::string const& path);
-	void Draw(Shader& shader, int instances=0);
+	Scene& sceneParent;
 
-private:
+	std::unordered_map<aiNode*, SceneObject*> assimpNodeToSceneObject;
 
 	void LoadModel(std::string const& path);
 	void ProcessNode(aiNode* node, const aiScene* scene);

@@ -42,11 +42,17 @@ struct MaterialData
 	#ifdef GL_ARB_gpu_shader_int64
 		uint64_t albedoTextureHandle;
 		uint64_t normalTextureHandle;
+		uint64_t specularTextureHandle;
+		uint64_t NATextureHandle;
 	#else
 		uint albedoTextureHandleLow;
 		uint albedoTextureHandleHigh;
 		uint normalTextureHandleLow;
 		uint normalTextureHandleHigh;
+		uint specularTextureHandleLow;
+		uint specularTextureHandleHigh;
+		uint NATextureHandleLow;
+		uint NATextureHandleHigh;
 	#endif
 
 	uint activePropertiesBitfield;
@@ -137,10 +143,26 @@ void main()
 			}
 			vec3 lightDirReflectedAroundNormal = reflect(-lightDir, lightingNormal);
 
+
+			//Setting ambient, diffuse, specular, and rim terms
 			vec4 ambient = material.matData.ambientColour * light.ambientColour;
 			vec4 diffuse = max(dot(lightingNormal, lightDir), 0.0f) * material.matData.diffuseColour * light.diffuseColour;
+			//Specular texture bit
+			vec3 specularColour;
+			if ((material.matData.activePropertiesBitfield & 8u) != 0u) {
+			#ifdef GL_ARB_gpu_shader_int64
+				specularColour = texture(sampler2D(material.matData.specularTextureHandle), texCoord).rgb;
+			#else
+				specularColour = texture(sampler2D(uvec2(material.matData.specularTextureHandleLow, material.matData.specularTextureHandleHigh)), texCoord).rgb;
+			#endif
+			}
+			else {
+				specularColour = material.matData.specularColour.rgb;
+			}
 			vec4 specular = pow(max(dot(lightDirReflectedAroundNormal, transformToCamera), 0.0f), material.matData.specularPower) * material.matData.specularColour * light.specularColour;
 			vec4 rim = calculateRimContribution(lightingNormal, transformToCamera, light.diffuseColour);
+
+
 
 			//Attenuate distance based on inverse square law
 			float lengthFromLightToPoint = length(light.position.xyz - transform);
@@ -151,6 +173,7 @@ void main()
 			FragColour += distanceAttenuatedColour * light.intensityPack.x;
 		}
 
+		//Albedo texture bit
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
 			#ifdef GL_ARB_gpu_shader_int64
 				FragColour *= texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
@@ -161,6 +184,7 @@ void main()
 	}
 
 	else {
+		//Albedo texture bit
 		if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
 			#ifdef GL_ARB_gpu_shader_int64
 				FragColour = texture(sampler2D(material.matData.albedoTextureHandle), texCoord);

@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Postprocessing Effects">
       <UniqueIdentifier>{446feec4-44b9-4d4c-bd44-ed09749e4f23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\Maths">
+      <UniqueIdentifier>{afe7b96c-bc13-4ff4-9c47-bef33832a1e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\World\Scene.cpp">
@@ -157,9 +160,6 @@
     <ClCompile Include="Source Files\World\Drawable\Special\PostprocessOverlay.cpp">
       <Filter>Source Files\World\Drawable\Special</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Utility\Maths\Ray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shaders\compute_shader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
@@ -177,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="Source Files\Postprocessing Effects\Fisheye.cpp">
       <Filter>Source Files\Postprocessing Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Utility\Maths\Ray.cpp">
+      <Filter>Source Files\Utility\Maths</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

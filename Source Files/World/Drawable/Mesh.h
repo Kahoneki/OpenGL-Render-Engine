@@ -7,13 +7,7 @@
 #include <GLM/glm.hpp>
 
 #include "../../../Shaders/shader.h"
-
-
-struct Vertex {
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
-};
+#include "Drawable.h"
 
 struct Texture {
 	unsigned int id;
@@ -22,19 +16,17 @@ struct Texture {
 };
 
 
-class Mesh {
+class Mesh : public Drawable {
+
 public:
-	//Mesh Data
-	std::vector<Vertex> vertices;
+	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> texture);
-	void Draw(Shader& shader, int instances=0);
+	Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent = nullptr);
+	void Draw(Shader& shader) override;
 
 private:
-	//Render data
-	unsigned int VAO, VBO, EBO;
 	void SetupMesh();
 };
 

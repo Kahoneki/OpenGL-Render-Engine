@@ -18,8 +18,9 @@ void PrimitiveModel::Draw(Shader& shader)
 
 	if (indexed) {
 		glDrawElements(drawMode, indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElementsInstanced(drawMode, indices.size(), GL_UNSIGNED_INT, 0, instances);
 	}
 	else {
-		glDrawArrays(drawMode, 0, vertices.size());
+		glDrawArraysInstanced(drawMode, 0, vertices.size(), instances);
 	}
 }

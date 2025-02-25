@@ -13,6 +13,7 @@
 #include "Shaders/shader.h"
 #include "Source Files/Postprocessing Effects/PostprocessingEffects.h"
 #include "Source Files/Utility/RandomFunctions.h"
+#include "Source Files/World/Drawable/ExternalModel.h"
 #include <GLM/gtx/string_cast.hpp>
 
 
@@ -91,6 +92,12 @@ int main()
 	portal2.SetOtherPortal(&portal1);
 
 
+	//External models
+	ExternalModel grass{ "grass.obj", scene, "grass", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
+	grass.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	scene.AddDrawable(&grass);
+
+
 	//Postprocess effects
 	PPEffect::Saturation satEffect1;
 	satEffect1.SetFactor(1.0f);
@@ -107,9 +114,6 @@ int main()
 	PPEffect::Vignette vigEffect1;
 	vigEffect1.SetStrength(0.0f);
 	cam.postprocessOverlay.AddPostprocessingEffect(&vigEffect1);
-	PPEffect::Fisheye fEyeEffect1;
-	fEyeEffect1.SetStrength(0.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&fEyeEffect1);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };

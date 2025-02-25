@@ -19,11 +19,17 @@ struct MaterialData
 	#ifdef GL_ARB_gpu_shader_int64
 		uint64_t albedoTextureHandle;
 		uint64_t normalTextureHandle;
+		uint64_t specularTextureHandle;
+		uint64_t NATextureHandle;
 	#else
 		uint albedoTextureHandleLow;
 		uint albedoTextureHandleHigh;
 		uint normalTextureHandleLow;
 		uint normalTextureHandleHigh;
+		uint specularTextureHandleLow;
+		uint specularTextureHandleHigh;
+		uint NATextureHandleLow;
+		uint NATextureHandleHigh;
 	#endif
 
 	uint activePropertiesBitfield;
@@ -42,6 +48,8 @@ void main()
 		#ifdef GL_ARB_gpu_shader_int64
 			FragColour = texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
 		#else
+			FragColour = texture(sampler2D(uvec2(material.matData.albedoTextureHandleLow, material.matData.albedoTextureHandleHigh)), texCoord);
+		#endif
 	}
 	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
 		FragColour *= material.matData.diffuseColour;

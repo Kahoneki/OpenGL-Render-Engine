@@ -26,6 +26,8 @@ Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec
 	eulerRotation = rotation;
 
 	renderOrder = 0;
+
+	instances = 1;
 }
 
 void Drawable::Draw(Shader& shader)
@@ -60,6 +62,6 @@ void Drawable::setRenderOrder(unsigned int val)
 void Drawable::UpdateMaterial()
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, BINDING_POINT::MATERIAL, materialBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, material.GetPaddedSize(), &material.materialData, GL_DYNAMIC_DRAW); //Dynamic draw as this function will be called everytime the material is modified
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(Material), &material.materialData, GL_DYNAMIC_DRAW); //Dynamic draw as this function will be called everytime the material is modified
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

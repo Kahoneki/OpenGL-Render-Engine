@@ -30,7 +30,7 @@ unsigned int AssetManager::addTexture(const char* filepath)
 	char directory[255]{ "Resource Files/" };
 	strcat_s(directory, sizeof(directory), filepath);
 
-	std::cout << "\n\n\n\nDIRECTORY IS: " << directory << "\n\n\n\n";
+	std::cout << "Loaded: " << directory << '\n';
 
 	int width, height, nrChannels;
 	unsigned char* data{ stbi_load(directory, &width, &height, &nrChannels, 0) };
@@ -115,7 +115,14 @@ void AssetManager::removeTextureByHandle(GLuint64 textureHandle)
 
 GLuint64 AssetManager::getTextureHandle(unsigned int textureName)
 {
-	return textureHandles[textureName];
+	for (std::map<unsigned int, GLuint64>::iterator it{ textureHandles.begin() }; it != textureHandles.end(); ++it) {
+		if (it->first == textureName) {
+			return it->second;
+		}
+	}
+	//Texture name not found
+	std::cerr << "ASSET_MANAGER::GET_TEXTURE_HANDLE::TEXTURE_NAME_NOT_FOUND::TEXTURE_NAME=" << textureName;
+	return -1;
 }
 
 unsigned int AssetManager::getTextureName(GLuint64 textureHandle)
@@ -128,4 +135,5 @@ unsigned int AssetManager::getTextureName(GLuint64 textureHandle)
 
 	//Texture handle not found
 	std::cerr << "ASSET_MANAGER::GET_TEXTURE_NAME::TEXTURE_HANDLE_NOT_FOUND::TEXTURE_HANDLE=" << textureHandle;
+	return -1;
 }

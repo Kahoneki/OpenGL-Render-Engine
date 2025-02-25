@@ -8,11 +8,12 @@
 #include "../../../Shaders/shader.h"
 
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent)
+	: Drawable(name, center, scale, rotation, parent)
 {
-	this->vertices = vertices;
-	this->indices = indices;
-	this->textures = textures;
+	vertices = _vertices;
+	indices = _indices;
+	textures = _textures;
 
 	SetupMesh();
 }
@@ -20,63 +21,57 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 
 void Mesh::SetupMesh()
 {
-	//----GENERATING VAO, VBO, AND EBO----//
-	
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
+	//VAO, VBO, EBO setup
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-
-	//----SETTING ATTRIBUTE POINTERS----//
-	
-	//Vertex positions
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	//Positions
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Vertex normals
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	//Normals
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Vertex texture coords
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,TexCoords));
+	//Texture coordinates
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-
 	glBindVertexArray(0);
+
+
+	//Setup material
+	for (Texture& t : textures)
+	{
+		if (t.type == "albedo")
+		{
+			material.setAlbedoTextureHandle(t.id);
+			material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
+			continue;
+		}
+		else if (t.type == "specular")
+		{
+			material.setSpecularTextureHandle(t.id);
+			material.SetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT, true);
+			continue;
+		}
+
+		if (material.GetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT) && material.GetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT))
+		{
+			//Both textures found
+			break;
+		}
+	}
 }
 
 
-void Mesh::Draw(Shader& shader, int instances)
+void Mesh::Draw(Shader& shader)
 {
-	unsigned int diffuseNr = 1;
-	unsigned int specularNr = 1;
-
-	for (unsigned int i = 0; i < textures.size(); i++) {
-		
-		//Activate proper texture unit
-		glActiveTexture(GL_TEXTURE0 + i);
-
-		//Retrieve texture number (the N in diffuse_textureN or specular_textureN)
-		std::string number;
-		std::string name = textures[i].type;
-		if (name == "texture_diffuse")
-			number = std::to_string(diffuseNr++);
-		else if (name == "texture_specular")
-			number = std::to_string(specularNr++);
-
-		shader.setInt(("material." + name + number).c_str(), i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
-	}
-	glActiveTexture(GL_TEXTURE0);
-
 	//Draw mesh
 	glBindVertexArray(VAO);
 	glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, instances);

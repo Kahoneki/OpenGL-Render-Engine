@@ -40,17 +40,6 @@ Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 ro
 void Portal::SetOtherPortal(Portal* _portal)
 {
     otherPortal = _portal;
-    if (name == "Portal 1")
-    {
-        glm::vec3 portalPos{ portal.GetHeirarchicalModelMatrix()[3] };
-        glm::vec3 renderRegionPos{ renderRegion.GetHeirarchicalModelMatrix()[3] };
-        glm::vec3 portalNorm{ glm::normalize(renderRegionPos - portalPos) };
-
-        glm::vec3 otherPortalPos{ otherPortal->GetHeirarchicalModelMatrix()[3] };
-        glm::vec3 otherRenderRegionPos{ otherPortal->renderRegion.GetHeirarchicalModelMatrix()[3] };
-        glm::vec3 otherPortalNorm{ glm::normalize(otherRenderRegionPos - otherPortalPos) };
-        std::cout << "Portal 1 norm: " << glm::to_string(portalNorm) << "\nPortal 2 norm: " << glm::to_string(otherPortalNorm) << '\n';
-    }
 }
 
 void Portal::Draw(Shader& shader)

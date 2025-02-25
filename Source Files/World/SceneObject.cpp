@@ -12,6 +12,7 @@ SceneObject::SceneObject()
 
 SceneObject::SceneObject(const char* _name, SceneObject* _parent, Transform _transform)
 {
+	std::cout << "NAME: " << _name << '\n';
 	name = _name;
 	parent = _parent;
 	transform = _transform;

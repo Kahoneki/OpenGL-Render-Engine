@@ -8,9 +8,10 @@
 
 enum MaterialProperties
 {
-	MATERIAL_COLOUR_BIT         = (1 << 0), //0000 0000 0000 0000 0000 0000 0000 0001
-	MATERIAL_ALBEDO_TEXTURE_BIT = (1 << 1), //0000 0000 0000 0000 0000 0000 0000 0010
-	MATERIAL_NORMAL_TEXTURE_BIT = (1 << 2), //0000 0000 0000 0000 0000 0000 0000 0100
+	MATERIAL_COLOUR_BIT				= (1 << 0), //0000 0000 0000 0000 0000 0000 0000 0001
+	MATERIAL_ALBEDO_TEXTURE_BIT		= (1 << 1), //0000 0000 0000 0000 0000 0000 0000 0010
+	MATERIAL_NORMAL_TEXTURE_BIT		= (1 << 2), //0000 0000 0000 0000 0000 0000 0000 0100
+	MATERIAL_SPECULAR_TEXTURE_BIT	= (1 << 3), //0000 0000 0000 0000 0000 0000 0000 1000
 };
 
 struct MaterialData
@@ -20,11 +21,10 @@ struct MaterialData
 	glm::vec4 specularColour;
 	float specularPower;
 	float rimPower;
-	//float padding1[2];
 
-	glm::u64vec2 textureHandles; //Albedo + Normal
+	glm::u64vec2 packedAlbedoNormal; //Albedo + Normal
+	glm::u64vec2 packedSpecularNA; //Specular + Nothing
 	std::uint32_t activePropertiesBitfield; //uint in glsl is 32 bits
-	//float padding2[3];
 
 	MaterialData() {}
 };
@@ -63,18 +63,21 @@ public:
 
 	GLuint64 getAlbedoTextureHandle();
 	GLuint64 getNormalTextureHandle();
+	GLuint64 getSpecularTextureHandle();
 	unsigned int getAlbedoTextureName();
 	unsigned int getNormalTextureName();
+	unsigned int getSpecularTextureName();
 	void setAlbedoTextureHandle(GLuint64 textureHandle);
 	void setNormalTextureHandle(GLuint64 textureHandle);
+	void setSpecularTextureHandle(GLuint64 textureHandle);
 	void setAlbedoTextureName(unsigned int textureName);
 	void setNormalTextureName(unsigned int textureName);
+	void setSpecularTextureName(unsigned int textureName);
 
 
 
 private:
 	[[no_discard]] const std::size_t GetMaxProperties();
-	[[no_discard]] const GLsizeiptr GetPaddedSize(); //For std140 layout padding requirements
 	
 	MaterialData materialData;
 

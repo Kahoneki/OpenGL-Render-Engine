@@ -101,43 +101,19 @@ const std::size_t Material::GetMaxProperties()
 	return 8 * sizeof(materialData.activePropertiesBitfield);
 }
 
-const GLsizeiptr Material::GetPaddedSize()
-{
-	GLsizeiptr size{ 0 };
-	
-	size += sizeof(materialData.ambientColour); //16 bytes
-
-	size += sizeof(materialData.diffuseColour); //16 bytes
-
-	size += sizeof(materialData.specularColour); //16 bytes
-
-	size += sizeof(materialData.specularPower); //4 bytes
-	//size += 12;
-
-	size += sizeof(materialData.rimPower); //4 bytes
-	size += 8;
-
-	size += sizeof(materialData.textureHandles); //16 bytes
-
-	size += sizeof(materialData.activePropertiesBitfield); //4 bytes
-	size += 12;
-
-	//Padding bytes for 16 byte alignment
-	if (size % 16 != 0) {
-		size += 16 - (size % 16);
-	}
-
-	return size;
-}
-
 GLuint64 Material::getAlbedoTextureHandle()
 {
-	return materialData.textureHandles.x;
+	return materialData.packedAlbedoNormal.x;
 }
 
 GLuint64 Material::getNormalTextureHandle()
 {
-	return materialData.textureHandles.y;
+	return materialData.packedAlbedoNormal.y;
+}
+
+GLuint64 Material::getSpecularTextureHandle()
+{
+	return materialData.packedSpecularNA.x;
 }
 
 unsigned int Material::getAlbedoTextureName()
@@ -150,6 +126,11 @@ unsigned int Material::getNormalTextureName()
 	return Application::getInstance().assetManager.get()->getTextureName(getNormalTextureHandle());
 }
 
+unsigned int Material::getSpecularTextureName()
+{
+	return Application::getInstance().assetManager.get()->getTextureName(getSpecularTextureHandle());
+}
+
 void Material::setAlbedoTextureName(unsigned int textureName)
 {
 	setAlbedoTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
@@ -160,14 +141,25 @@ void Material::setNormalTextureName(unsigned int textureName)
 	setNormalTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
 }
 
+void Material::setSpecularTextureName(unsigned int textureName)
+{
+	setSpecularTextureHandle(Application::getInstance().assetManager.get()->getTextureHandle(textureName));
+}
+
 void Material::setAlbedoTextureHandle(GLuint64 textureHandle)
 {
-	materialData.textureHandles.x = textureHandle;
+	materialData.packedAlbedoNormal.x = textureHandle;
 	drawableParent->UpdateMaterial();
 }
 
 void Material::setNormalTextureHandle(GLuint64 textureHandle)
 {
-	materialData.textureHandles.y = textureHandle;
+	materialData.packedAlbedoNormal.y = textureHandle;
+	drawableParent->UpdateMaterial();
+}
+
+void Material::setSpecularTextureHandle(GLuint64 textureHandle)
+{
+	materialData.packedSpecularNA.x = textureHandle;
 	drawableParent->UpdateMaterial();
 }
