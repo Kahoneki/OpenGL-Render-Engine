@@ -401,4 +401,4 @@ FodyWeavers.xsd
 !build/Debug/
 !build/Debug/*
 
-!Resource Files/*.obj
+!**/Resource Files/**/*.obj
