@@ -3,6 +3,7 @@
 
 #include "GLM/gtx/quaternion.hpp"
 #include <vector>
+#include <string>
 
 
 class Scene;
@@ -33,7 +34,7 @@ class SceneObject
 
 public:
 	SceneObject();
-	SceneObject(const char* _name, SceneObject* _parent, Transform transform);
+	SceneObject(std::string _name, SceneObject* _parent, Transform _transform);
 	virtual ~SceneObject();
 
 	//Setters
@@ -51,7 +52,7 @@ public:
 	SceneObject* parent;
 	std::vector<SceneObject*> children;
 
-	const char* name;
+	std::string name;
 
 protected:
 	Transform transform;

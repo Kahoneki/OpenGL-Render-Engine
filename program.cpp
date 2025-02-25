@@ -50,25 +50,25 @@ int main()
 	plane.material.SetPropertyActive(MATERIAL_NORMAL_TEXTURE_BIT, true);
 	scene.AddDrawable(&plane);
 
-	Cube24 cube{ "Cube", glm::vec3(-3.5f, 1.0f, 4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	cube.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
-	cube.material.setDiffuseColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	cube.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	cube.material.setSpecularPower(128.0f); // Specular strength
-	cube.material.setRimPower(5.0f);
-	cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	cube.useOnlyDiffuse = true;
-	scene.AddDrawable(&cube);
+	//Cube24 cube{ "Cube", glm::vec3(-3.5f, 1.0f, 4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	//cube.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	//cube.material.setDiffuseColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	//cube.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	//cube.material.setSpecularPower(128.0f); // Specular strength
+	//cube.material.setRimPower(5.0f);
+	//cube.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//cube.useOnlyDiffuse = true;
+	//scene.AddDrawable(&cube);
 
-	Cube24 cube2{ "Cube2", glm::vec3(3.5f, 1.0f, -4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
-	cube2.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
-	cube2.material.setDiffuseColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	cube2.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	cube2.material.setSpecularPower(128.0f); // Specular strength
-	cube2.material.setRimPower(5.0f);
-	cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	cube2.useOnlyDiffuse = true;
-	scene.AddDrawable(&cube2);
+	//Cube24 cube2{ "Cube2", glm::vec3(3.5f, 1.0f, -4.5f), glm::vec3(1.0f), glm::vec3(0.0f) };
+	//cube2.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
+	//cube2.material.setDiffuseColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	//cube2.material.setSpecularColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	//cube2.material.setSpecularPower(128.0f); // Specular strength
+	//cube2.material.setRimPower(5.0f);
+	//cube2.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//cube2.useOnlyDiffuse = true;
+	//scene.AddDrawable(&cube2);
 
 	Portal portal1{ "Portal 1", glm::vec3(-5.0f, 3.0f, 0.0f), glm::vec3(1.25f, 3.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f) };
 	portal1.portal.material.setAmbientColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
@@ -93,10 +93,21 @@ int main()
 
 
 	//External models
-	ExternalModel grass{ "grass.obj", scene, "grass", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
-	grass.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	scene.AddDrawable(&grass);
+	//ExternalModel grass{ "grass.obj", scene, "grass", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
+	//grass.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//scene.AddDrawable(&grass);
 
+	//ExternalModel iphone{ "iPhone/Iphone seceond version finished.obj", scene, "iphone", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
+	//iphone.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//scene.AddDrawable(&iphone);
+
+	//ExternalModel tree{ "Tree/Tree1.obj", scene, "tree", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
+	//tree.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//scene.AddDrawable(&tree);
+
+	ExternalModel cube3{ "Cube/cube123.obj", scene, "cube3", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
+	cube3.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	scene.AddDrawable(&cube3);
 
 	//Postprocess effects
 	PPEffect::Saturation satEffect1;

@@ -16,7 +16,8 @@
 
 
 ExternalModel::ExternalModel(const std::string& path, Scene& _sceneParent, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent)
-	: Drawable(name, center, scale, rotation, parent),
+	: SceneObject(name, parent, Transform(center, scale, rotation)),
+	  Drawable(name, center, scale, rotation, parent),
 	sceneParent(_sceneParent)
 {
 	std::string filepath{ "Resource Files/" };
@@ -56,26 +57,26 @@ void ExternalModel::LoadModel(std::string const& path)
 void ExternalModel::ProcessNode(aiNode* node, const aiScene* scene)
 {
 	//Create new SceneObject for this node and update scene hierarchy
-	assimpNodeToSceneObject[node] = new SceneObject(node->mName.C_Str(), nullptr, Transform());
-	sceneParent.AddSceneObject(assimpNodeToSceneObject[node]);
-	for (std::unordered_map<aiNode*, SceneObject*>::iterator it{ assimpNodeToSceneObject.begin() }; it != assimpNodeToSceneObject.end(); ++it)
-	{
-		if (it->first->mParent == node)
-		{
-			it->second->parent = assimpNodeToSceneObject[node];
-			if (std::find(assimpNodeToSceneObject[node]->children.begin(), assimpNodeToSceneObject[node]->children.end(), it->second) == assimpNodeToSceneObject[node]->children.end())
-			{
-				assimpNodeToSceneObject[node]->children.push_back(it->second);
-			}
-		}
-	}
+	//assimpNodeToSceneObject[node] = new SceneObject(node->mName.C_Str(), nullptr, Transform());
+	//sceneParent.AddSceneObject(assimpNodeToSceneObject[node]);
+	//for (std::unordered_map<aiNode*, SceneObject*>::iterator it{ assimpNodeToSceneObject.begin() }; it != assimpNodeToSceneObject.end(); ++it)
+	//{
+	//	if (it->first->mParent == node)
+	//	{
+	//		it->second->parent = assimpNodeToSceneObject[node];
+	//		if (std::find(assimpNodeToSceneObject[node]->children.begin(), assimpNodeToSceneObject[node]->children.end(), it->second) == assimpNodeToSceneObject[node]->children.end())
+	//		{
+	//			assimpNodeToSceneObject[node]->children.push_back(it->second);
+	//		}
+	//	}
+	//}
 
 	//Process all the node's meshes (if any)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(ProcessMesh(mesh, scene));
 		sceneParent.AddDrawable(&meshes[meshes.size() - 1]);
-		assimpNodeToSceneObject[node]->children.push_back(new SceneObject(mesh->mName.C_Str(), assimpNodeToSceneObject[node], Transform()));
+		//assimpNodeToSceneObject[node]->children.push_back(new SceneObject(mesh->mName.C_Str(), assimpNodeToSceneObject[node], Transform()));
 	}
 
 	//Recursively call this function for all the node's children
@@ -145,7 +146,7 @@ Mesh ExternalModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
-	return Mesh(vertices, indices, textures, mesh->mName.C_Str(), glm::vec3(0), glm::vec3(1), glm::vec3(0), this);
+	return Mesh(vertices, indices, textures, std::string(mesh->mName.C_Str()), glm::vec3(0), glm::vec3(1), glm::vec3(0), this);
 }
 
 
@@ -168,9 +169,8 @@ std::vector<Texture> ExternalModel::LoadMaterialTextures(aiMaterial* mat, aiText
 		}
 		if (!skip) {
 			Texture texture;
-			//texture.id = LoadTexture(str.C_Str(), this->directory);
-			std::string filename = std::string(directory);
-			filename = directory + '/' + filename;
+			std::string filename{ directory + '/' + std::string(str.C_Str()) };
+			std::cout << "Directory: " << directory << "\nFilename: " << filename << '\n';
 			texture.id = Application::getInstance().assetManager.get()->addTexture(filename.c_str());
 			texture.type = typeName;
 			texture.path = str.C_Str();

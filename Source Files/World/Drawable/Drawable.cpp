@@ -11,7 +11,7 @@
 #include <GLM/gtx/string_cast.hpp>
 #include <climits>
 
-Drawable::Drawable(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, Transform(center, scale, rotation))
+Drawable::Drawable(std::string name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, Transform(center, scale, rotation))
 {
 	glGenVertexArrays(1, &VAO);
 	glCreateBuffers(1, &VBO);

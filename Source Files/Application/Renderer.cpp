@@ -176,7 +176,7 @@ glm::vec4 Renderer::GetClearColour()
 
 void Renderer::DrawHeirarchy(SceneObject* s)
 {
-	if (ImGui::TreeNode(s->name)) {
+	if (ImGui::TreeNode(s->name.c_str())) {
 
 		//SceneObject can either be a LightSource, RenderSource, or Drawawble - handle each case separately
 

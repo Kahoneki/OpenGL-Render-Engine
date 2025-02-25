@@ -23,11 +23,13 @@ public:
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
 
-	Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent = nullptr);
+	Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, std::string name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent = nullptr);
 	void Draw(Shader& shader) override;
 
 private:
 	void SetupMesh();
+
+	std::string persistentName;
 };
 
 #endif

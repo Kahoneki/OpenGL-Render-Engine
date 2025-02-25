@@ -6,14 +6,18 @@
 #include <GLM/glm.hpp>
 
 #include "../../../Shaders/shader.h"
+#include <iostream>
 
 
-Mesh::Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent)
-	: Drawable(name, center, scale, rotation, parent)
+Mesh::Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, std::string name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent)
+	: SceneObject(name, parent, Transform(center, scale, rotation)),
+	  Drawable(name, center, scale, rotation, parent)
 {
 	vertices = _vertices;
 	indices = _indices;
 	textures = _textures;
+
+	std::cout << "name in mesh constructor is " << name << '\n';
 
 	SetupMesh();
 }

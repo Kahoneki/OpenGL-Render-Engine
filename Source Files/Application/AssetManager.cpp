@@ -30,12 +30,11 @@ unsigned int AssetManager::addTexture(const char* filepath)
 	char directory[255]{ "Resource Files/" };
 	strcat_s(directory, sizeof(directory), filepath);
 
-	std::cout << "Loaded: " << directory << '\n';
-
 	int width, height, nrChannels;
 	unsigned char* data{ stbi_load(directory, &width, &height, &nrChannels, 0) };
 
 	if (data) {
+		std::cout << "Loaded: " << directory << '\n';
 		GLenum format;
 		GLenum internalFormat;
 		switch (nrChannels) {
@@ -56,7 +55,7 @@ unsigned int AssetManager::addTexture(const char* filepath)
 			internalFormat = GL_RGBA8;
 			break;
 		default:
-			std::cerr << "ASSET_MANAGER::ADD_TEXTURE::FORMAT_NOT_SUPPORTED::NUMBER_CHANNELS=" << nrChannels;
+			std::cerr << "ASSET_MANAGER::ADD_TEXTURE::FORMAT_NOT_SUPPORTED::NUMBER_CHANNELS=" << nrChannels << std::endl;
 		}
 
 		if (textureBuffers.size() < maxTextures) {
@@ -72,13 +71,13 @@ unsigned int AssetManager::addTexture(const char* filepath)
 		}
 		else {
 			//Max textures reached
-			std::cerr << "ASSET_MANAGER::ADD_TEXTURE::MAX_TEXTURES_EXCEEDED::MAX_TEXTURES=" << maxTextures;
+			std::cerr << "ASSET_MANAGER::ADD_TEXTURE::MAX_TEXTURES_EXCEEDED::MAX_TEXTURES=" << maxTextures << std::endl;
 			return -1;
 		}
 
 	}
 	else {
-		std::cerr << "ASSET_MANAGER::ADD_TEXTURE::UNABLE_TO_READ_FILE::DIRECTORY=" << directory;
+		std::cerr << "ASSET_MANAGER::ADD_TEXTURE::UNABLE_TO_READ_FILE::DIRECTORY=" << directory << std::endl;
 		return -1;
 	}
 	return -1;

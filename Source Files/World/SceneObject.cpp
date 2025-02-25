@@ -10,7 +10,7 @@ SceneObject::SceneObject()
 	children = std::vector<SceneObject*>();
 }
 
-SceneObject::SceneObject(const char* _name, SceneObject* _parent, Transform _transform)
+SceneObject::SceneObject(std::string _name, SceneObject* _parent, Transform _transform)
 {
 	std::cout << "NAME: " << _name << '\n';
 	name = _name;
