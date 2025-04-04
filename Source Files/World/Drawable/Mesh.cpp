@@ -10,15 +10,12 @@
 
 
 Mesh::Mesh(std::vector<float> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures, std::string name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent)
-	: SceneObject(name, parent, Transform(center, scale, rotation)),
-	  Drawable(name, center, scale, rotation, parent)
+	:	SceneObject(name, parent, Transform(center, scale, rotation)),
+		Drawable(name, center, scale, rotation, parent),
+		vertices(_vertices),
+		indices(_indices),
+		textures(_textures)
 {
-	vertices = _vertices;
-	indices = _indices;
-	textures = _textures;
-
-	std::cout << "name in mesh constructor is " << name << '\n';
-
 	SetupMesh();
 }
 
@@ -39,12 +36,12 @@ void Mesh::SetupMesh()
 	glEnableVertexAttribArray(0);
 
 	//Normals
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	//Texture coordinates
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
 
@@ -54,20 +51,20 @@ void Mesh::SetupMesh()
 	{
 		if (t.type == "albedo")
 		{
-			material.setAlbedoTextureHandle(t.id);
+			material.setAlbedoTextureName(t.id);
 			material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, true);
 			continue;
 		}
 		else if (t.type == "specular")
 		{
-			material.setSpecularTextureHandle(t.id);
+			material.setSpecularTextureName(t.id);
 			material.SetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT, true);
 			continue;
 		}
 
 		if (material.GetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT) && material.GetPropertyActive(MATERIAL_SPECULAR_TEXTURE_BIT))
 		{
-			//Both textures found
+			//Both textures already found and handled - break out of loop
 			break;
 		}
 	}
@@ -76,6 +73,8 @@ void Mesh::SetupMesh()
 
 void Mesh::Draw(Shader& shader)
 {
+	Drawable::Draw(shader);
+
 	//Draw mesh
 	glBindVertexArray(VAO);
 	glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, instances);

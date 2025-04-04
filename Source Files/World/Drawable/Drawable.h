@@ -26,9 +26,10 @@ public:
 	unsigned int getRenderOrder();
 	void setRenderOrder(unsigned int val);
 
+	void UseOnlyDiffuse(bool val);
+
 	Material material;
 
-	bool useOnlyDiffuse; //When using a shader with lighting calculations, this toggle, if true, will skip the calculations and use a diffuse term instead
 	unsigned int instances; //Number of instances to draw
 
 protected:
@@ -47,6 +48,7 @@ protected:
 
 	unsigned int renderOrder; //Used to sort Scene::drawables vector (lower value = earlier render). Not unique. Default value = 0
 
+	bool useOnlyDiffuse; //When using a shader with lighting calculations, this toggle, if true, will skip the calculations and use a diffuse term instead
 
 private:
 	glm::vec3 eulerRotation; //Only used for display purposes

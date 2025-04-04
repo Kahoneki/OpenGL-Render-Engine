@@ -80,6 +80,11 @@ void Renderer::Render(Scene* scene)
 		//There are postprocessing effects active, bind the offscreen framebuffer for deferred rendering
 		glBindFramebuffer(GL_FRAMEBUFFER, rs->postprocessOverlay.fbo);
 	}
+	else
+	{
+		//Explicitly bind default framebuffer to fix syncing issues on window size change
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
 
 	glStencilMask(0xFF);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -93,13 +98,13 @@ void Renderer::Render(Scene* scene)
 	//Set view and projection matrices
 	Camera* c{ dynamic_cast<Camera*>(rs) };
 	if (c) {
-		//shaders[activeShader]->setMat4("view", dynamic_cast<const Camera*>(rs)->GetViewMatrix());
+		shaders[activeShader]->setMat4("view", dynamic_cast<const Camera*>(rs)->GetViewMatrix());
 		PlayerCamera* pc{ dynamic_cast<PlayerCamera*>(rs) };
 		if (pc) {
-			shaders[activeShader]->setMat4("projection", glm::perspective(glm::radians(pc->Fov), static_cast<float>(app->windowManager->SCRWIDTH) / static_cast<float>(app->windowManager->SCRWIDTH), pc->nearPlaneDistance, pc->farPlaneDistance));
+			shaders[activeShader]->setMat4("projection", glm::perspective(glm::radians(pc->Fov), static_cast<float>(app->windowManager->SCRWIDTH) / static_cast<float>(app->windowManager->SCRHEIGHT), pc->nearPlaneDistance, pc->farPlaneDistance));
 		}
 		else {
-			shaders[activeShader]->setMat4("projection", glm::perspective(glm::radians(90.0f), static_cast<float>(app->windowManager->SCRWIDTH) / static_cast<float>(app->windowManager->SCRWIDTH), c->nearPlaneDistance, c->farPlaneDistance));
+			shaders[activeShader]->setMat4("projection", glm::perspective(glm::radians(90.0f), static_cast<float>(app->windowManager->SCRWIDTH) / static_cast<float>(app->windowManager->SCRHEIGHT), c->nearPlaneDistance, c->farPlaneDistance));
 		}
 	}
 
@@ -177,7 +182,6 @@ glm::vec4 Renderer::GetClearColour()
 void Renderer::DrawHeirarchy(SceneObject* s)
 {
 	if (ImGui::TreeNode(s->name.c_str())) {
-
 		//SceneObject can either be a LightSource, RenderSource, or Drawawble - handle each case separately
 
 		if (dynamic_cast<LightSource*>(s)) {
@@ -335,26 +339,26 @@ void Renderer::DrawHeirarchy(SceneObject* s)
 
 			if (ImGui::TreeNode("Colour")) {
 
-					glm::vec3 amb{ d->material.getAmbientColour() };
-					if (ImGui::ColorPicker3("Ambient", &amb.x)) {
-						d->material.setAmbientColour(glm::vec4(amb, 0.0f));
-					}
-					glm::vec3 dif{ d->material.getDiffuseColour() };
-					if (ImGui::ColorPicker3("Diffuse", &dif.x)) {
-						d->material.setDiffuseColour(glm::vec4(dif, 0.0f));
-					}
-					glm::vec3 spec{ d->material.getSpecularColour() };
-					if (ImGui::ColorPicker3("Specular", &spec.x)) {
-						d->material.setSpecularColour(glm::vec4(spec, 0.0f));
-					}
-					float specPow{ d->material.getSpecularPower() };
-					if (ImGui::SliderFloat("Specular Power", &specPow, 0.1f, 256.0f)) {
-						d->material.setSpecularPower(specPow);
-					}
-					float rimPow{ d->material.getRimPower() };
-					if (ImGui::SliderFloat("Rim Power", &rimPow, 0.0f, 5.0f)) {
-						d->material.setRimPower(rimPow);
-					}
+				glm::vec3 amb{ d->material.getAmbientColour() };
+				if (ImGui::ColorPicker3("Ambient", &amb.x)) {
+					d->material.setAmbientColour(glm::vec4(amb, 0.0f));
+				}
+				glm::vec3 dif{ d->material.getDiffuseColour() };
+				if (ImGui::ColorPicker3("Diffuse", &dif.x)) {
+					d->material.setDiffuseColour(glm::vec4(dif, 0.0f));
+				}
+				glm::vec3 spec{ d->material.getSpecularColour() };
+				if (ImGui::ColorPicker3("Specular", &spec.x)) {
+					d->material.setSpecularColour(glm::vec4(spec, 0.0f));
+				}
+				float specPow{ d->material.getSpecularPower() };
+				if (ImGui::SliderFloat("Specular Power", &specPow, 0.1f, Material::MAX_SPECULAR_POWER)) {
+					d->material.setSpecularPower(specPow);
+				}
+				float rimPow{ d->material.getRimPower() };
+				if (ImGui::SliderFloat("Rim Power", &rimPow, 0.0f, Material::MAX_RIM_POWER)) {
+					d->material.setRimPower(rimPow);
+				}
 
 				ImGui::TreePop();
 			}

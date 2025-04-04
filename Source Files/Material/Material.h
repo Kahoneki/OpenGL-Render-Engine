@@ -74,6 +74,9 @@ public:
 	void setNormalTextureName(unsigned int textureName);
 	void setSpecularTextureName(unsigned int textureName);
 
+	
+	static constexpr float MAX_SPECULAR_POWER{ 256.0f };
+	static constexpr float MAX_RIM_POWER{ 5.0f };
 
 
 private:

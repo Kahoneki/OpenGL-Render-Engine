@@ -23,7 +23,7 @@ int main()
 	Application& app{ Application::getInstance() };
 
 	//Define renderer
-	Shader shader{ SHADER_PRESET::BLINN_PHONG };
+	Shader shader{ SHADER_PRESET::STATIC_MATERIAL };
 	app.renderer->AddShader(&shader);
 	app.renderer->SetActiveShader(0);
 	app.renderer->SetClearColour(glm::vec4(0.8f, 1.0f, 1.0f, 1.0f));
@@ -102,29 +102,36 @@ int main()
 	//scene.AddDrawable(&iphone);
 
 	//ExternalModel tree{ "Tree/Tree1.obj", scene, "tree", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
-	//tree.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	////tree.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
 	//scene.AddDrawable(&tree);
 
-	ExternalModel cube3{ "Cube/cube123.obj", scene, "cube3", glm::vec3(0), glm::vec3(1), glm::vec3(0) };
-	cube3.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
-	scene.AddDrawable(&cube3);
+	//ExternalModel cube3{ "Cube/cube123.obj", scene, "cube3", glm::vec3(0), glm::vec3(1), glm::vec3(0), true };
+	//cube3.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//cube3.UseOnlyDiffuse(true);
+	//scene.AddDrawable(&cube3);
+
+	ExternalModel mario{ "mario/Mario.obj", scene, "mario", glm::vec3(0), glm::vec3(1), glm::vec3(0), true };
+	//mario.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);
+	//mario.UseOnlyDiffuse(true);
+	//mario.material.SetPropertyActive(MATERIAL_ALBEDO_TEXTURE_BIT, false);
+	scene.AddDrawable(&mario);
 
 	//Postprocess effects
-	PPEffect::Saturation satEffect1;
-	satEffect1.SetFactor(1.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect1);
-	PPEffect::Saturation satEffect2;
-	satEffect2.SetFactor(1.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&satEffect2);
+	//PPEffect::Saturation satEffect1;
+	//satEffect1.SetFactor(1.0f);
+	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect1);
+	//PPEffect::Saturation satEffect2;
+	//satEffect2.SetFactor(1.0f);
+	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect2);
 	//PPEffect::Saturation satEffect3;
 	//satEffect3.SetFactor(1.0f);
 	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect3);
 	//PPEffect::Saturation satEffect4;
 	//satEffect4.SetFactor(1.0f);
 	//cam.postprocessOverlay.AddPostprocessingEffect(&satEffect4);
-	PPEffect::Vignette vigEffect1;
-	vigEffect1.SetStrength(0.0f);
-	cam.postprocessOverlay.AddPostprocessingEffect(&vigEffect1);
+	//PPEffect::Vignette vigEffect1;
+	//vigEffect1.SetStrength(0.0f);
+	//cam.postprocessOverlay.AddPostprocessingEffect(&vigEffect1);
 
 
 	constexpr std::size_t NUM_LIGHTS{ 8 };

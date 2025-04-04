@@ -44,6 +44,8 @@ layout (binding=1, std140) uniform MaterialBlock
 void main()
 {
 	FragColour = vec4(1.0f);
+
+	//Texture bit
 	if ((material.matData.activePropertiesBitfield & 2u) != 0u) {
 		#ifdef GL_ARB_gpu_shader_int64
 			FragColour = texture(sampler2D(material.matData.albedoTextureHandle), texCoord);
@@ -51,6 +53,8 @@ void main()
 			FragColour = texture(sampler2D(uvec2(material.matData.albedoTextureHandleLow, material.matData.albedoTextureHandleHigh)), texCoord);
 		#endif
 	}
+
+	//Colour bit
 	if ((material.matData.activePropertiesBitfield & 1u) != 0u) {
 		FragColour *= material.matData.diffuseColour;
 	}

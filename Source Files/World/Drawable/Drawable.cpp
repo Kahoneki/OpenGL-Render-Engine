@@ -6,6 +6,7 @@
 #include "../../Application/Renderer.h"
 #include "../../../Shaders/shader.h"
 #include "../Scene.h"
+#include "ExternalModel.h"
 
 #include <iostream>
 #include <GLM/gtx/string_cast.hpp>
@@ -55,6 +56,19 @@ void Drawable::setRenderOrder(unsigned int val)
 	renderOrder = val;
 	if (sceneParent) {
 		sceneParent->ReorderDrawable(this);
+	}
+}
+
+void Drawable::UseOnlyDiffuse(bool val)
+{
+	useOnlyDiffuse = val;
+	
+	if (ExternalModel* e{ dynamic_cast<ExternalModel*>(this) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->UseOnlyDiffuse(val);
+		}
 	}
 }
 

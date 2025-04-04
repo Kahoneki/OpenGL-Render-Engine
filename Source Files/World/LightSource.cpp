@@ -11,7 +11,7 @@ LightSource::LightSource() : SceneObject("New Light Source", nullptr, Transform(
 	light.specularColour = glm::vec4(1.0f);
 	light.intensityPack = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
 
-	cube.useOnlyDiffuse = true;
+	cube.UseOnlyDiffuse(true);
 	cube.material.setDiffuseColour(light.diffuseColour);
 }
 
@@ -23,7 +23,7 @@ LightSource::LightSource(const char* name, glm::vec3 _position, glm::vec4 ambien
 	light.specularColour = specularColour;
 	light.intensityPack = glm::vec4(intensity, 0.0f, 0.0f, 0.0f);
 
-	cube.useOnlyDiffuse = true;
+	cube.UseOnlyDiffuse(true);
 	cube.material.setDiffuseColour(light.diffuseColour);
 }
 

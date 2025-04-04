@@ -67,6 +67,12 @@ unsigned int AssetManager::addTexture(const char* filepath)
 			textureHandles[textureBuffers[i]] = glGetTextureHandleARB(textureBuffers[i]);
 			textureHandleBufferMap[i] = textureHandles[textureBuffers[i]];
 			glMakeTextureHandleResidentARB(textureHandles[textureBuffers[i]]);
+
+			glTextureParameteri(textureBuffers[i], GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTextureParameteri(textureBuffers[i], GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTextureParameteri(textureBuffers[i], GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTextureParameteri(textureBuffers[i], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 			return textureBuffers[i];
 		}
 		else {

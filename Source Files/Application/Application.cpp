@@ -37,6 +37,7 @@ Application::Application()
 	sceneManager = std::make_shared<SceneManager>(this);
 	assetManager = std::make_shared<AssetManager>();
 	renderer = std::make_shared<Renderer>(this);
+
 }
 
 Application::~Application() {

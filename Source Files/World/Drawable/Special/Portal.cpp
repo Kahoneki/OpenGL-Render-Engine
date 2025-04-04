@@ -31,7 +31,7 @@ Portal::Portal(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 ro
     ++Portal::numPortalsInScene;
     stencilValue = Portal::numPortalsInScene;
 
-    renderRegion.useOnlyDiffuse = true;
+    renderRegion.UseOnlyDiffuse(true);
 
     renderRegion.material.setDiffuseColour(Application::getInstance().renderer.get()->GetClearColour());
     renderRegion.material.SetPropertyActive(MATERIAL_COLOUR_BIT, true);

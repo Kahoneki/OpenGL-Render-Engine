@@ -6,6 +6,7 @@
 #include "../External/stb_image.h"
 #include <iostream>
 #include <cstring>
+#include "../World/Drawable/ExternalModel.h"
 
 Material::Material()
 {
@@ -34,6 +35,14 @@ void Material::SetPropertyActive(MaterialProperties property, bool active)
 	if (active) { materialData.activePropertiesBitfield |= property; }
 	else { materialData.activePropertiesBitfield &= ~property; }
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel* e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.SetPropertyActive(property, active);
+		}
+	}
 }
 
 bool Material::GetPropertyActive(MaterialProperties property)
@@ -50,6 +59,14 @@ void Material::setAmbientColour(glm::vec4 colour)
 {
 	materialData.ambientColour = colour;
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel* e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.setAmbientColour(colour);
+		}
+	}
 }
 
 glm::vec4 Material::getDiffuseColour()
@@ -61,6 +78,14 @@ void Material::setDiffuseColour(glm::vec4 colour)
 {
 	materialData.diffuseColour = colour;
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel * e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.setDiffuseColour(colour);
+		}
+	}
 }
 
 glm::vec4 Material::getSpecularColour()
@@ -72,6 +97,14 @@ void Material::setSpecularColour(glm::vec4 colour)
 {
 	materialData.specularColour = colour;
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel* e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.setSpecularColour(colour);
+		}
+	}
 }
 
 float Material::getSpecularPower()
@@ -83,6 +116,14 @@ void Material::setSpecularPower(float power)
 {
 	materialData.specularPower = power;
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel* e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.setSpecularPower(power);
+		}
+	}
 }
 
 float Material::getRimPower()
@@ -94,6 +135,14 @@ void Material::setRimPower(float power)
 {
 	materialData.rimPower = power;
 	drawableParent->UpdateMaterial();
+
+	if (ExternalModel * e{ dynamic_cast<ExternalModel*>(drawableParent) })
+	{
+		for (Mesh* m : e->meshes)
+		{
+			m->material.setRimPower(power);
+		}
+	}
 }
 
 const std::size_t Material::GetMaxProperties()
