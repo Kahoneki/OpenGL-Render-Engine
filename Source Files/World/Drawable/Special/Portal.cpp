@@ -6,13 +6,13 @@
 #include "../../../Application/InputManager.h"
 #include "../../../Application/WindowManager.h"
 #include "../../Scene.h"
-#include "../../../Camera/Camera.h"
+#include "../../../Camera/camera.h"
 #include <iostream>
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "../../../Utility/Maths/Ray.h"
-#include <GLM/gtx/euler_angles.hpp>
-#include <GLM/gtx/matrix_decompose.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 unsigned int Portal::numPortalsInScene = 0;
 bool Portal::cameraCanTeleport = true;

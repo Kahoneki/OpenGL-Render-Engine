@@ -1,5 +1,5 @@
 #include "SceneObject.h"
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
 SceneObject::SceneObject()

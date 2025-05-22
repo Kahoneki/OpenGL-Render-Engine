@@ -1,7 +1,7 @@
 #include "LightSource.h"
 #include "../World/Scene.h"
 #include <iostream>
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 LightSource::LightSource() : SceneObject("New Light Source", nullptr, Transform(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f))), cube("New Light Source Box", glm::vec3(0.0f), glm::vec3(0.2f), glm::vec3(0.0f), this)
 {

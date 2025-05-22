@@ -1,12 +1,13 @@
 #include "../Shaders/shader.h"
 
-#include "GLM/gtc/type_ptr.hpp"
+#include <filesystem>
+
+#include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
 #include <sstream>
 
 #include <iostream>
-#include "Windows.h"
 #include <string>
 
 void Shader::ShaderConstructor(const char* vertexFilepath, const char* fragmentFilepath)
@@ -22,10 +23,9 @@ void Shader::ShaderConstructor(const char* vertexFilepath, const char* fragmentF
     try
     {
         //Open files
-        char cwd[MAX_PATH];
-        GetCurrentDirectoryA(MAX_PATH, cwd);
-        vShaderFile.open(std::string(cwd).append("/Shaders/").append(vertexFilepath));
-        fShaderFile.open(std::string(cwd).append("/Shaders/").append(fragmentFilepath));
+        std::string cwd{ std::filesystem::current_path().string() };
+        vShaderFile.open(cwd.append("/Shaders/").append(vertexFilepath));
+        fShaderFile.open(cwd.append("/Shaders/").append(fragmentFilepath));
         std::stringstream vShaderStream, fShaderStream;
         //Read file's buffer contents into streams
         vShaderStream << vShaderFile.rdbuf();

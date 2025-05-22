@@ -2,7 +2,7 @@
 #define RAY_H
 
 
-#include <GLM/vec3.hpp>
+#include <glm/vec3.hpp>
 
 class Plane;
 

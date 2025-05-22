@@ -1,5 +1,5 @@
 #include "AssetManager.h"
-#include "../External/stb_image.h"
+#include "stb_image.h"
 #include <iostream>
 
 AssetManager::AssetManager(std::size_t _maxTextures)
@@ -27,14 +27,13 @@ AssetManager::~AssetManager()
 
 unsigned int AssetManager::addTexture(const char* filepath)
 {
-	char directory[255]{ "Resource Files/" };
-	strcat_s(directory, sizeof(directory), filepath);
+	std::string fullPath = std::string("Resource Files/") + filepath;
 
 	int width, height, nrChannels;
-	unsigned char* data{ stbi_load(directory, &width, &height, &nrChannels, 0) };
+	unsigned char* data{ stbi_load(fullPath.c_str(), &width, &height, &nrChannels, 0) };
 
 	if (data) {
-		std::cout << "Loaded: " << directory << '\n';
+		std::cout << "Loaded: " << fullPath << '\n';
 		GLenum format;
 		GLenum internalFormat;
 		switch (nrChannels) {
@@ -83,7 +82,7 @@ unsigned int AssetManager::addTexture(const char* filepath)
 
 	}
 	else {
-		std::cerr << "ASSET_MANAGER::ADD_TEXTURE::UNABLE_TO_READ_FILE::DIRECTORY=" << directory << std::endl;
+		std::cerr << "ASSET_MANAGER::ADD_TEXTURE::UNABLE_TO_READ_FILE::DIRECTORY=" << fullPath << std::endl;
 		return -1;
 	}
 	return -1;

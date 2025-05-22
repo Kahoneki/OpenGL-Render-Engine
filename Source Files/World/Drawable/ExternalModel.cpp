@@ -2,11 +2,11 @@
 
 #include "Mesh.h"
 #include "../../../Shaders/shader.h"
-#include "../../External/stb_image.h"
+#include "stb_image.h"
 
-#include <ASSIMP/Importer.hpp>
-#include <ASSIMP/scene.h>
-#include <ASSIMP/postprocess.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include <string>
 #include <iostream>

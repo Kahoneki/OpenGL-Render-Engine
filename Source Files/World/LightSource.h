@@ -4,7 +4,7 @@
 #include "SceneObject.h"
 #include "Drawable/Cube8.h"
 
-#include "GLM/glm.hpp"
+#include <glm/glm.hpp>
 #include <GLAD/glad.h>
 
 class Scene;

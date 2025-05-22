@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <GLM/glm.hpp>
+#include <glm/glm.hpp>
 
 #include "../../../Shaders/shader.h"
 #include <iostream>

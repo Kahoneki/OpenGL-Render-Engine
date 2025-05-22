@@ -4,8 +4,8 @@
 #include "../SceneObject.h"
 #include "../../Material/Material.h"
 
-#include "GLM/gtc/matrix_transform.hpp"
-#include "GLAD/glad.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <GLAD/glad.h>
 
 #include <vector>
 

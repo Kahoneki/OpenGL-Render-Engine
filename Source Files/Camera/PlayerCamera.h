@@ -3,9 +3,9 @@
 
 #include "camera.h"
 
-#include <glad/glad.h>
-#include <GLM/glm.hpp>
-#include <GLM/gtc/matrix_transform.hpp>
+#include <GLAD/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
 

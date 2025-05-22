@@ -1,7 +1,7 @@
 #ifndef EXTERNALMODEL_H
 #define EXTERNALMODEL_H
 
-#include <ASSIMP/scene.h>
+#include <assimp/scene.h>
 
 #include <vector>
 

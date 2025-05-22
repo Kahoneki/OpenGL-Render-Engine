@@ -2,7 +2,7 @@
 #define SHADER_H
 
 #include "GLAD/glad.h"
-#include <GLM/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <string>
 #include <vector>

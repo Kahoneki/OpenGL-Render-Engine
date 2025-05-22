@@ -1,6 +1,6 @@
 #include "Drawable.h"
 
-#include "GLM/gtx/quaternion.hpp"
+#include <glm/gtx/quaternion.hpp>
 #include "../../Utility/BindingPoints.h"
 #include "../../Application/Application.h"
 #include "../../Application/Renderer.h"
@@ -9,7 +9,7 @@
 #include "ExternalModel.h"
 
 #include <iostream>
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <climits>
 
 Drawable::Drawable(std::string name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) : SceneObject(name, parent, Transform(center, scale, rotation))

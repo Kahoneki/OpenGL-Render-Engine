@@ -5,6 +5,7 @@
 #include "../../../../Shaders/compute_shader.h"
 #include "../../../Postprocessing Effects/PostprocessingEffect.h"
 #include <iostream>
+#include <algorithm>
 
 
 PostprocessOverlay::PostprocessOverlay() : fbQuad(SHADER_PRESET::FBO_POSTPROCESS)

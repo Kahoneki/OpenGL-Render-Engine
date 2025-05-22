@@ -14,7 +14,7 @@
 #include "Source Files/Postprocessing Effects/PostprocessingEffects.h"
 #include "Source Files/Utility/RandomFunctions.h"
 #include "Source Files/World/Drawable/ExternalModel.h"
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 int main()

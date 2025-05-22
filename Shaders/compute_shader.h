@@ -1,6 +1,5 @@
 #include "shader.h"
-
-enum POSTPROCESSING_EFFECT;
+#include "../Source Files/World/Drawable/Special/PostprocessOverlay.h"
 
 class ComputeShader : public Shader
 {

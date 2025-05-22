@@ -1,7 +1,9 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "GLM/gtx/quaternion.hpp"
+
+
+#include <glm/gtx/quaternion.hpp>
 #include <vector>
 #include <string>
 

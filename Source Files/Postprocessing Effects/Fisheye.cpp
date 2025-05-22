@@ -1,7 +1,7 @@
 #include "Fisheye.h"
 
 #include "../World/Drawable/Special/PostprocessOverlay.h"
-#include "../Shaders/compute_shader.h"
+#include "../../Shaders/compute_shader.h"
 
 namespace PPEffect
 {

@@ -1,10 +1,10 @@
 #include "compute_shader.h"
 
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
 #include <iostream>
-#include "Windows.h"
 #include <string>
 
 #include "../Source Files/World/Drawable/Special/PostprocessOverlay.h"
@@ -16,9 +16,8 @@ void ComputeShader::ComputeShaderConstructor(const char* shaderFilepath)
     shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try
     {
-        char cwd[MAX_PATH];
-        GetCurrentDirectoryA(MAX_PATH, cwd);
-        shaderFile.open(std::string(cwd).append("/Shaders/").append(shaderFilepath));
+        std::string cwd{ std::filesystem::current_path().string() };
+        shaderFile.open(cwd.append("/Shaders/").append(shaderFilepath));
         std::stringstream shaderStream;
         shaderStream << shaderFile.rdbuf();
         shaderFile.close();

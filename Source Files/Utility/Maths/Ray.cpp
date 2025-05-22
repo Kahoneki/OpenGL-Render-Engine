@@ -1,11 +1,7 @@
 ﻿#include "Ray.h"
 #include "../../World/Drawable/Plane.h"
 #include <iostream>
-#include <GLM/gtx/string_cast.hpp>
-
-//Disable deprecation warning in EIGEN/Dense
-#pragma warning(disable : 4996)
-#include "EIGEN/Dense"
+#include <glm/gtx/string_cast.hpp>
 
 Ray::Ray(glm::vec3 _origin, glm::vec3 _endpoint)
 {

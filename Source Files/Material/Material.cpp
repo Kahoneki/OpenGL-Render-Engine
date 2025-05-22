@@ -3,7 +3,7 @@
 #include "../Application/Application.h"
 #include "../Application/AssetManager.h"
 #include "../World/Drawable/Drawable.h"
-#include "../External/stb_image.h"
+#include "stb_image.h"
 #include <iostream>
 #include <cstring>
 #include "../World/Drawable/ExternalModel.h"

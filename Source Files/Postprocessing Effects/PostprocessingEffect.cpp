@@ -3,7 +3,7 @@
 #include <GLAD/glad.h>
 #include "../Utility/BindingPoints.h"
 
-#include "../Shaders/compute_shader.h"
+#include "../../Shaders/compute_shader.h"
 
 namespace PPEffect
 {

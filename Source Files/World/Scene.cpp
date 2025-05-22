@@ -3,7 +3,7 @@
 #include "LightSource.h"
 #include "../Utility/BindingPoints.h"
 #include <iostream>
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "../Camera/camera.h"
 #include <algorithm> //for std::lower_bound
 

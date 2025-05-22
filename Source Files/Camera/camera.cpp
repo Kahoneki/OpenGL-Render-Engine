@@ -1,7 +1,7 @@
 #include "camera.h"
 #include <iostream>
 #include "camera.h"
-#include <GLM/gtx/string_cast.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "../Application/Application.h"
 #include "../Application/InputManager.h"
 

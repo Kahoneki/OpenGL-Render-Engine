@@ -1,5 +1,5 @@
 #include "Plane.h"
-#include <GLM/vec4.hpp>
+#include <glm/vec4.hpp>
 
 Plane::Plane(const char* name, glm::vec3 center, glm::vec3 scale, glm::vec3 rotation, SceneObject* parent) :
 	SceneObject(name, parent, Transform(center, scale, rotation)),

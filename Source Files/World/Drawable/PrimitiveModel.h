@@ -2,7 +2,7 @@
 #define PRIMITIVEMODEL_H
 #include "Drawable.h"
 
-#include "GLM/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
 class Shader;
