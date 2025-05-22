@@ -1,5 +1,1 @@
-Requires:
-- GLFW
-- GLAD
-- Assimp
-- stb_image
+Ensure dependencies are pulled from vcpkg
